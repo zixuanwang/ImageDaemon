@@ -10,6 +10,9 @@ struct Posting{
 }
 
 service ImageDaemon{
-	list<Bin> getBoWFeatureFromHbase(1:i64 rowKey),
-	void addPostingList(1:i64 visualwordID, 2:list<Posting> postingArray)
+	list<Bin> getBoWFeature(1:i64 rowKey),
+	void addPostingList(1:i64 visualwordID, 2:list<Posting> postingArray),
+	void addImage(1:string imageHash, 2:i64 imageKey),
+	void computeColorFeature(1:i64 rowKey),
+	list<string> query(1:string imagePath)
 }

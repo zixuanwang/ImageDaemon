@@ -1,17 +1,26 @@
+CFLAGS = 	-O3 -Wall
+
 THRIFT_DIR = /usr/local/include/thrift
 
-LIB_DIR = /usr/local/lib
-
-SRC = 		gen-cpp/*.cpp
+OBJS =		ANNVocabulary.o BoWHistogram.o DBAdapter.o \
+			GlobalConfig.o Hbase_constants.o Hbase_types.o \
+			Hbase.o Image.o ImageDaemon_constants.o \
+			ImageDaemon_types.o ImageDaemon.o InvertedIndex.o \
+			LocalFeature.o LocalFeatureExtractor.o MongoDBAdapter.o \
+			RankItem.o TypeConverter.o ImageDaemon_server.o \
+			ColorFeature.o Feature.o
 
 LIBS =		-lthrift -lboost_system -lboost_filesystem \
 			-lopencv_core -lopencv_imgproc -lopencv_highgui \
-			-lopencv_features2d -lopencv_flann
+			-lopencv_features2d -lopencv_flann -lmongoclient -lboost_thread -lboost_program_options
 
 TARGET =	ImageDaemon
 
-$(TARGET):	$(SRC)
-	g++ -o $(TARGET) -I$(THRIFT_DIR) -I./gen-cpp -L$(LIB_DIR) $(LIBS) $(SRC) -O3 -Wall
+$(TARGET):	$(OBJS)
+	g++ -o $(TARGET) $(LIBS) $(CFLAGS) $(OBJS)
+
+%.o: %.cpp
+	g++ -c -o $@ $< -I$(THRIFT_DIR) $(CFLAGS) 
 
 all:	$(TARGET)
 

@@ -8,7 +8,7 @@
 
 namespace ImageDaemon {
 
-uint32_t ImageDaemon_getBoWFeatureFromHbase_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_getBoWFeature_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -48,9 +48,9 @@ uint32_t ImageDaemon_getBoWFeatureFromHbase_args::read(::apache::thrift::protoco
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeatureFromHbase_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_getBoWFeature_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeatureFromHbase_args");
+  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeature_args");
   xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->rowKey);
   xfer += oprot->writeFieldEnd();
@@ -59,9 +59,9 @@ uint32_t ImageDaemon_getBoWFeatureFromHbase_args::write(::apache::thrift::protoc
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeatureFromHbase_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_getBoWFeature_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeatureFromHbase_pargs");
+  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeature_pargs");
   xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->rowKey)));
   xfer += oprot->writeFieldEnd();
@@ -70,7 +70,7 @@ uint32_t ImageDaemon_getBoWFeatureFromHbase_pargs::write(::apache::thrift::proto
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeatureFromHbase_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_getBoWFeature_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -122,11 +122,11 @@ uint32_t ImageDaemon_getBoWFeatureFromHbase_result::read(::apache::thrift::proto
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeatureFromHbase_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_getBoWFeature_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeatureFromHbase_result");
+  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeature_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
@@ -146,7 +146,7 @@ uint32_t ImageDaemon_getBoWFeatureFromHbase_result::write(::apache::thrift::prot
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeatureFromHbase_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_getBoWFeature_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -377,18 +377,496 @@ uint32_t ImageDaemon_addPostingList_presult::read(::apache::thrift::protocol::TP
   return xfer;
 }
 
-void ImageDaemonClient::getBoWFeatureFromHbase(std::vector<Bin> & _return, const int64_t rowKey)
-{
-  send_getBoWFeatureFromHbase(rowKey);
-  recv_getBoWFeatureFromHbase(_return);
+uint32_t ImageDaemon_addImage_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->imageHash);
+          this->__isset.imageHash = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->imageKey);
+          this->__isset.imageKey = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
 }
 
-void ImageDaemonClient::send_getBoWFeatureFromHbase(const int64_t rowKey)
+uint32_t ImageDaemon_addImage_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_addImage_args");
+  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->imageHash);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("imageKey", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->imageKey);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_addImage_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_addImage_pargs");
+  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->imageHash)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("imageKey", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->imageKey)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_addImage_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_addImage_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("ImageDaemon_addImage_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_addImage_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_computeColorFeature_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->rowKey);
+          this->__isset.rowKey = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_computeColorFeature_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_computeColorFeature_args");
+  xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->rowKey);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_computeColorFeature_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_computeColorFeature_pargs");
+  xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->rowKey)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_computeColorFeature_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_computeColorFeature_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("ImageDaemon_computeColorFeature_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_computeColorFeature_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_query_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->imagePath);
+          this->__isset.imagePath = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_query_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_query_args");
+  xfer += oprot->writeFieldBegin("imagePath", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->imagePath);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_query_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_query_pargs");
+  xfer += oprot->writeFieldBegin("imagePath", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->imagePath)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_query_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size18;
+            ::apache::thrift::protocol::TType _etype21;
+            iprot->readListBegin(_etype21, _size18);
+            this->success.resize(_size18);
+            uint32_t _i22;
+            for (_i22 = 0; _i22 < _size18; ++_i22)
+            {
+              xfer += iprot->readString(this->success[_i22]);
+            }
+            iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_query_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("ImageDaemon_query_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
+      std::vector<std::string> ::const_iterator _iter23;
+      for (_iter23 = this->success.begin(); _iter23 != this->success.end(); ++_iter23)
+      {
+        xfer += oprot->writeString((*_iter23));
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_query_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size24;
+            ::apache::thrift::protocol::TType _etype27;
+            iprot->readListBegin(_etype27, _size24);
+            (*(this->success)).resize(_size24);
+            uint32_t _i28;
+            for (_i28 = 0; _i28 < _size24; ++_i28)
+            {
+              xfer += iprot->readString((*(this->success))[_i28]);
+            }
+            iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void ImageDaemonClient::getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey)
+{
+  send_getBoWFeature(rowKey);
+  recv_getBoWFeature(_return);
+}
+
+void ImageDaemonClient::send_getBoWFeature(const int64_t rowKey)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("getBoWFeatureFromHbase", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("getBoWFeature", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  ImageDaemon_getBoWFeatureFromHbase_pargs args;
+  ImageDaemon_getBoWFeature_pargs args;
   args.rowKey = &rowKey;
   args.write(oprot_);
 
@@ -397,7 +875,7 @@ void ImageDaemonClient::send_getBoWFeatureFromHbase(const int64_t rowKey)
   oprot_->getTransport()->flush();
 }
 
-void ImageDaemonClient::recv_getBoWFeatureFromHbase(std::vector<Bin> & _return)
+void ImageDaemonClient::recv_getBoWFeature(std::vector<Bin> & _return)
 {
 
   int32_t rseqid = 0;
@@ -417,12 +895,12 @@ void ImageDaemonClient::recv_getBoWFeatureFromHbase(std::vector<Bin> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("getBoWFeatureFromHbase") != 0) {
+  if (fname.compare("getBoWFeature") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  ImageDaemon_getBoWFeatureFromHbase_presult result;
+  ImageDaemon_getBoWFeature_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -432,7 +910,7 @@ void ImageDaemonClient::recv_getBoWFeatureFromHbase(std::vector<Bin> & _return)
     // _return pointer has now been filled
     return;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getBoWFeatureFromHbase failed: unknown result");
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getBoWFeature failed: unknown result");
 }
 
 void ImageDaemonClient::addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray)
@@ -489,6 +967,171 @@ void ImageDaemonClient::recv_addPostingList()
   return;
 }
 
+void ImageDaemonClient::addImage(const std::string& imageHash, const int64_t imageKey)
+{
+  send_addImage(imageHash, imageKey);
+  recv_addImage();
+}
+
+void ImageDaemonClient::send_addImage(const std::string& imageHash, const int64_t imageKey)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("addImage", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  ImageDaemon_addImage_pargs args;
+  args.imageHash = &imageHash;
+  args.imageKey = &imageKey;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void ImageDaemonClient::recv_addImage()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("addImage") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  ImageDaemon_addImage_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void ImageDaemonClient::computeColorFeature(const int64_t rowKey)
+{
+  send_computeColorFeature(rowKey);
+  recv_computeColorFeature();
+}
+
+void ImageDaemonClient::send_computeColorFeature(const int64_t rowKey)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("computeColorFeature", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  ImageDaemon_computeColorFeature_pargs args;
+  args.rowKey = &rowKey;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void ImageDaemonClient::recv_computeColorFeature()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("computeColorFeature") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  ImageDaemon_computeColorFeature_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void ImageDaemonClient::query(std::vector<std::string> & _return, const std::string& imagePath)
+{
+  send_query(imagePath);
+  recv_query(_return);
+}
+
+void ImageDaemonClient::send_query(const std::string& imagePath)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("query", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  ImageDaemon_query_pargs args;
+  args.imagePath = &imagePath;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void ImageDaemonClient::recv_query(std::vector<std::string> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("query") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  ImageDaemon_query_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "query failed: unknown result");
+}
+
 bool ImageDaemonProcessor::process(boost::shared_ptr<apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr<apache::thrift::protocol::TProtocol> poprot, void* callContext) {
 
   ::apache::thrift::protocol::TProtocol* iprot = piprot.get();
@@ -534,38 +1177,38 @@ bool ImageDaemonProcessor::process_fn(apache::thrift::protocol::TProtocol* iprot
   return true;
 }
 
-void ImageDaemonProcessor::process_getBoWFeatureFromHbase(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ImageDaemonProcessor::process_getBoWFeature(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ImageDaemon.getBoWFeatureFromHbase", callContext);
+    ctx = this->eventHandler_->getContext("ImageDaemon.getBoWFeature", callContext);
   }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.getBoWFeatureFromHbase");
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.getBoWFeature");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ImageDaemon.getBoWFeatureFromHbase");
+    this->eventHandler_->preRead(ctx, "ImageDaemon.getBoWFeature");
   }
 
-  ImageDaemon_getBoWFeatureFromHbase_args args;
+  ImageDaemon_getBoWFeature_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ImageDaemon.getBoWFeatureFromHbase", bytes);
+    this->eventHandler_->postRead(ctx, "ImageDaemon.getBoWFeature", bytes);
   }
 
-  ImageDaemon_getBoWFeatureFromHbase_result result;
+  ImageDaemon_getBoWFeature_result result;
   try {
-    iface_->getBoWFeatureFromHbase(result.success, args.rowKey);
+    iface_->getBoWFeature(result.success, args.rowKey);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ImageDaemon.getBoWFeatureFromHbase");
+      this->eventHandler_->handlerError(ctx, "ImageDaemon.getBoWFeature");
     }
 
     apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("getBoWFeatureFromHbase", apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("getBoWFeature", apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -574,17 +1217,17 @@ void ImageDaemonProcessor::process_getBoWFeatureFromHbase(int32_t seqid, ::apach
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ImageDaemon.getBoWFeatureFromHbase");
+    this->eventHandler_->preWrite(ctx, "ImageDaemon.getBoWFeature");
   }
 
-  oprot->writeMessageBegin("getBoWFeatureFromHbase", apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("getBoWFeature", apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ImageDaemon.getBoWFeatureFromHbase", bytes);
+    this->eventHandler_->postWrite(ctx, "ImageDaemon.getBoWFeature", bytes);
   }
 }
 
@@ -638,6 +1281,166 @@ void ImageDaemonProcessor::process_addPostingList(int32_t seqid, ::apache::thrif
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "ImageDaemon.addPostingList", bytes);
+  }
+}
+
+void ImageDaemonProcessor::process_addImage(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("ImageDaemon.addImage", callContext);
+  }
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.addImage");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "ImageDaemon.addImage");
+  }
+
+  ImageDaemon_addImage_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "ImageDaemon.addImage", bytes);
+  }
+
+  ImageDaemon_addImage_result result;
+  try {
+    iface_->addImage(args.imageHash, args.imageKey);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "ImageDaemon.addImage");
+    }
+
+    apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("addImage", apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "ImageDaemon.addImage");
+  }
+
+  oprot->writeMessageBegin("addImage", apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "ImageDaemon.addImage", bytes);
+  }
+}
+
+void ImageDaemonProcessor::process_computeColorFeature(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("ImageDaemon.computeColorFeature", callContext);
+  }
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.computeColorFeature");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "ImageDaemon.computeColorFeature");
+  }
+
+  ImageDaemon_computeColorFeature_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "ImageDaemon.computeColorFeature", bytes);
+  }
+
+  ImageDaemon_computeColorFeature_result result;
+  try {
+    iface_->computeColorFeature(args.rowKey);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "ImageDaemon.computeColorFeature");
+    }
+
+    apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("computeColorFeature", apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "ImageDaemon.computeColorFeature");
+  }
+
+  oprot->writeMessageBegin("computeColorFeature", apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "ImageDaemon.computeColorFeature", bytes);
+  }
+}
+
+void ImageDaemonProcessor::process_query(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("ImageDaemon.query", callContext);
+  }
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.query");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "ImageDaemon.query");
+  }
+
+  ImageDaemon_query_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "ImageDaemon.query", bytes);
+  }
+
+  ImageDaemon_query_result result;
+  try {
+    iface_->query(result.success, args.imagePath);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "ImageDaemon.query");
+    }
+
+    apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("query", apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "ImageDaemon.query");
+  }
+
+  oprot->writeMessageBegin("query", apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "ImageDaemon.query", bytes);
   }
 }
 
