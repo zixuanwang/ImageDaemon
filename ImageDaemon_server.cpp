@@ -23,6 +23,7 @@
 #include "InvertedIndex.h"
 #include "BoWHistogram.h"
 #include "ColorFeature.h"
+#include "Ticker.h"
 #include "test.h"
 
 using namespace ::apache::thrift;
@@ -115,6 +116,8 @@ public:
 		std::cout << "histogram size: " << histogram.size() << std::endl;
 		// TODO: modify the query pipeline
 		boost::unordered_map<int64_t, double> candidateScoreMap;
+		Ticker ticker;
+		ticker.start();
 		for (size_t i = 0; i < visualwordIdArray.size(); ++i) {
 			std::vector<int64_t> imageIdArray;
 			std::vector<double> imageScoreArray;
@@ -126,6 +129,8 @@ public:
 				candidateScoreMap[imageIdArray[j]] += imageScoreArray[j];
 			}
 		}
+		ticker.stop();
+		ticker.start();
 		std::vector<RankItem<int64_t, double> > candidateRankList;
 		candidateRankList.reserve(candidateScoreMap.size());
 		for (boost::unordered_map<int64_t, double>::iterator iter =
@@ -140,6 +145,8 @@ public:
 					candidateRankList.begin() + candidateSize,
 					candidateRankList.end());
 		}
+		ticker.stop();
+		ticker.start();
 		std::vector<double> queryVector;
 		histogram.flatten(&queryVector, ANNVocabulary::instance()->size());
 		std::vector<RankItem<int64_t, double> > rankList;
@@ -153,6 +160,7 @@ public:
 			rankList.push_back(item);
 		}
 		std::sort(rankList.begin(), rankList.end());
+		ticker.stop();
 		for (int i = 0; i < 10 && i < (int) rankList.size(); ++i) {
 			std::string path;
 			MongoDBAdapter::instance()->loadCell(&path,

@@ -8,7 +8,7 @@ OBJS =		ANNVocabulary.o BoWHistogram.o DBAdapter.o \
 			ImageDaemon_types.o ImageDaemon.o InvertedIndex.o \
 			LocalFeature.o LocalFeatureExtractor.o MongoDBAdapter.o \
 			RankItem.o TypeConverter.o ImageDaemon_server.o \
-			ColorFeature.o Feature.o
+			ColorFeature.o Feature.o Ticker.o
 
 LIBS =		-lthrift -lboost_system -lboost_filesystem \
 			-lopencv_core -lopencv_imgproc -lopencv_highgui \
