@@ -39,9 +39,10 @@ using namespace ::ImageDaemon;
 class ImageDaemonHandler: virtual public ImageDaemonIf {
 public:
 	ImageDaemonHandler() {
-//		HbaseAdapter::instance()->init();
+		// Singletons should be initialized in this order.
 		MongoDBAdapter::instance()->init();
 		ANNVocabulary::instance()->init("/media/data/voc/surf.1m.voc.dat");
+		InvertedIndex::instance()->init();
 		std::cout << "Init Done." << std::endl;
 		//testQuery();
 	}
@@ -101,6 +102,10 @@ public:
 		MongoDBAdapter::instance()->saveCell(string, GlobalConfig::IMAGE_TABLE,
 				rowKey, GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
 	}
+	void loadInvertedIndex() {
+		InvertedIndex::instance()->init();
+	}
+
 	void query(std::vector<std::string> & _return,
 			const std::string& imagePath) {
 		_return.clear();
@@ -141,7 +146,7 @@ public:
 			RankItem<int64_t, double> item(iter->first, iter->second);
 			candidateRankList.push_back(item);
 		}
-		size_t candidateSize = 50;
+		size_t candidateSize = 100;
 		if (candidateRankList.size() > candidateSize) {
 			std::nth_element(candidateRankList.begin(),
 					candidateRankList.begin() + candidateSize,

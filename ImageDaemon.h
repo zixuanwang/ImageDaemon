@@ -20,6 +20,7 @@ class ImageDaemonIf {
   virtual void addImage(const std::string& imageHash, const int64_t imageKey) = 0;
   virtual void computeColorFeature(const int64_t rowKey) = 0;
   virtual void query(std::vector<std::string> & _return, const std::string& imagePath) = 0;
+  virtual void loadInvertedIndex() = 0;
 };
 
 class ImageDaemonIfFactory {
@@ -62,6 +63,9 @@ class ImageDaemonNull : virtual public ImageDaemonIf {
     return;
   }
   void query(std::vector<std::string> & /* _return */, const std::string& /* imagePath */) {
+    return;
+  }
+  void loadInvertedIndex() {
     return;
   }
 };
@@ -564,6 +568,80 @@ class ImageDaemon_query_presult {
 
 };
 
+
+class ImageDaemon_loadInvertedIndex_args {
+ public:
+
+  ImageDaemon_loadInvertedIndex_args() {
+  }
+
+  virtual ~ImageDaemon_loadInvertedIndex_args() throw() {}
+
+
+  bool operator == (const ImageDaemon_loadInvertedIndex_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ImageDaemon_loadInvertedIndex_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_loadInvertedIndex_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_loadInvertedIndex_pargs {
+ public:
+
+
+  virtual ~ImageDaemon_loadInvertedIndex_pargs() throw() {}
+
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_loadInvertedIndex_result {
+ public:
+
+  ImageDaemon_loadInvertedIndex_result() {
+  }
+
+  virtual ~ImageDaemon_loadInvertedIndex_result() throw() {}
+
+
+  bool operator == (const ImageDaemon_loadInvertedIndex_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ImageDaemon_loadInvertedIndex_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_loadInvertedIndex_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_loadInvertedIndex_presult {
+ public:
+
+
+  virtual ~ImageDaemon_loadInvertedIndex_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class ImageDaemonClient : virtual public ImageDaemonIf {
  public:
   ImageDaemonClient(boost::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) :
@@ -599,6 +677,9 @@ class ImageDaemonClient : virtual public ImageDaemonIf {
   void query(std::vector<std::string> & _return, const std::string& imagePath);
   void send_query(const std::string& imagePath);
   void recv_query(std::vector<std::string> & _return);
+  void loadInvertedIndex();
+  void send_loadInvertedIndex();
+  void recv_loadInvertedIndex();
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -617,6 +698,7 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
   void process_addImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_computeColorFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_query(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_loadInvertedIndex(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   ImageDaemonProcessor(boost::shared_ptr<ImageDaemonIf> iface) :
     iface_(iface) {
@@ -625,6 +707,7 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
     processMap_["addImage"] = &ImageDaemonProcessor::process_addImage;
     processMap_["computeColorFeature"] = &ImageDaemonProcessor::process_computeColorFeature;
     processMap_["query"] = &ImageDaemonProcessor::process_query;
+    processMap_["loadInvertedIndex"] = &ImageDaemonProcessor::process_loadInvertedIndex;
   }
 
   virtual bool process(boost::shared_ptr<apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr<apache::thrift::protocol::TProtocol> poprot, void* callContext);
@@ -696,6 +779,13 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
       } else {
         ifaces_[i]->query(_return, imagePath);
       }
+    }
+  }
+
+  void loadInvertedIndex() {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->loadInvertedIndex();
     }
   }
 

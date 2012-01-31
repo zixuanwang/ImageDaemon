@@ -47,6 +47,11 @@ class ImageDaemonHandler : virtual public ImageDaemonIf {
     printf("query\n");
   }
 
+  void loadInvertedIndex() {
+    // Your implementation goes here
+    printf("loadInvertedIndex\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

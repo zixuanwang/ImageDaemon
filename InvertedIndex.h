@@ -8,6 +8,7 @@
 #ifndef INVERTEDINDEX_H_
 #define INVERTEDINDEX_H_
 #include "GlobalConfig.h"
+#include "ANNVocabulary.h"
 #include "HbaseAdapter.h"
 #include "MongoDBAdapter.h"
 #include "ImageDaemon_types.h"
@@ -16,10 +17,11 @@ using namespace ImageDaemon;
 class InvertedIndex {
 public:
 	static InvertedIndex* instance();
+	void init();
 	void savePostingList(int64_t visualwordID,
 			const std::vector<Posting>& postingArray);
-	void loadPostingList(std::vector<int64_t>* pImageIDArray, std::vector<double>* pImageScoreArray,
-			int64_t visualwordID);
+	void loadPostingList(std::vector<int64_t>* pImageIDArray,
+			std::vector<double>* pImageScoreArray, int64_t visualwordID);
 private:
 	static InvertedIndex* pInstance;
 	// Default constuctor, copy constructor and assignment operators should be as private so that nobody
@@ -32,6 +34,8 @@ private:
 			return (i.score < j.score);
 		}
 	};
+	std::vector<std::vector<int64_t> > mImageIDArray;
+	std::vector<std::vector<double> > mImageScoreArray;
 };
 
 #endif /* INVERTEDINDEX_H_ */

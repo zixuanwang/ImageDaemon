@@ -39,6 +39,8 @@ public class ImageDaemon {
 
     public List<String> query(String imagePath) throws org.apache.thrift.TException;
 
+    public void loadInvertedIndex() throws org.apache.thrift.TException;
+
   }
 
   public interface AsyncIface {
@@ -52,6 +54,8 @@ public class ImageDaemon {
     public void computeColorFeature(long rowKey, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.computeColorFeature_call> resultHandler) throws org.apache.thrift.TException;
 
     public void query(String imagePath, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.query_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void loadInvertedIndex(org.apache.thrift.async.AsyncMethodCallback<AsyncClient.loadInvertedIndex_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -181,6 +185,25 @@ public class ImageDaemon {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "query failed: unknown result");
+    }
+
+    public void loadInvertedIndex() throws org.apache.thrift.TException
+    {
+      send_loadInvertedIndex();
+      recv_loadInvertedIndex();
+    }
+
+    public void send_loadInvertedIndex() throws org.apache.thrift.TException
+    {
+      loadInvertedIndex_args args = new loadInvertedIndex_args();
+      sendBase("loadInvertedIndex", args);
+    }
+
+    public void recv_loadInvertedIndex() throws org.apache.thrift.TException
+    {
+      loadInvertedIndex_result result = new loadInvertedIndex_result();
+      receiveBase(result, "loadInvertedIndex");
+      return;
     }
 
   }
@@ -367,6 +390,35 @@ public class ImageDaemon {
       }
     }
 
+    public void loadInvertedIndex(org.apache.thrift.async.AsyncMethodCallback<loadInvertedIndex_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      loadInvertedIndex_call method_call = new loadInvertedIndex_call(resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class loadInvertedIndex_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public loadInvertedIndex_call(org.apache.thrift.async.AsyncMethodCallback<loadInvertedIndex_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("loadInvertedIndex", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        loadInvertedIndex_args args = new loadInvertedIndex_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public void getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        (new Client(prot)).recv_loadInvertedIndex();
+      }
+    }
+
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -385,6 +437,7 @@ public class ImageDaemon {
       processMap.put("addImage", new addImage());
       processMap.put("computeColorFeature", new computeColorFeature());
       processMap.put("query", new query());
+      processMap.put("loadInvertedIndex", new loadInvertedIndex());
       return processMap;
     }
 
@@ -464,6 +517,22 @@ public class ImageDaemon {
       protected query_result getResult(I iface, query_args args) throws org.apache.thrift.TException {
         query_result result = new query_result();
         result.success = iface.query(args.imagePath);
+        return result;
+      }
+    }
+
+    private static class loadInvertedIndex<I extends Iface> extends org.apache.thrift.ProcessFunction<I, loadInvertedIndex_args> {
+      public loadInvertedIndex() {
+        super("loadInvertedIndex");
+      }
+
+      protected loadInvertedIndex_args getEmptyArgsInstance() {
+        return new loadInvertedIndex_args();
+      }
+
+      protected loadInvertedIndex_result getResult(I iface, loadInvertedIndex_args args) throws org.apache.thrift.TException {
+        loadInvertedIndex_result result = new loadInvertedIndex_result();
+        iface.loadInvertedIndex();
         return result;
       }
     }
@@ -4027,6 +4096,496 @@ public class ImageDaemon {
           }
           struct.setSuccessIsSet(true);
         }
+      }
+    }
+
+  }
+
+  public static class loadInvertedIndex_args implements org.apache.thrift.TBase<loadInvertedIndex_args, loadInvertedIndex_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("loadInvertedIndex_args");
+
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new loadInvertedIndex_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new loadInvertedIndex_argsTupleSchemeFactory());
+    }
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(loadInvertedIndex_args.class, metaDataMap);
+    }
+
+    public loadInvertedIndex_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public loadInvertedIndex_args(loadInvertedIndex_args other) {
+    }
+
+    public loadInvertedIndex_args deepCopy() {
+      return new loadInvertedIndex_args(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof loadInvertedIndex_args)
+        return this.equals((loadInvertedIndex_args)that);
+      return false;
+    }
+
+    public boolean equals(loadInvertedIndex_args that) {
+      if (that == null)
+        return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(loadInvertedIndex_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      loadInvertedIndex_args typedOther = (loadInvertedIndex_args)other;
+
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("loadInvertedIndex_args(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class loadInvertedIndex_argsStandardSchemeFactory implements SchemeFactory {
+      public loadInvertedIndex_argsStandardScheme getScheme() {
+        return new loadInvertedIndex_argsStandardScheme();
+      }
+    }
+
+    private static class loadInvertedIndex_argsStandardScheme extends StandardScheme<loadInvertedIndex_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, loadInvertedIndex_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, loadInvertedIndex_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class loadInvertedIndex_argsTupleSchemeFactory implements SchemeFactory {
+      public loadInvertedIndex_argsTupleScheme getScheme() {
+        return new loadInvertedIndex_argsTupleScheme();
+      }
+    }
+
+    private static class loadInvertedIndex_argsTupleScheme extends TupleScheme<loadInvertedIndex_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, loadInvertedIndex_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, loadInvertedIndex_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+      }
+    }
+
+  }
+
+  public static class loadInvertedIndex_result implements org.apache.thrift.TBase<loadInvertedIndex_result, loadInvertedIndex_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("loadInvertedIndex_result");
+
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new loadInvertedIndex_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new loadInvertedIndex_resultTupleSchemeFactory());
+    }
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(loadInvertedIndex_result.class, metaDataMap);
+    }
+
+    public loadInvertedIndex_result() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public loadInvertedIndex_result(loadInvertedIndex_result other) {
+    }
+
+    public loadInvertedIndex_result deepCopy() {
+      return new loadInvertedIndex_result(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof loadInvertedIndex_result)
+        return this.equals((loadInvertedIndex_result)that);
+      return false;
+    }
+
+    public boolean equals(loadInvertedIndex_result that) {
+      if (that == null)
+        return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(loadInvertedIndex_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      loadInvertedIndex_result typedOther = (loadInvertedIndex_result)other;
+
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("loadInvertedIndex_result(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class loadInvertedIndex_resultStandardSchemeFactory implements SchemeFactory {
+      public loadInvertedIndex_resultStandardScheme getScheme() {
+        return new loadInvertedIndex_resultStandardScheme();
+      }
+    }
+
+    private static class loadInvertedIndex_resultStandardScheme extends StandardScheme<loadInvertedIndex_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, loadInvertedIndex_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, loadInvertedIndex_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class loadInvertedIndex_resultTupleSchemeFactory implements SchemeFactory {
+      public loadInvertedIndex_resultTupleScheme getScheme() {
+        return new loadInvertedIndex_resultTupleScheme();
+      }
+    }
+
+    private static class loadInvertedIndex_resultTupleScheme extends TupleScheme<loadInvertedIndex_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, loadInvertedIndex_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, loadInvertedIndex_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
       }
     }
 

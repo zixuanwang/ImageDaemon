@@ -20,6 +20,38 @@ InvertedIndex::InvertedIndex() {
 
 }
 
+void InvertedIndex::init() {
+	// load the short posting list by default
+	int64_t vocabularySize = ANNVocabulary::instance()->size();
+	std::vector<int64_t> dummyID;
+	mImageIDArray.assign(vocabularySize, dummyID);
+	std::vector<double> dummyScore;
+	mImageScoreArray.assign(vocabularySize, dummyScore);
+	std::vector<str::string> columnNameArray;
+	columnNameArray.push_back(GlobalConfig::INVERT_INDEX_SHORT_COLUMN);
+	columnNameArray.push_back(GlobalConfig::INVERT_INDEX_SHORT_SCORE_COLUMN);
+	for (int64_t i = 0; i < vocabularySize; ++i) {
+		std::vector<std::string> shortPostingArray;
+		MongoDBAdapter::instance()->loadCells(&shortPostingArray,
+				GlobalConfig::INVERT_INDEX_TABLE, i, columnNameArray);
+		if (shortPostingArray.size() == 2) {
+			std::vector<int64_t>& imageID = mImageIDArray[i];
+			imageID.assign(shortPostingArray[0].size() / sizeof(int64_t), 0);
+			if (!shortPostingArray[0].empty()) {
+				memcpy((char*) &imageID[0], (char*) &shortPostingArray[0][0],
+						shortPostingArray[0].size());
+			}
+			std::vector<double>& imageScore = mImageScoreArray[i];
+			imageScore.assign(shortPostingArray[1].size() / sizeof(double),
+					0.0);
+			if (!shortPostingArray[1].empty()) {
+				memcpy((char*) &imageScore[0], (char*) &shortPostingArray[1][0],
+						shortPostingArray[1].size());
+			}
+		}
+	}
+}
+
 void InvertedIndex::savePostingList(int64_t visualwordID,
 		const std::vector<Posting>& postingArray) {
 	if (postingArray.empty()) {
@@ -72,24 +104,31 @@ void InvertedIndex::savePostingList(int64_t visualwordID,
 
 void InvertedIndex::loadPostingList(std::vector<int64_t>* pImageIDArray,
 		std::vector<double>* pImageScoreArray, int64_t visualwordID) {
-	// load the short posting list by default
-	std::vector<std::string> shortPostingArray;
-	std::vector<str::string> columnNameArray;
-	columnNameArray.push_back(GlobalConfig::INVERT_INDEX_SHORT_COLUMN);
-	columnNameArray.push_back(GlobalConfig::INVERT_INDEX_SHORT_SCORE_COLUMN);
-	MongoDBAdapter::instance()->loadCells(&shortPostingArray,
-			GlobalConfig::INVERT_INDEX_TABLE, visualwordID, columnNameArray);
-	if (shortPostingArray.size() == 2) {
-		pImageIDArray->assign(shortPostingArray[0].size() / sizeof(int64_t), 0);
-		if(!shortPostingArray[0].empty()){
-			memcpy((char*) &(*pImageIDArray)[0], (char*) &shortPostingArray[0][0],
-					shortPostingArray[0].size());
-		}
-		pImageScoreArray->assign(shortPostingArray[1].size() / sizeof(double),
-				0.0);
-		if (!shortPostingArray[1].empty()) {
-			memcpy((char*) &(*pImageScoreArray)[0],(char*) &shortPostingArray[1][0],
-					shortPostingArray[1].size());
-		}
-	}
+	// return the inverted index from memory
+	pImageIDArray->assign(mImageIDArray[visualwordID].begin(),
+			mImageIDArray[visualwordID].end());
+	pImageScoreArray->assign(mImageScoreArray[visualwordID].begin(),
+			mImageScoreArray[visualwordID].end());
+
+//	std::vector<std::string> shortPostingArray;
+//	std::vector<str::string> columnNameArray;
+//	columnNameArray.push_back(GlobalConfig::INVERT_INDEX_SHORT_COLUMN);
+//	columnNameArray.push_back(GlobalConfig::INVERT_INDEX_SHORT_SCORE_COLUMN);
+//	MongoDBAdapter::instance()->loadCells(&shortPostingArray,
+//			GlobalConfig::INVERT_INDEX_TABLE, visualwordID, columnNameArray);
+//	if (shortPostingArray.size() == 2) {
+//		pImageIDArray->assign(shortPostingArray[0].size() / sizeof(int64_t), 0);
+//		if (!shortPostingArray[0].empty()) {
+//			memcpy((char*) &(*pImageIDArray)[0],
+//					(char*) &shortPostingArray[0][0],
+//					shortPostingArray[0].size());
+//		}
+//		pImageScoreArray->assign(shortPostingArray[1].size() / sizeof(double),
+//				0.0);
+//		if (!shortPostingArray[1].empty()) {
+//			memcpy((char*) &(*pImageScoreArray)[0],
+//					(char*) &shortPostingArray[1][0],
+//					shortPostingArray[1].size());
+//		}
+//	}
 }
