@@ -111,6 +111,10 @@ const std::vector<int64_t>& BoWHistogram::visualwordIdArray() {
 	return mHistogram.first;
 }
 
+const std::vector<double>& BoWHistogram::frequencyArray() {
+	return mHistogram.second;
+}
+
 double BoWHistogram::innerProduct(const std::vector<double>& vector) {
 	double score = 0.0;
 	int64_t histogramSize = size();

@@ -27,7 +27,7 @@ const std::string GlobalConfig::INVERT_INDEX_SHORT_SCORE_COLUMN = COLUMN_FAMILY
 		+ "shortScore";
 const std::string GlobalConfig::INVERT_INDEX_LONG_SCORE_COLUMN = COLUMN_FAMILY
 		+ "longScore";
-const int GlobalConfig::SHORT_LIST_SIZE = 10;
+const int GlobalConfig::SHORT_LIST_SIZE = 100;
 const int GlobalConfig::IMAGE_LENGTH = 320;
 
 GlobalConfig::GlobalConfig() {

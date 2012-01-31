@@ -26,6 +26,7 @@ public:
 	void addBin(int64_t visualwordID, double frequency);
 	void normalize();
 	const std::vector<int64_t>& visualwordIdArray();
+	const std::vector<double>& frequencyArray();
 	double innerProduct(const std::vector<double>& vector);
 	int64_t size() const;
 	void print() const;

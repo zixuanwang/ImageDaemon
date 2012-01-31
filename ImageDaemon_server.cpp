@@ -113,6 +113,7 @@ public:
 		ANNVocabulary::instance()->quantizeFeature(localFeature, &histogram);
 		const std::vector<int64_t>& visualwordIdArray =
 				histogram.visualwordIdArray();
+		const std::vector<double>& frequencyArray = histogram.frequencyArray();
 		std::cout << "histogram size: " << histogram.size() << std::endl;
 		// TODO: modify the query pipeline
 		boost::unordered_map<int64_t, double> candidateScoreMap;
@@ -126,7 +127,8 @@ public:
 			for (size_t j = 0;
 					j < imageIdArray.size() && j < imageScoreArray.size();
 					++j) {
-				candidateScoreMap[imageIdArray[j]] += imageScoreArray[j];
+				candidateScoreMap[imageIdArray[j]] += imageScoreArray[j]
+						* frequencyArray[i];
 			}
 		}
 		ticker.stop();
@@ -161,7 +163,7 @@ public:
 		}
 		std::sort(rankList.begin(), rankList.end());
 		ticker.stop();
-		for (int i = 0; i < 10 && i < (int) rankList.size(); ++i) {
+		for (int i = 0; i < 16 && i < (int) rankList.size(); ++i) {
 			std::string path;
 			MongoDBAdapter::instance()->loadCell(&path,
 					GlobalConfig::IMAGE_TABLE, rankList[i].index,
