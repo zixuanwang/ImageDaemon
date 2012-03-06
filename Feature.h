@@ -7,9 +7,7 @@
 
 #ifndef FEATURE_H_
 #define FEATURE_H_
-#include <string>
-#include <vector>
-#include <opencv2/opencv.hpp>
+#include "GlobalConfig.h"
 class Feature {
 public:
 	Feature();

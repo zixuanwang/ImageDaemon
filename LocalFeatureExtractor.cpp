@@ -15,7 +15,6 @@ LocalFeatureExtractor::LocalFeatureExtractor(int minFeatureNumber,
 }
 
 LocalFeatureExtractor::~LocalFeatureExtractor() {
-	// TODO Auto-generated destructor stub
 }
 
 void LocalFeatureExtractor::extractFeature(const cv::Mat& image,

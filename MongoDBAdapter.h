@@ -7,12 +7,13 @@
 
 #ifndef MONGODBADAPTER_H_
 #define MONGODBADAPTER_H_
-
+#include <mongo/client/dbclient.h>
+#include <mongo/client/gridfs.h>
+#include <mongo/client/connpool.h>
 #include "GlobalConfig.h"
-#include "DBAdapter.h"
 
 using namespace mongo;
-class MongoDBAdapter: public DBAdapter {
+class MongoDBAdapter {
 public:
 	static MongoDBAdapter* instance();
 	void init();

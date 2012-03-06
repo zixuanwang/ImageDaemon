@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Posting");
 
-  private static final org.apache.thrift.protocol.TField IMAGE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("imageID", org.apache.thrift.protocol.TType.I64, (short)1);
+  private static final org.apache.thrift.protocol.TField IMAGE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("imageId", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField SCORE_FIELD_DESC = new org.apache.thrift.protocol.TField("score", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
@@ -37,12 +37,12 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
     schemes.put(TupleScheme.class, new PostingTupleSchemeFactory());
   }
 
-  public long imageID; // required
+  public long imageId; // required
   public double score; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    IMAGE_ID((short)1, "imageID"),
+    IMAGE_ID((short)1, "imageId"),
     SCORE((short)2, "score");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -108,7 +108,7 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.IMAGE_ID, new org.apache.thrift.meta_data.FieldMetaData("imageID", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.IMAGE_ID, new org.apache.thrift.meta_data.FieldMetaData("imageId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.SCORE, new org.apache.thrift.meta_data.FieldMetaData("score", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
@@ -120,12 +120,12 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
   }
 
   public Posting(
-    long imageID,
+    long imageId,
     double score)
   {
     this();
-    this.imageID = imageID;
-    setImageIDIsSet(true);
+    this.imageId = imageId;
+    setImageIdIsSet(true);
     this.score = score;
     setScoreIsSet(true);
   }
@@ -136,7 +136,7 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
   public Posting(Posting other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.imageID = other.imageID;
+    this.imageId = other.imageId;
     this.score = other.score;
   }
 
@@ -146,32 +146,32 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
 
   @Override
   public void clear() {
-    setImageIDIsSet(false);
-    this.imageID = 0;
+    setImageIdIsSet(false);
+    this.imageId = 0;
     setScoreIsSet(false);
     this.score = 0.0;
   }
 
-  public long getImageID() {
-    return this.imageID;
+  public long getImageId() {
+    return this.imageId;
   }
 
-  public Posting setImageID(long imageID) {
-    this.imageID = imageID;
-    setImageIDIsSet(true);
+  public Posting setImageId(long imageId) {
+    this.imageId = imageId;
+    setImageIdIsSet(true);
     return this;
   }
 
-  public void unsetImageID() {
+  public void unsetImageId() {
     __isset_bit_vector.clear(__IMAGEID_ISSET_ID);
   }
 
-  /** Returns true if field imageID is set (has been assigned a value) and false otherwise */
-  public boolean isSetImageID() {
+  /** Returns true if field imageId is set (has been assigned a value) and false otherwise */
+  public boolean isSetImageId() {
     return __isset_bit_vector.get(__IMAGEID_ISSET_ID);
   }
 
-  public void setImageIDIsSet(boolean value) {
+  public void setImageIdIsSet(boolean value) {
     __isset_bit_vector.set(__IMAGEID_ISSET_ID, value);
   }
 
@@ -202,9 +202,9 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
     switch (field) {
     case IMAGE_ID:
       if (value == null) {
-        unsetImageID();
+        unsetImageId();
       } else {
-        setImageID((Long)value);
+        setImageId((Long)value);
       }
       break;
 
@@ -222,7 +222,7 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
   public Object getFieldValue(_Fields field) {
     switch (field) {
     case IMAGE_ID:
-      return Long.valueOf(getImageID());
+      return Long.valueOf(getImageId());
 
     case SCORE:
       return Double.valueOf(getScore());
@@ -239,7 +239,7 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
 
     switch (field) {
     case IMAGE_ID:
-      return isSetImageID();
+      return isSetImageId();
     case SCORE:
       return isSetScore();
     }
@@ -259,12 +259,12 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
     if (that == null)
       return false;
 
-    boolean this_present_imageID = true;
-    boolean that_present_imageID = true;
-    if (this_present_imageID || that_present_imageID) {
-      if (!(this_present_imageID && that_present_imageID))
+    boolean this_present_imageId = true;
+    boolean that_present_imageId = true;
+    if (this_present_imageId || that_present_imageId) {
+      if (!(this_present_imageId && that_present_imageId))
         return false;
-      if (this.imageID != that.imageID)
+      if (this.imageId != that.imageId)
         return false;
     }
 
@@ -293,12 +293,12 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
     int lastComparison = 0;
     Posting typedOther = (Posting)other;
 
-    lastComparison = Boolean.valueOf(isSetImageID()).compareTo(typedOther.isSetImageID());
+    lastComparison = Boolean.valueOf(isSetImageId()).compareTo(typedOther.isSetImageId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetImageID()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.imageID, typedOther.imageID);
+    if (isSetImageId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.imageId, typedOther.imageId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -333,8 +333,8 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
     StringBuilder sb = new StringBuilder("Posting(");
     boolean first = true;
 
-    sb.append("imageID:");
-    sb.append(this.imageID);
+    sb.append("imageId:");
+    sb.append(this.imageId);
     first = false;
     if (!first) sb.append(", ");
     sb.append("score:");
@@ -386,8 +386,8 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
         switch (schemeField.id) {
           case 1: // IMAGE_ID
             if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
-              struct.imageID = iprot.readI64();
-              struct.setImageIDIsSet(true);
+              struct.imageId = iprot.readI64();
+              struct.setImageIdIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -416,7 +416,7 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
 
       oprot.writeStructBegin(STRUCT_DESC);
       oprot.writeFieldBegin(IMAGE_ID_FIELD_DESC);
-      oprot.writeI64(struct.imageID);
+      oprot.writeI64(struct.imageId);
       oprot.writeFieldEnd();
       oprot.writeFieldBegin(SCORE_FIELD_DESC);
       oprot.writeDouble(struct.score);
@@ -439,15 +439,15 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
     public void write(org.apache.thrift.protocol.TProtocol prot, Posting struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetImageID()) {
+      if (struct.isSetImageId()) {
         optionals.set(0);
       }
       if (struct.isSetScore()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
-      if (struct.isSetImageID()) {
-        oprot.writeI64(struct.imageID);
+      if (struct.isSetImageId()) {
+        oprot.writeI64(struct.imageId);
       }
       if (struct.isSetScore()) {
         oprot.writeDouble(struct.score);
@@ -459,8 +459,8 @@ public class Posting implements org.apache.thrift.TBase<Posting, Posting._Fields
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.imageID = iprot.readI64();
-        struct.setImageIDIsSet(true);
+        struct.imageId = iprot.readI64();
+        struct.setImageIdIsSet(true);
       }
       if (incoming.get(1)) {
         struct.score = iprot.readDouble();

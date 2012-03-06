@@ -9,9 +9,7 @@
 #define BOWHISTOGRAM_H_
 #include "GlobalConfig.h"
 #include "ImageDaemon_types.h"
-
 #include "HbaseAdapter.h"
-#include "MongoDBAdapter.h"
 using namespace ::ImageDaemon;
 class BoWHistogram {
 public:

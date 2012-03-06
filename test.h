@@ -13,6 +13,8 @@
 #include "LocalFeatureExtractor.h"
 #include "ImageDaemon_types.h"
 #include "RankItem.h"
+#include "Hbase.h"
+#include "Ticker.h"
 using namespace ::ImageDaemon;
 void testFeature() {
 	int64_t rowKey = 0;
@@ -112,5 +114,60 @@ void testHistogram() {
 //		cv::waitKey(0);
 //	}
 //}
+
+void testHbase() {
+	Ticker t;
+	t.start();
+	boost::shared_ptr<TSocket> socket(new TSocket("localhost", 9090));
+	boost::shared_ptr<TTransport> transport(new TFramedTransport(socket));
+	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+
+	HbaseClient client(protocol);
+	transport->open();
+	transport->close();
+	t.stop();
+}
+struct PostingComparator {
+	bool operator()(const Posting &i, const Posting &j) {
+		return (i.score < j.score);
+	}
+};
+
+void testMultiSet() {
+	std::string a(10,'0');
+	std::cout << a << std::endl;
+//	std::multiset<Posting, PostingComparator> mySet;
+//	Posting a;
+//	a.imageID = 1;
+//	a.score = -10;
+//	Posting b;
+//	b.imageID = 2;
+//	b.score = -1;
+//	Posting c;
+//	c.imageID = 3;
+//	c.score = -10;
+//	Posting d;
+//	d.imageID = 4;
+//	d.score = -2;
+//	mySet.insert(a);
+//	mySet.insert(b);
+//	mySet.insert(c);
+//	mySet.insert(d);
+//	for (std::multiset<Posting, PostingComparator>::iterator iter =
+//			mySet.begin(); iter != mySet.end(); ++iter) {
+//		std::cout << iter->imageID << "\t" << iter->score << std::endl;
+//	}
+//	std::multiset<Posting,PostingComparator>::reverse_iterator citer=mySet.rbegin();
+//	//citer.base();
+//	std::cout << mySet.size() << std::endl;
+//
+//	mySet.erase(--(citer.base()));
+//	for (std::multiset<Posting, PostingComparator>::iterator iter =
+//			mySet.begin(); iter != mySet.end(); ++iter) {
+//		std::cout << iter->imageID << "\t" << iter->score << std::endl;
+//	}
+//	std::cout << mySet.size() << std::endl;
+
+}
 
 #endif /* TEST_H_ */

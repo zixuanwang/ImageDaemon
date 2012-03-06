@@ -27,16 +27,6 @@ class ImageDaemonHandler : virtual public ImageDaemonIf {
     printf("getBoWFeature\n");
   }
 
-  void addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray) {
-    // Your implementation goes here
-    printf("addPostingList\n");
-  }
-
-  void addImage(const std::string& imageHash, const int64_t imageKey) {
-    // Your implementation goes here
-    printf("addImage\n");
-  }
-
   void computeColorFeature(const int64_t rowKey) {
     // Your implementation goes here
     printf("computeColorFeature\n");
@@ -47,9 +37,14 @@ class ImageDaemonHandler : virtual public ImageDaemonIf {
     printf("query\n");
   }
 
-  void loadInvertedIndex() {
+  void addImage(const std::string& imageHash, const int64_t rowKey) {
     // Your implementation goes here
-    printf("loadInvertedIndex\n");
+    printf("addImage\n");
+  }
+
+  void indexImage(const std::string& imageHash, const int64_t rowKey) {
+    // Your implementation goes here
+    printf("indexImage\n");
   }
 
 };

@@ -16,11 +16,10 @@ class ImageDaemonIf {
  public:
   virtual ~ImageDaemonIf() {}
   virtual void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) = 0;
-  virtual void addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray) = 0;
-  virtual void addImage(const std::string& imageHash, const int64_t imageKey) = 0;
   virtual void computeColorFeature(const int64_t rowKey) = 0;
   virtual void query(std::vector<std::string> & _return, const std::string& imagePath) = 0;
-  virtual void loadInvertedIndex() = 0;
+  virtual void addImage(const std::string& imageHash, const int64_t rowKey) = 0;
+  virtual void indexImage(const std::string& imageHash, const int64_t rowKey) = 0;
 };
 
 class ImageDaemonIfFactory {
@@ -53,19 +52,16 @@ class ImageDaemonNull : virtual public ImageDaemonIf {
   void getBoWFeature(std::vector<Bin> & /* _return */, const int64_t /* rowKey */) {
     return;
   }
-  void addPostingList(const int64_t /* visualwordID */, const std::vector<Posting> & /* postingArray */) {
-    return;
-  }
-  void addImage(const std::string& /* imageHash */, const int64_t /* imageKey */) {
-    return;
-  }
   void computeColorFeature(const int64_t /* rowKey */) {
     return;
   }
   void query(std::vector<std::string> & /* _return */, const std::string& /* imagePath */) {
     return;
   }
-  void loadInvertedIndex() {
+  void addImage(const std::string& /* imageHash */, const int64_t /* rowKey */) {
+    return;
+  }
+  void indexImage(const std::string& /* imageHash */, const int64_t /* rowKey */) {
     return;
   }
 };
@@ -173,200 +169,6 @@ class ImageDaemon_getBoWFeature_presult {
   std::vector<Bin> * success;
 
   _ImageDaemon_getBoWFeature_presult__isset __isset;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-
-};
-
-typedef struct _ImageDaemon_addPostingList_args__isset {
-  _ImageDaemon_addPostingList_args__isset() : visualwordID(false), postingArray(false) {}
-  bool visualwordID;
-  bool postingArray;
-} _ImageDaemon_addPostingList_args__isset;
-
-class ImageDaemon_addPostingList_args {
- public:
-
-  ImageDaemon_addPostingList_args() : visualwordID(0) {
-  }
-
-  virtual ~ImageDaemon_addPostingList_args() throw() {}
-
-  int64_t visualwordID;
-  std::vector<Posting>  postingArray;
-
-  _ImageDaemon_addPostingList_args__isset __isset;
-
-  void __set_visualwordID(const int64_t val) {
-    visualwordID = val;
-  }
-
-  void __set_postingArray(const std::vector<Posting> & val) {
-    postingArray = val;
-  }
-
-  bool operator == (const ImageDaemon_addPostingList_args & rhs) const
-  {
-    if (!(visualwordID == rhs.visualwordID))
-      return false;
-    if (!(postingArray == rhs.postingArray))
-      return false;
-    return true;
-  }
-  bool operator != (const ImageDaemon_addPostingList_args &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const ImageDaemon_addPostingList_args & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addPostingList_pargs {
- public:
-
-
-  virtual ~ImageDaemon_addPostingList_pargs() throw() {}
-
-  const int64_t* visualwordID;
-  const std::vector<Posting> * postingArray;
-
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addPostingList_result {
- public:
-
-  ImageDaemon_addPostingList_result() {
-  }
-
-  virtual ~ImageDaemon_addPostingList_result() throw() {}
-
-
-  bool operator == (const ImageDaemon_addPostingList_result & /* rhs */) const
-  {
-    return true;
-  }
-  bool operator != (const ImageDaemon_addPostingList_result &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const ImageDaemon_addPostingList_result & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addPostingList_presult {
- public:
-
-
-  virtual ~ImageDaemon_addPostingList_presult() throw() {}
-
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-
-};
-
-typedef struct _ImageDaemon_addImage_args__isset {
-  _ImageDaemon_addImage_args__isset() : imageHash(false), imageKey(false) {}
-  bool imageHash;
-  bool imageKey;
-} _ImageDaemon_addImage_args__isset;
-
-class ImageDaemon_addImage_args {
- public:
-
-  ImageDaemon_addImage_args() : imageHash(""), imageKey(0) {
-  }
-
-  virtual ~ImageDaemon_addImage_args() throw() {}
-
-  std::string imageHash;
-  int64_t imageKey;
-
-  _ImageDaemon_addImage_args__isset __isset;
-
-  void __set_imageHash(const std::string& val) {
-    imageHash = val;
-  }
-
-  void __set_imageKey(const int64_t val) {
-    imageKey = val;
-  }
-
-  bool operator == (const ImageDaemon_addImage_args & rhs) const
-  {
-    if (!(imageHash == rhs.imageHash))
-      return false;
-    if (!(imageKey == rhs.imageKey))
-      return false;
-    return true;
-  }
-  bool operator != (const ImageDaemon_addImage_args &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const ImageDaemon_addImage_args & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addImage_pargs {
- public:
-
-
-  virtual ~ImageDaemon_addImage_pargs() throw() {}
-
-  const std::string* imageHash;
-  const int64_t* imageKey;
-
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addImage_result {
- public:
-
-  ImageDaemon_addImage_result() {
-  }
-
-  virtual ~ImageDaemon_addImage_result() throw() {}
-
-
-  bool operator == (const ImageDaemon_addImage_result & /* rhs */) const
-  {
-    return true;
-  }
-  bool operator != (const ImageDaemon_addImage_result &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const ImageDaemon_addImage_result & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addImage_presult {
- public:
-
-
-  virtual ~ImageDaemon_addImage_presult() throw() {}
-
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -568,25 +370,46 @@ class ImageDaemon_query_presult {
 
 };
 
+typedef struct _ImageDaemon_addImage_args__isset {
+  _ImageDaemon_addImage_args__isset() : imageHash(false), rowKey(false) {}
+  bool imageHash;
+  bool rowKey;
+} _ImageDaemon_addImage_args__isset;
 
-class ImageDaemon_loadInvertedIndex_args {
+class ImageDaemon_addImage_args {
  public:
 
-  ImageDaemon_loadInvertedIndex_args() {
+  ImageDaemon_addImage_args() : imageHash(""), rowKey(0) {
   }
 
-  virtual ~ImageDaemon_loadInvertedIndex_args() throw() {}
+  virtual ~ImageDaemon_addImage_args() throw() {}
 
+  std::string imageHash;
+  int64_t rowKey;
 
-  bool operator == (const ImageDaemon_loadInvertedIndex_args & /* rhs */) const
+  _ImageDaemon_addImage_args__isset __isset;
+
+  void __set_imageHash(const std::string& val) {
+    imageHash = val;
+  }
+
+  void __set_rowKey(const int64_t val) {
+    rowKey = val;
+  }
+
+  bool operator == (const ImageDaemon_addImage_args & rhs) const
   {
+    if (!(imageHash == rhs.imageHash))
+      return false;
+    if (!(rowKey == rhs.rowKey))
+      return false;
     return true;
   }
-  bool operator != (const ImageDaemon_loadInvertedIndex_args &rhs) const {
+  bool operator != (const ImageDaemon_addImage_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const ImageDaemon_loadInvertedIndex_args & ) const;
+  bool operator < (const ImageDaemon_addImage_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -594,36 +417,38 @@ class ImageDaemon_loadInvertedIndex_args {
 };
 
 
-class ImageDaemon_loadInvertedIndex_pargs {
+class ImageDaemon_addImage_pargs {
  public:
 
 
-  virtual ~ImageDaemon_loadInvertedIndex_pargs() throw() {}
+  virtual ~ImageDaemon_addImage_pargs() throw() {}
 
+  const std::string* imageHash;
+  const int64_t* rowKey;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
 
-class ImageDaemon_loadInvertedIndex_result {
+class ImageDaemon_addImage_result {
  public:
 
-  ImageDaemon_loadInvertedIndex_result() {
+  ImageDaemon_addImage_result() {
   }
 
-  virtual ~ImageDaemon_loadInvertedIndex_result() throw() {}
+  virtual ~ImageDaemon_addImage_result() throw() {}
 
 
-  bool operator == (const ImageDaemon_loadInvertedIndex_result & /* rhs */) const
+  bool operator == (const ImageDaemon_addImage_result & /* rhs */) const
   {
     return true;
   }
-  bool operator != (const ImageDaemon_loadInvertedIndex_result &rhs) const {
+  bool operator != (const ImageDaemon_addImage_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const ImageDaemon_loadInvertedIndex_result & ) const;
+  bool operator < (const ImageDaemon_addImage_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -631,11 +456,108 @@ class ImageDaemon_loadInvertedIndex_result {
 };
 
 
-class ImageDaemon_loadInvertedIndex_presult {
+class ImageDaemon_addImage_presult {
  public:
 
 
-  virtual ~ImageDaemon_loadInvertedIndex_presult() throw() {}
+  virtual ~ImageDaemon_addImage_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ImageDaemon_indexImage_args__isset {
+  _ImageDaemon_indexImage_args__isset() : imageHash(false), rowKey(false) {}
+  bool imageHash;
+  bool rowKey;
+} _ImageDaemon_indexImage_args__isset;
+
+class ImageDaemon_indexImage_args {
+ public:
+
+  ImageDaemon_indexImage_args() : imageHash(""), rowKey(0) {
+  }
+
+  virtual ~ImageDaemon_indexImage_args() throw() {}
+
+  std::string imageHash;
+  int64_t rowKey;
+
+  _ImageDaemon_indexImage_args__isset __isset;
+
+  void __set_imageHash(const std::string& val) {
+    imageHash = val;
+  }
+
+  void __set_rowKey(const int64_t val) {
+    rowKey = val;
+  }
+
+  bool operator == (const ImageDaemon_indexImage_args & rhs) const
+  {
+    if (!(imageHash == rhs.imageHash))
+      return false;
+    if (!(rowKey == rhs.rowKey))
+      return false;
+    return true;
+  }
+  bool operator != (const ImageDaemon_indexImage_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_indexImage_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_indexImage_pargs {
+ public:
+
+
+  virtual ~ImageDaemon_indexImage_pargs() throw() {}
+
+  const std::string* imageHash;
+  const int64_t* rowKey;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_indexImage_result {
+ public:
+
+  ImageDaemon_indexImage_result() {
+  }
+
+  virtual ~ImageDaemon_indexImage_result() throw() {}
+
+
+  bool operator == (const ImageDaemon_indexImage_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ImageDaemon_indexImage_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_indexImage_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_indexImage_presult {
+ public:
+
+
+  virtual ~ImageDaemon_indexImage_presult() throw() {}
 
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
@@ -665,21 +587,18 @@ class ImageDaemonClient : virtual public ImageDaemonIf {
   void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey);
   void send_getBoWFeature(const int64_t rowKey);
   void recv_getBoWFeature(std::vector<Bin> & _return);
-  void addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray);
-  void send_addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray);
-  void recv_addPostingList();
-  void addImage(const std::string& imageHash, const int64_t imageKey);
-  void send_addImage(const std::string& imageHash, const int64_t imageKey);
-  void recv_addImage();
   void computeColorFeature(const int64_t rowKey);
   void send_computeColorFeature(const int64_t rowKey);
   void recv_computeColorFeature();
   void query(std::vector<std::string> & _return, const std::string& imagePath);
   void send_query(const std::string& imagePath);
   void recv_query(std::vector<std::string> & _return);
-  void loadInvertedIndex();
-  void send_loadInvertedIndex();
-  void recv_loadInvertedIndex();
+  void addImage(const std::string& imageHash, const int64_t rowKey);
+  void send_addImage(const std::string& imageHash, const int64_t rowKey);
+  void recv_addImage();
+  void indexImage(const std::string& imageHash, const int64_t rowKey);
+  void send_indexImage(const std::string& imageHash, const int64_t rowKey);
+  void recv_indexImage();
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -694,20 +613,18 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
  private:
   std::map<std::string, void (ImageDaemonProcessor::*)(int32_t, apache::thrift::protocol::TProtocol*, apache::thrift::protocol::TProtocol*, void*)> processMap_;
   void process_getBoWFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_addPostingList(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_addImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_computeColorFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_query(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_loadInvertedIndex(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_indexImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   ImageDaemonProcessor(boost::shared_ptr<ImageDaemonIf> iface) :
     iface_(iface) {
     processMap_["getBoWFeature"] = &ImageDaemonProcessor::process_getBoWFeature;
-    processMap_["addPostingList"] = &ImageDaemonProcessor::process_addPostingList;
-    processMap_["addImage"] = &ImageDaemonProcessor::process_addImage;
     processMap_["computeColorFeature"] = &ImageDaemonProcessor::process_computeColorFeature;
     processMap_["query"] = &ImageDaemonProcessor::process_query;
-    processMap_["loadInvertedIndex"] = &ImageDaemonProcessor::process_loadInvertedIndex;
+    processMap_["addImage"] = &ImageDaemonProcessor::process_addImage;
+    processMap_["indexImage"] = &ImageDaemonProcessor::process_indexImage;
   }
 
   virtual bool process(boost::shared_ptr<apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr<apache::thrift::protocol::TProtocol> poprot, void* callContext);
@@ -749,20 +666,6 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
     }
   }
 
-  void addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray) {
-    size_t sz = ifaces_.size();
-    for (size_t i = 0; i < sz; ++i) {
-      ifaces_[i]->addPostingList(visualwordID, postingArray);
-    }
-  }
-
-  void addImage(const std::string& imageHash, const int64_t imageKey) {
-    size_t sz = ifaces_.size();
-    for (size_t i = 0; i < sz; ++i) {
-      ifaces_[i]->addImage(imageHash, imageKey);
-    }
-  }
-
   void computeColorFeature(const int64_t rowKey) {
     size_t sz = ifaces_.size();
     for (size_t i = 0; i < sz; ++i) {
@@ -782,10 +685,17 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
     }
   }
 
-  void loadInvertedIndex() {
+  void addImage(const std::string& imageHash, const int64_t rowKey) {
     size_t sz = ifaces_.size();
     for (size_t i = 0; i < sz; ++i) {
-      ifaces_[i]->loadInvertedIndex();
+      ifaces_[i]->addImage(imageHash, rowKey);
+    }
+  }
+
+  void indexImage(const std::string& imageHash, const int64_t rowKey) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->indexImage(imageHash, rowKey);
     }
   }
 

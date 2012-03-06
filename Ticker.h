@@ -19,7 +19,7 @@ public:
 	void stop() {
 		mTStop = boost::posix_time::microsec_clock::local_time();
 		boost::posix_time::time_duration diff = mTStop - mTStart;
-		std::cout << diff.total_milliseconds() << " has elapsed" << std::endl;
+		std::cout << diff.total_milliseconds() << " ms has elapsed" << std::endl;
 	}
 private:
 	boost::posix_time::ptime mTStart;

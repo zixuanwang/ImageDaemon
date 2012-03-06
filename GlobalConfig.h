@@ -13,6 +13,8 @@
 #include <vector>
 #include <sstream>
 #include <cstring>
+#include <set>
+#include <map>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -27,15 +29,30 @@
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 #include <boost/shared_ptr.hpp>
+#include <pthread.h>
+#include <log4cxx/logger.h>
+#include <log4cxx/xml/domconfigurator.h>
+#include <log4cxx/consoleappender.h>
+#include <log4cxx/patternlayout.h>
+#include <log4cxx/basicconfigurator.h>
+#include <protocol/TBinaryProtocol.h>
+#include <server/TSimpleServer.h>
+#include <server/TNonblockingServer.h>
+#include <concurrency/ThreadManager.h>
+#include <concurrency/PosixThreadFactory.h>
+#include <transport/TServerSocket.h>
+#include <transport/TBufferTransports.h>
+#include <transport/TSocket.h>
+#include <transport/TTransportUtils.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <poll.h>
 
-#include <mongo/client/dbclient.h>
-#include <mongo/client/gridfs.h>
-#include <mongo/client/connpool.h>
 class GlobalConfig {
 public:
 	GlobalConfig();
 	~GlobalConfig();
-	const static std::string MONGO_DATABASE;
 	const static std::string IMAGE_TABLE;
 	const static std::string INVERT_INDEX_TABLE;
 	const static std::string COLUMN_FAMILY;
@@ -44,13 +61,24 @@ public:
 	const static std::string IMAGE_FEATURE_COLUMN;
 	const static std::string IMAGE_COLOR_FEATURE_COLUMN;
 	const static std::string IMAGE_BOW_HISTOGRAM_COLUMN;
+	const static std::string IMAGE_DIRECTORY;
+	const static int VOCABULARY_SIZE;
+	const static int SHORT_LIST_SIZE;
+	const static int IMAGE_LENGTH;
+	const static int CANDIDATE_COUNT;
+	const static int VERIFICATION_COUNT;
+	const static std::string INVERT_INDEX_NEXT_COLUMN;
+
+	const static std::string INVERTED_INDEX_SERVER;
+
+
+	// TODO: obsolete
+	const static std::string MONGO_DATABASE;
+	const static std::string MONGODB_SERVER;
 	const static std::string INVERT_INDEX_SHORT_COLUMN;
 	const static std::string INVERT_INDEX_LONG_COLUMN;
 	const static std::string INVERT_INDEX_SHORT_SCORE_COLUMN;
 	const static std::string INVERT_INDEX_LONG_SCORE_COLUMN;
-	const static std::string MONGODB_SERVER;
-	const static int SHORT_LIST_SIZE;
-	const static int IMAGE_LENGTH;
 };
 
 #endif /* GLOBALCONFIG_H_ */

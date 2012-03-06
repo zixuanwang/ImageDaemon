@@ -14,18 +14,18 @@ Image::~Image() {
 
 }
 
-int64_t Image::id() {
-	return mId;
+void Image::load(int64_t rowKey) {
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	std::string strImageHash;
+	dbAdapter->loadCell(&strImageHash, GlobalConfig::IMAGE_TABLE, rowKey,
+			GlobalConfig::IMAGE_HASH_COLUMN);
+	image = cv::imread(GlobalConfig::IMAGE_DIRECTORY + strImageHash + ".jpg",
+			0);
 }
 
-void Image::load(int64_t rowKey) {
-	std::string strImageHash;
-	MongoDBAdapter::instance()->loadCell(&strImageHash,
-			GlobalConfig::IMAGE_TABLE, rowKey, GlobalConfig::IMAGE_HASH_COLUMN);
-	std::string strImageData;
-	MongoDBAdapter::instance()->loadFile(&strImageData, strImageHash + ".jpg");
-	std::vector<char> buf(strImageData.begin(), strImageData.end());
-	image = cv::imdecode(cv::Mat(buf), 0);
+void Image::load(const std::string& imageHash){
+	image = cv::imread(GlobalConfig::IMAGE_DIRECTORY + imageHash + ".jpg",
+			0);
 }
 
 //void Image::uniqueId() {

@@ -198,336 +198,6 @@ uint32_t ImageDaemon_getBoWFeature_presult::read(::apache::thrift::protocol::TPr
   return xfer;
 }
 
-uint32_t ImageDaemon_addPostingList_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->visualwordID);
-          this->__isset.visualwordID = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_LIST) {
-          {
-            this->postingArray.clear();
-            uint32_t _size11;
-            ::apache::thrift::protocol::TType _etype14;
-            iprot->readListBegin(_etype14, _size11);
-            this->postingArray.resize(_size11);
-            uint32_t _i15;
-            for (_i15 = 0; _i15 < _size11; ++_i15)
-            {
-              xfer += this->postingArray[_i15].read(iprot);
-            }
-            iprot->readListEnd();
-          }
-          this->__isset.postingArray = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ImageDaemon_addPostingList_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_addPostingList_args");
-  xfer += oprot->writeFieldBegin("visualwordID", ::apache::thrift::protocol::T_I64, 1);
-  xfer += oprot->writeI64(this->visualwordID);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("postingArray", ::apache::thrift::protocol::T_LIST, 2);
-  {
-    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->postingArray.size()));
-    std::vector<Posting> ::const_iterator _iter16;
-    for (_iter16 = this->postingArray.begin(); _iter16 != this->postingArray.end(); ++_iter16)
-    {
-      xfer += (*_iter16).write(oprot);
-    }
-    xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ImageDaemon_addPostingList_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_addPostingList_pargs");
-  xfer += oprot->writeFieldBegin("visualwordID", ::apache::thrift::protocol::T_I64, 1);
-  xfer += oprot->writeI64((*(this->visualwordID)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("postingArray", ::apache::thrift::protocol::T_LIST, 2);
-  {
-    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->postingArray)).size()));
-    std::vector<Posting> ::const_iterator _iter17;
-    for (_iter17 = (*(this->postingArray)).begin(); _iter17 != (*(this->postingArray)).end(); ++_iter17)
-    {
-      xfer += (*_iter17).write(oprot);
-    }
-    xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ImageDaemon_addPostingList_result::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ImageDaemon_addPostingList_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("ImageDaemon_addPostingList_result");
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ImageDaemon_addPostingList_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ImageDaemon_addImage_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->imageHash);
-          this->__isset.imageHash = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->imageKey);
-          this->__isset.imageKey = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ImageDaemon_addImage_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_addImage_args");
-  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->imageHash);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("imageKey", ::apache::thrift::protocol::T_I64, 2);
-  xfer += oprot->writeI64(this->imageKey);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ImageDaemon_addImage_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_addImage_pargs");
-  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->imageHash)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("imageKey", ::apache::thrift::protocol::T_I64, 2);
-  xfer += oprot->writeI64((*(this->imageKey)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ImageDaemon_addImage_result::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ImageDaemon_addImage_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("ImageDaemon_addImage_result");
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ImageDaemon_addImage_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
 uint32_t ImageDaemon_computeColorFeature_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -751,14 +421,14 @@ uint32_t ImageDaemon_query_result::read(::apache::thrift::protocol::TProtocol* i
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size18;
-            ::apache::thrift::protocol::TType _etype21;
-            iprot->readListBegin(_etype21, _size18);
-            this->success.resize(_size18);
-            uint32_t _i22;
-            for (_i22 = 0; _i22 < _size18; ++_i22)
+            uint32_t _size11;
+            ::apache::thrift::protocol::TType _etype14;
+            iprot->readListBegin(_etype14, _size11);
+            this->success.resize(_size11);
+            uint32_t _i15;
+            for (_i15 = 0; _i15 < _size11; ++_i15)
             {
-              xfer += iprot->readString(this->success[_i22]);
+              xfer += iprot->readString(this->success[_i15]);
             }
             iprot->readListEnd();
           }
@@ -789,10 +459,10 @@ uint32_t ImageDaemon_query_result::write(::apache::thrift::protocol::TProtocol* 
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
-      std::vector<std::string> ::const_iterator _iter23;
-      for (_iter23 = this->success.begin(); _iter23 != this->success.end(); ++_iter23)
+      std::vector<std::string> ::const_iterator _iter16;
+      for (_iter16 = this->success.begin(); _iter16 != this->success.end(); ++_iter16)
       {
-        xfer += oprot->writeString((*_iter23));
+        xfer += oprot->writeString((*_iter16));
       }
       xfer += oprot->writeListEnd();
     }
@@ -827,14 +497,14 @@ uint32_t ImageDaemon_query_presult::read(::apache::thrift::protocol::TProtocol* 
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size24;
-            ::apache::thrift::protocol::TType _etype27;
-            iprot->readListBegin(_etype27, _size24);
-            (*(this->success)).resize(_size24);
-            uint32_t _i28;
-            for (_i28 = 0; _i28 < _size24; ++_i28)
+            uint32_t _size17;
+            ::apache::thrift::protocol::TType _etype20;
+            iprot->readListBegin(_etype20, _size17);
+            (*(this->success)).resize(_size17);
+            uint32_t _i21;
+            for (_i21 = 0; _i21 < _size17; ++_i21)
             {
-              xfer += iprot->readString((*(this->success))[_i28]);
+              xfer += iprot->readString((*(this->success))[_i21]);
             }
             iprot->readListEnd();
           }
@@ -855,7 +525,83 @@ uint32_t ImageDaemon_query_presult::read(::apache::thrift::protocol::TProtocol* 
   return xfer;
 }
 
-uint32_t ImageDaemon_loadInvertedIndex_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_addImage_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->imageHash);
+          this->__isset.imageHash = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->rowKey);
+          this->__isset.rowKey = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_addImage_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_addImage_args");
+  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->imageHash);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->rowKey);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_addImage_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_addImage_pargs");
+  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->imageHash)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->rowKey)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_addImage_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -887,23 +633,18 @@ uint32_t ImageDaemon_loadInvertedIndex_args::read(::apache::thrift::protocol::TP
   return xfer;
 }
 
-uint32_t ImageDaemon_loadInvertedIndex_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_addImage_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_loadInvertedIndex_args");
+
+  xfer += oprot->writeStructBegin("ImageDaemon_addImage_result");
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t ImageDaemon_loadInvertedIndex_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_loadInvertedIndex_pargs");
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ImageDaemon_loadInvertedIndex_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_addImage_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -935,18 +676,126 @@ uint32_t ImageDaemon_loadInvertedIndex_result::read(::apache::thrift::protocol::
   return xfer;
 }
 
-uint32_t ImageDaemon_loadInvertedIndex_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_indexImage_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->imageHash);
+          this->__isset.imageHash = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->rowKey);
+          this->__isset.rowKey = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_indexImage_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_indexImage_args");
+  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->imageHash);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->rowKey);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_indexImage_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ImageDaemon_indexImage_pargs");
+  xfer += oprot->writeFieldBegin("imageHash", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->imageHash)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->rowKey)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ImageDaemon_indexImage_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ImageDaemon_indexImage_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("ImageDaemon_loadInvertedIndex_result");
+  xfer += oprot->writeStructBegin("ImageDaemon_indexImage_result");
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t ImageDaemon_loadInvertedIndex_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_indexImage_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -1034,114 +883,6 @@ void ImageDaemonClient::recv_getBoWFeature(std::vector<Bin> & _return)
     return;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getBoWFeature failed: unknown result");
-}
-
-void ImageDaemonClient::addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray)
-{
-  send_addPostingList(visualwordID, postingArray);
-  recv_addPostingList();
-}
-
-void ImageDaemonClient::send_addPostingList(const int64_t visualwordID, const std::vector<Posting> & postingArray)
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("addPostingList", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  ImageDaemon_addPostingList_pargs args;
-  args.visualwordID = &visualwordID;
-  args.postingArray = &postingArray;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-}
-
-void ImageDaemonClient::recv_addPostingList()
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  if (fname.compare("addPostingList") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  ImageDaemon_addPostingList_presult result;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  return;
-}
-
-void ImageDaemonClient::addImage(const std::string& imageHash, const int64_t imageKey)
-{
-  send_addImage(imageHash, imageKey);
-  recv_addImage();
-}
-
-void ImageDaemonClient::send_addImage(const std::string& imageHash, const int64_t imageKey)
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("addImage", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  ImageDaemon_addImage_pargs args;
-  args.imageHash = &imageHash;
-  args.imageKey = &imageKey;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-}
-
-void ImageDaemonClient::recv_addImage()
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  if (fname.compare("addImage") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  ImageDaemon_addImage_presult result;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  return;
 }
 
 void ImageDaemonClient::computeColorFeature(const int64_t rowKey)
@@ -1255,18 +996,20 @@ void ImageDaemonClient::recv_query(std::vector<std::string> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "query failed: unknown result");
 }
 
-void ImageDaemonClient::loadInvertedIndex()
+void ImageDaemonClient::addImage(const std::string& imageHash, const int64_t rowKey)
 {
-  send_loadInvertedIndex();
-  recv_loadInvertedIndex();
+  send_addImage(imageHash, rowKey);
+  recv_addImage();
 }
 
-void ImageDaemonClient::send_loadInvertedIndex()
+void ImageDaemonClient::send_addImage(const std::string& imageHash, const int64_t rowKey)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("loadInvertedIndex", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("addImage", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  ImageDaemon_loadInvertedIndex_pargs args;
+  ImageDaemon_addImage_pargs args;
+  args.imageHash = &imageHash;
+  args.rowKey = &rowKey;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1274,7 +1017,7 @@ void ImageDaemonClient::send_loadInvertedIndex()
   oprot_->getTransport()->flush();
 }
 
-void ImageDaemonClient::recv_loadInvertedIndex()
+void ImageDaemonClient::recv_addImage()
 {
 
   int32_t rseqid = 0;
@@ -1294,12 +1037,66 @@ void ImageDaemonClient::recv_loadInvertedIndex()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("loadInvertedIndex") != 0) {
+  if (fname.compare("addImage") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  ImageDaemon_loadInvertedIndex_presult result;
+  ImageDaemon_addImage_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void ImageDaemonClient::indexImage(const std::string& imageHash, const int64_t rowKey)
+{
+  send_indexImage(imageHash, rowKey);
+  recv_indexImage();
+}
+
+void ImageDaemonClient::send_indexImage(const std::string& imageHash, const int64_t rowKey)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("indexImage", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  ImageDaemon_indexImage_pargs args;
+  args.imageHash = &imageHash;
+  args.rowKey = &rowKey;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void ImageDaemonClient::recv_indexImage()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("indexImage") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  ImageDaemon_indexImage_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
@@ -1403,112 +1200,6 @@ void ImageDaemonProcessor::process_getBoWFeature(int32_t seqid, ::apache::thrift
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "ImageDaemon.getBoWFeature", bytes);
-  }
-}
-
-void ImageDaemonProcessor::process_addPostingList(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
-{
-  void* ctx = NULL;
-  if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ImageDaemon.addPostingList", callContext);
-  }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.addPostingList");
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ImageDaemon.addPostingList");
-  }
-
-  ImageDaemon_addPostingList_args args;
-  args.read(iprot);
-  iprot->readMessageEnd();
-  uint32_t bytes = iprot->getTransport()->readEnd();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ImageDaemon.addPostingList", bytes);
-  }
-
-  ImageDaemon_addPostingList_result result;
-  try {
-    iface_->addPostingList(args.visualwordID, args.postingArray);
-  } catch (const std::exception& e) {
-    if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ImageDaemon.addPostingList");
-    }
-
-    apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("addPostingList", apache::thrift::protocol::T_EXCEPTION, seqid);
-    x.write(oprot);
-    oprot->writeMessageEnd();
-    oprot->getTransport()->writeEnd();
-    oprot->getTransport()->flush();
-    return;
-  }
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ImageDaemon.addPostingList");
-  }
-
-  oprot->writeMessageBegin("addPostingList", apache::thrift::protocol::T_REPLY, seqid);
-  result.write(oprot);
-  oprot->writeMessageEnd();
-  bytes = oprot->getTransport()->writeEnd();
-  oprot->getTransport()->flush();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ImageDaemon.addPostingList", bytes);
-  }
-}
-
-void ImageDaemonProcessor::process_addImage(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
-{
-  void* ctx = NULL;
-  if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ImageDaemon.addImage", callContext);
-  }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.addImage");
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ImageDaemon.addImage");
-  }
-
-  ImageDaemon_addImage_args args;
-  args.read(iprot);
-  iprot->readMessageEnd();
-  uint32_t bytes = iprot->getTransport()->readEnd();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ImageDaemon.addImage", bytes);
-  }
-
-  ImageDaemon_addImage_result result;
-  try {
-    iface_->addImage(args.imageHash, args.imageKey);
-  } catch (const std::exception& e) {
-    if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ImageDaemon.addImage");
-    }
-
-    apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("addImage", apache::thrift::protocol::T_EXCEPTION, seqid);
-    x.write(oprot);
-    oprot->writeMessageEnd();
-    oprot->getTransport()->writeEnd();
-    oprot->getTransport()->flush();
-    return;
-  }
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ImageDaemon.addImage");
-  }
-
-  oprot->writeMessageBegin("addImage", apache::thrift::protocol::T_REPLY, seqid);
-  result.write(oprot);
-  oprot->writeMessageEnd();
-  bytes = oprot->getTransport()->writeEnd();
-  oprot->getTransport()->flush();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ImageDaemon.addImage", bytes);
   }
 }
 
@@ -1619,37 +1310,37 @@ void ImageDaemonProcessor::process_query(int32_t seqid, ::apache::thrift::protoc
   }
 }
 
-void ImageDaemonProcessor::process_loadInvertedIndex(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ImageDaemonProcessor::process_addImage(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ImageDaemon.loadInvertedIndex", callContext);
+    ctx = this->eventHandler_->getContext("ImageDaemon.addImage", callContext);
   }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.loadInvertedIndex");
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.addImage");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ImageDaemon.loadInvertedIndex");
+    this->eventHandler_->preRead(ctx, "ImageDaemon.addImage");
   }
 
-  ImageDaemon_loadInvertedIndex_args args;
+  ImageDaemon_addImage_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ImageDaemon.loadInvertedIndex", bytes);
+    this->eventHandler_->postRead(ctx, "ImageDaemon.addImage", bytes);
   }
 
-  ImageDaemon_loadInvertedIndex_result result;
+  ImageDaemon_addImage_result result;
   try {
-    iface_->loadInvertedIndex();
+    iface_->addImage(args.imageHash, args.rowKey);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ImageDaemon.loadInvertedIndex");
+      this->eventHandler_->handlerError(ctx, "ImageDaemon.addImage");
     }
 
     apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("loadInvertedIndex", apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("addImage", apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -1658,17 +1349,70 @@ void ImageDaemonProcessor::process_loadInvertedIndex(int32_t seqid, ::apache::th
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ImageDaemon.loadInvertedIndex");
+    this->eventHandler_->preWrite(ctx, "ImageDaemon.addImage");
   }
 
-  oprot->writeMessageBegin("loadInvertedIndex", apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("addImage", apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ImageDaemon.loadInvertedIndex", bytes);
+    this->eventHandler_->postWrite(ctx, "ImageDaemon.addImage", bytes);
+  }
+}
+
+void ImageDaemonProcessor::process_indexImage(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("ImageDaemon.indexImage", callContext);
+  }
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.indexImage");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "ImageDaemon.indexImage");
+  }
+
+  ImageDaemon_indexImage_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "ImageDaemon.indexImage", bytes);
+  }
+
+  ImageDaemon_indexImage_result result;
+  try {
+    iface_->indexImage(args.imageHash, args.rowKey);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "ImageDaemon.indexImage");
+    }
+
+    apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("indexImage", apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "ImageDaemon.indexImage");
+  }
+
+  oprot->writeMessageBegin("indexImage", apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "ImageDaemon.indexImage", bytes);
   }
 }
 

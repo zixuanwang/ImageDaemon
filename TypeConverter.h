@@ -20,6 +20,9 @@ public:
 	}
 	template<typename T> static void readStringToNum(T* number,
 			const std::string& string) {
+		if (string.empty()) {
+			return;
+		}
 		memcpy((char*) number, (char*) &string[0], sizeof(T));
 	}
 	template<typename T> static void readArrayToString(std::string* pString,

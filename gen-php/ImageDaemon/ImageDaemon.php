@@ -11,11 +11,10 @@ include_once $GLOBALS['THRIFT_ROOT'].'/packages/ImageDaemon/ImageDaemon_types.ph
 
 interface ImageDaemonIf {
   public function getBoWFeature($rowKey);
-  public function addPostingList($visualwordID, $postingArray);
-  public function addImage($imageHash, $imageKey);
   public function computeColorFeature($rowKey);
   public function query($imagePath);
-  public function loadInvertedIndex();
+  public function addImage($imageHash, $rowKey);
+  public function indexImage($imageHash, $rowKey);
 }
 
 class ImageDaemonClient implements ImageDaemonIf {
@@ -78,104 +77,6 @@ class ImageDaemonClient implements ImageDaemonIf {
       return $result->success;
     }
     throw new Exception("getBoWFeature failed: unknown result");
-  }
-
-  public function addPostingList($visualwordID, $postingArray)
-  {
-    $this->send_addPostingList($visualwordID, $postingArray);
-    $this->recv_addPostingList();
-  }
-
-  public function send_addPostingList($visualwordID, $postingArray)
-  {
-    $args = new ImageDaemon_addPostingList_args();
-    $args->visualwordID = $visualwordID;
-    $args->postingArray = $postingArray;
-    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
-    if ($bin_accel)
-    {
-      thrift_protocol_write_binary($this->output_, 'addPostingList', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
-    }
-    else
-    {
-      $this->output_->writeMessageBegin('addPostingList', TMessageType::CALL, $this->seqid_);
-      $args->write($this->output_);
-      $this->output_->writeMessageEnd();
-      $this->output_->getTransport()->flush();
-    }
-  }
-
-  public function recv_addPostingList()
-  {
-    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
-    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_addPostingList_result', $this->input_->isStrictRead());
-    else
-    {
-      $rseqid = 0;
-      $fname = null;
-      $mtype = 0;
-
-      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-      if ($mtype == TMessageType::EXCEPTION) {
-        $x = new TApplicationException();
-        $x->read($this->input_);
-        $this->input_->readMessageEnd();
-        throw $x;
-      }
-      $result = new ImageDaemon_addPostingList_result();
-      $result->read($this->input_);
-      $this->input_->readMessageEnd();
-    }
-    return;
-  }
-
-  public function addImage($imageHash, $imageKey)
-  {
-    $this->send_addImage($imageHash, $imageKey);
-    $this->recv_addImage();
-  }
-
-  public function send_addImage($imageHash, $imageKey)
-  {
-    $args = new ImageDaemon_addImage_args();
-    $args->imageHash = $imageHash;
-    $args->imageKey = $imageKey;
-    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
-    if ($bin_accel)
-    {
-      thrift_protocol_write_binary($this->output_, 'addImage', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
-    }
-    else
-    {
-      $this->output_->writeMessageBegin('addImage', TMessageType::CALL, $this->seqid_);
-      $args->write($this->output_);
-      $this->output_->writeMessageEnd();
-      $this->output_->getTransport()->flush();
-    }
-  }
-
-  public function recv_addImage()
-  {
-    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
-    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_addImage_result', $this->input_->isStrictRead());
-    else
-    {
-      $rseqid = 0;
-      $fname = null;
-      $mtype = 0;
-
-      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-      if ($mtype == TMessageType::EXCEPTION) {
-        $x = new TApplicationException();
-        $x->read($this->input_);
-        $this->input_->readMessageEnd();
-        throw $x;
-      }
-      $result = new ImageDaemon_addImage_result();
-      $result->read($this->input_);
-      $this->input_->readMessageEnd();
-    }
-    return;
   }
 
   public function computeColorFeature($rowKey)
@@ -277,33 +178,35 @@ class ImageDaemonClient implements ImageDaemonIf {
     throw new Exception("query failed: unknown result");
   }
 
-  public function loadInvertedIndex()
+  public function addImage($imageHash, $rowKey)
   {
-    $this->send_loadInvertedIndex();
-    $this->recv_loadInvertedIndex();
+    $this->send_addImage($imageHash, $rowKey);
+    $this->recv_addImage();
   }
 
-  public function send_loadInvertedIndex()
+  public function send_addImage($imageHash, $rowKey)
   {
-    $args = new ImageDaemon_loadInvertedIndex_args();
+    $args = new ImageDaemon_addImage_args();
+    $args->imageHash = $imageHash;
+    $args->rowKey = $rowKey;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
-      thrift_protocol_write_binary($this->output_, 'loadInvertedIndex', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+      thrift_protocol_write_binary($this->output_, 'addImage', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
     }
     else
     {
-      $this->output_->writeMessageBegin('loadInvertedIndex', TMessageType::CALL, $this->seqid_);
+      $this->output_->writeMessageBegin('addImage', TMessageType::CALL, $this->seqid_);
       $args->write($this->output_);
       $this->output_->writeMessageEnd();
       $this->output_->getTransport()->flush();
     }
   }
 
-  public function recv_loadInvertedIndex()
+  public function recv_addImage()
   {
     $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
-    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_loadInvertedIndex_result', $this->input_->isStrictRead());
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_addImage_result', $this->input_->isStrictRead());
     else
     {
       $rseqid = 0;
@@ -317,7 +220,56 @@ class ImageDaemonClient implements ImageDaemonIf {
         $this->input_->readMessageEnd();
         throw $x;
       }
-      $result = new ImageDaemon_loadInvertedIndex_result();
+      $result = new ImageDaemon_addImage_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    return;
+  }
+
+  public function indexImage($imageHash, $rowKey)
+  {
+    $this->send_indexImage($imageHash, $rowKey);
+    $this->recv_indexImage();
+  }
+
+  public function send_indexImage($imageHash, $rowKey)
+  {
+    $args = new ImageDaemon_indexImage_args();
+    $args->imageHash = $imageHash;
+    $args->rowKey = $rowKey;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'indexImage', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('indexImage', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_indexImage()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_indexImage_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new ImageDaemon_indexImage_result();
       $result->read($this->input_);
       $this->input_->readMessageEnd();
     }
@@ -493,318 +445,6 @@ class ImageDaemon_getBoWFeature_result {
       }
       $xfer += $output->writeFieldEnd();
     }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class ImageDaemon_addPostingList_args {
-  static $_TSPEC;
-
-  public $visualwordID = null;
-  public $postingArray = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'visualwordID',
-          'type' => TType::I64,
-          ),
-        2 => array(
-          'var' => 'postingArray',
-          'type' => TType::LST,
-          'etype' => TType::STRUCT,
-          'elem' => array(
-            'type' => TType::STRUCT,
-            'class' => 'Posting',
-            ),
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['visualwordID'])) {
-        $this->visualwordID = $vals['visualwordID'];
-      }
-      if (isset($vals['postingArray'])) {
-        $this->postingArray = $vals['postingArray'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'ImageDaemon_addPostingList_args';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->visualwordID);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::LST) {
-            $this->postingArray = array();
-            $_size7 = 0;
-            $_etype10 = 0;
-            $xfer += $input->readListBegin($_etype10, $_size7);
-            for ($_i11 = 0; $_i11 < $_size7; ++$_i11)
-            {
-              $elem12 = null;
-              $elem12 = new Posting();
-              $xfer += $elem12->read($input);
-              $this->postingArray []= $elem12;
-            }
-            $xfer += $input->readListEnd();
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_addPostingList_args');
-    if ($this->visualwordID !== null) {
-      $xfer += $output->writeFieldBegin('visualwordID', TType::I64, 1);
-      $xfer += $output->writeI64($this->visualwordID);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->postingArray !== null) {
-      if (!is_array($this->postingArray)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
-      }
-      $xfer += $output->writeFieldBegin('postingArray', TType::LST, 2);
-      {
-        $output->writeListBegin(TType::STRUCT, count($this->postingArray));
-        {
-          foreach ($this->postingArray as $iter13)
-          {
-            $xfer += $iter13->write($output);
-          }
-        }
-        $output->writeListEnd();
-      }
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class ImageDaemon_addPostingList_result {
-  static $_TSPEC;
-
-
-  public function __construct() {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        );
-    }
-  }
-
-  public function getName() {
-    return 'ImageDaemon_addPostingList_result';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_addPostingList_result');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class ImageDaemon_addImage_args {
-  static $_TSPEC;
-
-  public $imageHash = null;
-  public $imageKey = null;
-
-  public function __construct($vals=null) {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        1 => array(
-          'var' => 'imageHash',
-          'type' => TType::STRING,
-          ),
-        2 => array(
-          'var' => 'imageKey',
-          'type' => TType::I64,
-          ),
-        );
-    }
-    if (is_array($vals)) {
-      if (isset($vals['imageHash'])) {
-        $this->imageHash = $vals['imageHash'];
-      }
-      if (isset($vals['imageKey'])) {
-        $this->imageKey = $vals['imageKey'];
-      }
-    }
-  }
-
-  public function getName() {
-    return 'ImageDaemon_addImage_args';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->imageHash);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == TType::I64) {
-            $xfer += $input->readI64($this->imageKey);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_addImage_args');
-    if ($this->imageHash !== null) {
-      $xfer += $output->writeFieldBegin('imageHash', TType::STRING, 1);
-      $xfer += $output->writeString($this->imageHash);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->imageKey !== null) {
-      $xfer += $output->writeFieldBegin('imageKey', TType::I64, 2);
-      $xfer += $output->writeI64($this->imageKey);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
-}
-
-class ImageDaemon_addImage_result {
-  static $_TSPEC;
-
-
-  public function __construct() {
-    if (!isset(self::$_TSPEC)) {
-      self::$_TSPEC = array(
-        );
-    }
-  }
-
-  public function getName() {
-    return 'ImageDaemon_addImage_result';
-  }
-
-  public function read($input)
-  {
-    $xfer = 0;
-    $fname = null;
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
-        break;
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function write($output) {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_addImage_result');
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -1053,14 +693,14 @@ class ImageDaemon_query_result {
         case 0:
           if ($ftype == TType::LST) {
             $this->success = array();
-            $_size14 = 0;
-            $_etype17 = 0;
-            $xfer += $input->readListBegin($_etype17, $_size14);
-            for ($_i18 = 0; $_i18 < $_size14; ++$_i18)
+            $_size7 = 0;
+            $_etype10 = 0;
+            $xfer += $input->readListBegin($_etype10, $_size7);
+            for ($_i11 = 0; $_i11 < $_size7; ++$_i11)
             {
-              $elem19 = null;
-              $xfer += $input->readString($elem19);
-              $this->success []= $elem19;
+              $elem12 = null;
+              $xfer += $input->readString($elem12);
+              $this->success []= $elem12;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1088,9 +728,9 @@ class ImageDaemon_query_result {
       {
         $output->writeListBegin(TType::STRING, count($this->success));
         {
-          foreach ($this->success as $iter20)
+          foreach ($this->success as $iter13)
           {
-            $xfer += $output->writeString($iter20);
+            $xfer += $output->writeString($iter13);
           }
         }
         $output->writeListEnd();
@@ -1104,19 +744,37 @@ class ImageDaemon_query_result {
 
 }
 
-class ImageDaemon_loadInvertedIndex_args {
+class ImageDaemon_addImage_args {
   static $_TSPEC;
 
+  public $imageHash = null;
+  public $rowKey = null;
 
-  public function __construct() {
+  public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
+        1 => array(
+          'var' => 'imageHash',
+          'type' => TType::STRING,
+          ),
+        2 => array(
+          'var' => 'rowKey',
+          'type' => TType::I64,
+          ),
         );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['imageHash'])) {
+        $this->imageHash = $vals['imageHash'];
+      }
+      if (isset($vals['rowKey'])) {
+        $this->rowKey = $vals['rowKey'];
+      }
     }
   }
 
   public function getName() {
-    return 'ImageDaemon_loadInvertedIndex_args';
+    return 'ImageDaemon_addImage_args';
   }
 
   public function read($input)
@@ -1134,6 +792,20 @@ class ImageDaemon_loadInvertedIndex_args {
       }
       switch ($fid)
       {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->imageHash);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->rowKey);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -1146,7 +818,17 @@ class ImageDaemon_loadInvertedIndex_args {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_loadInvertedIndex_args');
+    $xfer += $output->writeStructBegin('ImageDaemon_addImage_args');
+    if ($this->imageHash !== null) {
+      $xfer += $output->writeFieldBegin('imageHash', TType::STRING, 1);
+      $xfer += $output->writeString($this->imageHash);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->rowKey !== null) {
+      $xfer += $output->writeFieldBegin('rowKey', TType::I64, 2);
+      $xfer += $output->writeI64($this->rowKey);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -1154,7 +836,7 @@ class ImageDaemon_loadInvertedIndex_args {
 
 }
 
-class ImageDaemon_loadInvertedIndex_result {
+class ImageDaemon_addImage_result {
   static $_TSPEC;
 
 
@@ -1166,7 +848,7 @@ class ImageDaemon_loadInvertedIndex_result {
   }
 
   public function getName() {
-    return 'ImageDaemon_loadInvertedIndex_result';
+    return 'ImageDaemon_addImage_result';
   }
 
   public function read($input)
@@ -1196,7 +878,149 @@ class ImageDaemon_loadInvertedIndex_result {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_loadInvertedIndex_result');
+    $xfer += $output->writeStructBegin('ImageDaemon_addImage_result');
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class ImageDaemon_indexImage_args {
+  static $_TSPEC;
+
+  public $imageHash = null;
+  public $rowKey = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'imageHash',
+          'type' => TType::STRING,
+          ),
+        2 => array(
+          'var' => 'rowKey',
+          'type' => TType::I64,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['imageHash'])) {
+        $this->imageHash = $vals['imageHash'];
+      }
+      if (isset($vals['rowKey'])) {
+        $this->rowKey = $vals['rowKey'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'ImageDaemon_indexImage_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->imageHash);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->rowKey);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('ImageDaemon_indexImage_args');
+    if ($this->imageHash !== null) {
+      $xfer += $output->writeFieldBegin('imageHash', TType::STRING, 1);
+      $xfer += $output->writeString($this->imageHash);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->rowKey !== null) {
+      $xfer += $output->writeFieldBegin('rowKey', TType::I64, 2);
+      $xfer += $output->writeI64($this->rowKey);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class ImageDaemon_indexImage_result {
+  static $_TSPEC;
+
+
+  public function __construct() {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        );
+    }
+  }
+
+  public function getName() {
+    return 'ImageDaemon_indexImage_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('ImageDaemon_indexImage_result');
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;

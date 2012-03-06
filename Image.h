@@ -10,19 +10,13 @@
 
 #include "GlobalConfig.h"
 #include "HbaseAdapter.h"
-#include "MongoDBAdapter.h"
 class Image {
 public:
 	Image();
 	~Image();
-	int64_t id();
 	cv::Mat image;
 	void load(int64_t rowKey);
-private:
-	int64_t mId;
-	std::string mImageHash;
-//	void uniqueId();
-//	void loadFromHbase(const std::string& imageHash);
+	void load(const std::string& imageHash);
 };
 
 #endif /* IMAGE_H_ */

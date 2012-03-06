@@ -8,12 +8,10 @@
 #include "BoWHistogram.h"
 
 BoWHistogram::BoWHistogram() {
-	// TODO Auto-generated constructor stub
 
 }
 
 BoWHistogram::~BoWHistogram() {
-	// TODO Auto-generated destructor stub
 }
 
 bool BoWHistogram::empty() const {
@@ -23,7 +21,8 @@ bool BoWHistogram::empty() const {
 void BoWHistogram::load(int64_t rowKey) {
 	clear();
 	std::string strHistogram;
-	MongoDBAdapter::instance()->loadCell(&strHistogram,
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->loadCell(&strHistogram,
 			GlobalConfig::IMAGE_TABLE, rowKey,
 			GlobalConfig::IMAGE_BOW_HISTOGRAM_COLUMN);
 	if (strHistogram.empty()) {
@@ -44,6 +43,7 @@ void BoWHistogram::save(int64_t rowKey) const {
 	if (empty()) {
 		return;
 	}
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
 	std::stringstream ss(std::stringstream::out | std::stringstream::binary);
 	int64_t histogramSize = size();
 	for (int i = 0; i < histogramSize; ++i) {
@@ -55,7 +55,7 @@ void BoWHistogram::save(int64_t rowKey) const {
 		ss.write((char*) &frequency, sizeof(frequency));
 	}
 	std::string strHistogram = ss.str();
-	MongoDBAdapter::instance()->saveCell(strHistogram,
+	dbAdapter->saveCell(strHistogram,
 			GlobalConfig::IMAGE_TABLE, rowKey,
 			GlobalConfig::IMAGE_BOW_HISTOGRAM_COLUMN);
 }

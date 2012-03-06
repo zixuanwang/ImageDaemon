@@ -21,8 +21,8 @@ bool LocalFeature::empty() const {
 
 void LocalFeature::load(int64_t rowKey) {
 	std::string strImageFeature;
-	MongoDBAdapter::instance()->loadCell(&strImageFeature,
-			GlobalConfig::IMAGE_TABLE, rowKey,
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->loadCell(&strImageFeature, GlobalConfig::IMAGE_TABLE, rowKey,
 			GlobalConfig::IMAGE_FEATURE_COLUMN);
 	load(strImageFeature);
 }
@@ -30,8 +30,8 @@ void LocalFeature::load(int64_t rowKey) {
 void LocalFeature::save(int64_t rowKey) const {
 	std::string strImageFeature;
 	save(&strImageFeature);
-	MongoDBAdapter::instance()->saveCell(strImageFeature,
-			GlobalConfig::IMAGE_TABLE, rowKey,
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->saveCell(strImageFeature, GlobalConfig::IMAGE_TABLE, rowKey,
 			GlobalConfig::IMAGE_FEATURE_COLUMN);
 }
 
@@ -78,6 +78,10 @@ void LocalFeature::load(const std::string& string) {
 }
 
 void LocalFeature::save(std::string* string) const {
+	string->clear();
+	if (keypoint.empty()) {
+		return;
+	}
 	std::stringstream ss(std::stringstream::out | std::stringstream::binary);
 	// save keypoint
 	int featureSize = (int) keypoint.size();

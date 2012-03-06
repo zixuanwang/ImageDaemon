@@ -65,55 +65,6 @@ class Bin {
 
 };
 
-typedef struct _Posting__isset {
-  _Posting__isset() : imageID(false), score(false) {}
-  bool imageID;
-  bool score;
-} _Posting__isset;
-
-class Posting {
- public:
-
-  static const char* ascii_fingerprint; // = "056BD45B5249CAA453D3C7B115F349DB";
-  static const uint8_t binary_fingerprint[16]; // = {0x05,0x6B,0xD4,0x5B,0x52,0x49,0xCA,0xA4,0x53,0xD3,0xC7,0xB1,0x15,0xF3,0x49,0xDB};
-
-  Posting() : imageID(0), score(0) {
-  }
-
-  virtual ~Posting() throw() {}
-
-  int64_t imageID;
-  double score;
-
-  _Posting__isset __isset;
-
-  void __set_imageID(const int64_t val) {
-    imageID = val;
-  }
-
-  void __set_score(const double val) {
-    score = val;
-  }
-
-  bool operator == (const Posting & rhs) const
-  {
-    if (!(imageID == rhs.imageID))
-      return false;
-    if (!(score == rhs.score))
-      return false;
-    return true;
-  }
-  bool operator != (const Posting &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const Posting & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
 } // namespace
 
 #endif

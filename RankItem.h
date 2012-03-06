@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RANKITEM_H_
+#define RANKITEM_H_
 template <typename T1, typename T2>
 class RankItem
 {
@@ -20,3 +21,4 @@ public:
 	T1 index;
 	T2 value;
 };
+#endif

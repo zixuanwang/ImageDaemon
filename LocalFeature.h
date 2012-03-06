@@ -10,7 +10,6 @@
 
 #include "GlobalConfig.h"
 #include "HbaseAdapter.h"
-#include "MongoDBAdapter.h"
 class LocalFeature {
 public:
 	LocalFeature();
