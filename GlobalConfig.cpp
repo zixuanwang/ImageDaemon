@@ -27,6 +27,7 @@ const int GlobalConfig::VERIFICATION_COUNT = 5;
 const std::string GlobalConfig::INVERT_INDEX_NEXT_COLUMN = COLUMN_FAMILY
 		+ "next";
 const std::string GlobalConfig::INVERTED_INDEX_SERVER = "node1";
+const bool GlobalConfig::USE_VERIFICATION = false;
 
 // TODO: obsolete
 const std::string GlobalConfig::MONGO_DATABASE = "image";

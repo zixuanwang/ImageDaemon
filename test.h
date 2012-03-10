@@ -15,6 +15,7 @@
 #include "RankItem.h"
 #include "Hbase.h"
 #include "Ticker.h"
+#include "ImageResizer.h"
 using namespace ::ImageDaemon;
 void testFeature() {
 	int64_t rowKey = 0;
@@ -54,6 +55,13 @@ void testHistogram() {
 		std::cout << _return[i].visualwordID << "\t" << _return[i].frequency
 				<< std::endl;
 	}
+}
+
+void testResizer() {
+	std::string imagePath =
+			"/home/zixuan/Desktop/Firefox_wallpaper.png";
+	std::string cropImagePath = "/home/zixuan/Desktop/crop.jpg";
+	ImageResizer::crop(imagePath, cropImagePath, 160, 160);
 }
 
 //void testQuery() {
@@ -134,7 +142,7 @@ struct PostingComparator {
 };
 
 void testMultiSet() {
-	std::string a(10,'0');
+	std::string a(10, '0');
 	std::cout << a << std::endl;
 //	std::multiset<Posting, PostingComparator> mySet;
 //	Posting a;

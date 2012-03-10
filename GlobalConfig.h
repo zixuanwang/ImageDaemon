@@ -70,6 +70,7 @@ public:
 	const static std::string INVERT_INDEX_NEXT_COLUMN;
 
 	const static std::string INVERTED_INDEX_SERVER;
+	const static bool USE_VERIFICATION;
 
 
 	// TODO: obsolete

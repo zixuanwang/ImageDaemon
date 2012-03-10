@@ -75,16 +75,25 @@ void ImageRecognizer::queryBoWFeature(std::vector<std::string>* pReturnArray,
 	}
 	std::sort(rankList.begin(), rankList.end());
 	ticker.stop();
-	for (int i = 0;
-			i < GlobalConfig::VERIFICATION_COUNT && i < (int) rankList.size();
-			++i) {
-		RobustMatcher rmatcher;
-		LocalFeature otherLocalFeature;
-		otherLocalFeature.load(rankList[i].index);
-		std::vector<cv::DMatch> matches;
-		cv::Mat homography = rmatcher.match(localFeature, otherLocalFeature,
-				&matches);
-		if (matches.size() >= 7) {
+	if (GlobalConfig::USE_VERIFICATION) {
+		for (int i = 0;
+				i < GlobalConfig::VERIFICATION_COUNT
+						&& i < (int) rankList.size(); ++i) {
+			RobustMatcher rmatcher;
+			LocalFeature otherLocalFeature;
+			otherLocalFeature.load(rankList[i].index);
+			std::vector<cv::DMatch> matches;
+			cv::Mat homography = rmatcher.match(localFeature, otherLocalFeature,
+					&matches);
+			if (matches.size() >= 7) {
+				std::string path;
+				dbAdapter->loadCell(&path, GlobalConfig::IMAGE_TABLE,
+						rankList[i].index, GlobalConfig::IMAGE_HASH_COLUMN);
+				pReturnArray->push_back(path);
+			}
+		}
+	} else {
+		for (size_t i = 0; i < rankList.size(); ++i) {
 			std::string path;
 			dbAdapter->loadCell(&path, GlobalConfig::IMAGE_TABLE,
 					rankList[i].index, GlobalConfig::IMAGE_HASH_COLUMN);

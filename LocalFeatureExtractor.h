@@ -8,6 +8,7 @@
 #ifndef LOCALFEATUREEXTRACTOR_H_
 #define LOCALFEATUREEXTRACTOR_H_
 #include "GlobalConfig.h"
+#include "ImageResizer.h"
 
 class LocalFeatureExtractor {
 public:

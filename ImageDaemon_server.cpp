@@ -11,6 +11,7 @@
 #include "InvertedIndexClient.h"
 #include "Ticker.h"
 #include "Logger.h"
+#include "ImageResizer.h"
 #include "test.h"
 
 using namespace ::apache::thrift;
@@ -20,7 +21,6 @@ using namespace ::apache::thrift::server;
 using namespace ::apache::thrift::concurrency;
 
 using boost::shared_ptr;
-
 using namespace ::ImageDaemon;
 
 class ImageDaemonHandler: virtual public ImageDaemonIf {
@@ -113,6 +113,12 @@ public:
 			invertedIndexClient.addPosting(visualwordId, posting);
 		}
 		Logger::instance()->log("RPC indexImage");
+	}
+
+	void cropImage(const std::string& imagePath,
+			const std::string& cropImagePath, const int32_t width,
+			const int32_t height) {
+		ImageResizer::crop(imagePath, cropImagePath, width, height);
 	}
 };
 

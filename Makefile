@@ -11,6 +11,7 @@ IMAGE_OBJS =		ANNVocabulary.o BoWHistogram.o DBAdapter.o \
 					ColorFeature.o Feature.o Ticker.o RobustMatcher.o \
 					ImageRecognizer.o InvertedIndexClient.o InvertedIndexDaemon.o \
 					InvertedIndexDaemon_constants.o InvertedIndexDaemon_types.o \
+					ImageResizer.o \
 					
 					
 INVERTEDINDEX_OBJS = 	InvertedIndexDaemon_server.o InvertedIndex.o InvertedIndexDaemon_constants.o \

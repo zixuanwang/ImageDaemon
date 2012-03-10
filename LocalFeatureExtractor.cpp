@@ -26,7 +26,7 @@ void LocalFeatureExtractor::extractFeature(const cv::Mat& image,
 			return;
 		}
 		cv::Mat resizedImage;
-		resize(image, &resizedImage, GlobalConfig::IMAGE_LENGTH);
+		ImageResizer::resize(image, &resizedImage, GlobalConfig::IMAGE_LENGTH);
 		if (resizedImage.data == NULL) {
 			return;
 		}
