@@ -30,7 +30,7 @@ public:
 		int size = (int) array.size() * sizeof(T);
 		pString->assign(size, 0);
 		if (size > 0) {
-			memcpy((char*) &pString[0], (char*) &array[0], size);
+			memcpy((char*) &(*pString)[0], (char*) &array[0], size);
 		}
 	}
 	template<typename T> static void readStringToArray(std::vector<T>* pArray,
@@ -38,7 +38,7 @@ public:
 		int size = (int) string.size() / sizeof(T);
 		pArray->assign(size, 0);
 		if (size > 0) {
-			memcpy((char*) &pArray[0], (char*) &string[0], string.size());
+			memcpy((char*) &(*pArray)[0], (char*) &string[0], string.size());
 		}
 	}
 };

@@ -8,10 +8,9 @@
 #include "TypeConverter.h"
 
 TypeConverter::TypeConverter() {
-	// TODO Auto-generated constructor stub
 
 }
 
 TypeConverter::~TypeConverter() {
-	// TODO Auto-generated destructor stub
+
 }
