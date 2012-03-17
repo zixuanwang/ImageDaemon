@@ -57,10 +57,12 @@ public:
 	void computeColorFeature(const int64_t rowKey) {
 		Image image;
 		image.load(rowKey);
-		ColorFeature colorFeature;
-		colorFeature.compute(image.image);
+		boost::shared_ptr<Feature> pFeature(new ColorFeature);
+		cv::Mat mask;
+		pFeature->segment(&mask, image.image);
+		pFeature->compute(image.image, mask);
 		std::string string;
-		colorFeature.save(&string);
+		pFeature->save(&string);
 		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
 		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
 				GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);

@@ -22,12 +22,15 @@ void LocalFeatureExtractor::extractFeature(const cv::Mat& image,
 	try {
 		keypoints.clear();
 		descriptors = cv::Mat();
-		if (image.data == NULL) {
+		if (image.empty()) {
 			return;
 		}
+		cv::Mat grayImage;
+		cv::cvtColor(image, grayImage, CV_BGR2GRAY);
 		cv::Mat resizedImage;
-		ImageResizer::resize(image, &resizedImage, GlobalConfig::IMAGE_LENGTH);
-		if (resizedImage.data == NULL) {
+		ImageResizer::resize(grayImage, &resizedImage,
+				GlobalConfig::IMAGE_LENGTH);
+		if (resizedImage.empty()) {
 			return;
 		}
 		for (int i = 0; i < mMaxIter; ++i) {

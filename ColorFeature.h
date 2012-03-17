@@ -12,7 +12,7 @@ class ColorFeature: public Feature {
 public:
 	ColorFeature();
 	virtual ~ColorFeature();
-	virtual void compute(cv::Mat& image);
+	virtual void compute(cv::Mat& image, cv::Mat& mask);
 };
 
 #endif /* COLORFEATURE_H_ */

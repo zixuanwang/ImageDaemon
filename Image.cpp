@@ -20,12 +20,12 @@ void Image::load(int64_t rowKey) {
 	dbAdapter->loadCell(&strImageHash, GlobalConfig::IMAGE_TABLE, rowKey,
 			GlobalConfig::IMAGE_HASH_COLUMN);
 	image = cv::imread(GlobalConfig::IMAGE_DIRECTORY + strImageHash + ".jpg",
-			0);
+			1);
 }
 
 void Image::load(const std::string& imageHash){
 	image = cv::imread(GlobalConfig::IMAGE_DIRECTORY + imageHash + ".jpg",
-			0);
+			1);
 }
 
 //void Image::uniqueId() {
