@@ -12,6 +12,7 @@ include_once $GLOBALS['THRIFT_ROOT'].'/packages/ImageDaemon/ImageDaemon_types.ph
 interface ImageDaemonIf {
   public function getBoWFeature($rowKey);
   public function computeColorFeature($rowKey);
+  public function computeShapeFeature($rowKey);
   public function query($imagePath);
   public function addImage($imageHash, $rowKey);
   public function indexImage($imageHash, $rowKey);
@@ -122,6 +123,54 @@ class ImageDaemonClient implements ImageDaemonIf {
         throw $x;
       }
       $result = new ImageDaemon_computeColorFeature_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    return;
+  }
+
+  public function computeShapeFeature($rowKey)
+  {
+    $this->send_computeShapeFeature($rowKey);
+    $this->recv_computeShapeFeature();
+  }
+
+  public function send_computeShapeFeature($rowKey)
+  {
+    $args = new ImageDaemon_computeShapeFeature_args();
+    $args->rowKey = $rowKey;
+    $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'computeShapeFeature', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('computeShapeFeature', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_computeShapeFeature()
+  {
+    $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_computeShapeFeature_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new ImageDaemon_computeShapeFeature_result();
       $result->read($this->input_);
       $this->input_->readMessageEnd();
     }
@@ -619,6 +668,128 @@ class ImageDaemon_computeColorFeature_result {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('ImageDaemon_computeColorFeature_result');
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class ImageDaemon_computeShapeFeature_args {
+  static $_TSPEC;
+
+  public $rowKey = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'rowKey',
+          'type' => TType::I64,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['rowKey'])) {
+        $this->rowKey = $vals['rowKey'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'ImageDaemon_computeShapeFeature_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->rowKey);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('ImageDaemon_computeShapeFeature_args');
+    if ($this->rowKey !== null) {
+      $xfer += $output->writeFieldBegin('rowKey', TType::I64, 1);
+      $xfer += $output->writeI64($this->rowKey);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class ImageDaemon_computeShapeFeature_result {
+  static $_TSPEC;
+
+
+  public function __construct() {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        );
+    }
+  }
+
+  public function getName() {
+    return 'ImageDaemon_computeShapeFeature_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('ImageDaemon_computeShapeFeature_result');
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;

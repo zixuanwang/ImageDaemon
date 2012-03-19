@@ -33,6 +33,8 @@ public class ImageDaemon {
 
     public void computeColorFeature(long rowKey) throws org.apache.thrift.TException;
 
+    public void computeShapeFeature(long rowKey) throws org.apache.thrift.TException;
+
     public List<String> query(String imagePath) throws org.apache.thrift.TException;
 
     public void addImage(String imageHash, long rowKey) throws org.apache.thrift.TException;
@@ -48,6 +50,8 @@ public class ImageDaemon {
     public void getBoWFeature(long rowKey, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getBoWFeature_call> resultHandler) throws org.apache.thrift.TException;
 
     public void computeColorFeature(long rowKey, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.computeColorFeature_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void computeShapeFeature(long rowKey, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.computeShapeFeature_call> resultHandler) throws org.apache.thrift.TException;
 
     public void query(String imagePath, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.query_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -119,6 +123,26 @@ public class ImageDaemon {
     {
       computeColorFeature_result result = new computeColorFeature_result();
       receiveBase(result, "computeColorFeature");
+      return;
+    }
+
+    public void computeShapeFeature(long rowKey) throws org.apache.thrift.TException
+    {
+      send_computeShapeFeature(rowKey);
+      recv_computeShapeFeature();
+    }
+
+    public void send_computeShapeFeature(long rowKey) throws org.apache.thrift.TException
+    {
+      computeShapeFeature_args args = new computeShapeFeature_args();
+      args.setRowKey(rowKey);
+      sendBase("computeShapeFeature", args);
+    }
+
+    public void recv_computeShapeFeature() throws org.apache.thrift.TException
+    {
+      computeShapeFeature_result result = new computeShapeFeature_result();
+      receiveBase(result, "computeShapeFeature");
       return;
     }
 
@@ -292,6 +316,38 @@ public class ImageDaemon {
       }
     }
 
+    public void computeShapeFeature(long rowKey, org.apache.thrift.async.AsyncMethodCallback<computeShapeFeature_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      computeShapeFeature_call method_call = new computeShapeFeature_call(rowKey, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class computeShapeFeature_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private long rowKey;
+      public computeShapeFeature_call(long rowKey, org.apache.thrift.async.AsyncMethodCallback<computeShapeFeature_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.rowKey = rowKey;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("computeShapeFeature", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        computeShapeFeature_args args = new computeShapeFeature_args();
+        args.setRowKey(rowKey);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public void getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        (new Client(prot)).recv_computeShapeFeature();
+      }
+    }
+
     public void query(String imagePath, org.apache.thrift.async.AsyncMethodCallback<query_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       query_call method_call = new query_call(imagePath, resultHandler, this, ___protocolFactory, ___transport);
@@ -450,6 +506,7 @@ public class ImageDaemon {
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getBoWFeature", new getBoWFeature());
       processMap.put("computeColorFeature", new computeColorFeature());
+      processMap.put("computeShapeFeature", new computeShapeFeature());
       processMap.put("query", new query());
       processMap.put("addImage", new addImage());
       processMap.put("indexImage", new indexImage());
@@ -485,6 +542,22 @@ public class ImageDaemon {
       protected computeColorFeature_result getResult(I iface, computeColorFeature_args args) throws org.apache.thrift.TException {
         computeColorFeature_result result = new computeColorFeature_result();
         iface.computeColorFeature(args.rowKey);
+        return result;
+      }
+    }
+
+    private static class computeShapeFeature<I extends Iface> extends org.apache.thrift.ProcessFunction<I, computeShapeFeature_args> {
+      public computeShapeFeature() {
+        super("computeShapeFeature");
+      }
+
+      protected computeShapeFeature_args getEmptyArgsInstance() {
+        return new computeShapeFeature_args();
+      }
+
+      protected computeShapeFeature_result getResult(I iface, computeShapeFeature_args args) throws org.apache.thrift.TException {
+        computeShapeFeature_result result = new computeShapeFeature_result();
+        iface.computeShapeFeature(args.rowKey);
         return result;
       }
     }
@@ -1905,6 +1978,603 @@ public class ImageDaemon {
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, computeColorFeature_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+      }
+    }
+
+  }
+
+  public static class computeShapeFeature_args implements org.apache.thrift.TBase<computeShapeFeature_args, computeShapeFeature_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("computeShapeFeature_args");
+
+    private static final org.apache.thrift.protocol.TField ROW_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("rowKey", org.apache.thrift.protocol.TType.I64, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new computeShapeFeature_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new computeShapeFeature_argsTupleSchemeFactory());
+    }
+
+    public long rowKey; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      ROW_KEY((short)1, "rowKey");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // ROW_KEY
+            return ROW_KEY;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __ROWKEY_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.ROW_KEY, new org.apache.thrift.meta_data.FieldMetaData("rowKey", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(computeShapeFeature_args.class, metaDataMap);
+    }
+
+    public computeShapeFeature_args() {
+    }
+
+    public computeShapeFeature_args(
+      long rowKey)
+    {
+      this();
+      this.rowKey = rowKey;
+      setRowKeyIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public computeShapeFeature_args(computeShapeFeature_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      this.rowKey = other.rowKey;
+    }
+
+    public computeShapeFeature_args deepCopy() {
+      return new computeShapeFeature_args(this);
+    }
+
+    @Override
+    public void clear() {
+      setRowKeyIsSet(false);
+      this.rowKey = 0;
+    }
+
+    public long getRowKey() {
+      return this.rowKey;
+    }
+
+    public computeShapeFeature_args setRowKey(long rowKey) {
+      this.rowKey = rowKey;
+      setRowKeyIsSet(true);
+      return this;
+    }
+
+    public void unsetRowKey() {
+      __isset_bit_vector.clear(__ROWKEY_ISSET_ID);
+    }
+
+    /** Returns true if field rowKey is set (has been assigned a value) and false otherwise */
+    public boolean isSetRowKey() {
+      return __isset_bit_vector.get(__ROWKEY_ISSET_ID);
+    }
+
+    public void setRowKeyIsSet(boolean value) {
+      __isset_bit_vector.set(__ROWKEY_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case ROW_KEY:
+        if (value == null) {
+          unsetRowKey();
+        } else {
+          setRowKey((Long)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case ROW_KEY:
+        return Long.valueOf(getRowKey());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case ROW_KEY:
+        return isSetRowKey();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof computeShapeFeature_args)
+        return this.equals((computeShapeFeature_args)that);
+      return false;
+    }
+
+    public boolean equals(computeShapeFeature_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_rowKey = true;
+      boolean that_present_rowKey = true;
+      if (this_present_rowKey || that_present_rowKey) {
+        if (!(this_present_rowKey && that_present_rowKey))
+          return false;
+        if (this.rowKey != that.rowKey)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(computeShapeFeature_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      computeShapeFeature_args typedOther = (computeShapeFeature_args)other;
+
+      lastComparison = Boolean.valueOf(isSetRowKey()).compareTo(typedOther.isSetRowKey());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetRowKey()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.rowKey, typedOther.rowKey);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("computeShapeFeature_args(");
+      boolean first = true;
+
+      sb.append("rowKey:");
+      sb.append(this.rowKey);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bit_vector = new BitSet(1);
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class computeShapeFeature_argsStandardSchemeFactory implements SchemeFactory {
+      public computeShapeFeature_argsStandardScheme getScheme() {
+        return new computeShapeFeature_argsStandardScheme();
+      }
+    }
+
+    private static class computeShapeFeature_argsStandardScheme extends StandardScheme<computeShapeFeature_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, computeShapeFeature_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // ROW_KEY
+              if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+                struct.rowKey = iprot.readI64();
+                struct.setRowKeyIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, computeShapeFeature_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldBegin(ROW_KEY_FIELD_DESC);
+        oprot.writeI64(struct.rowKey);
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class computeShapeFeature_argsTupleSchemeFactory implements SchemeFactory {
+      public computeShapeFeature_argsTupleScheme getScheme() {
+        return new computeShapeFeature_argsTupleScheme();
+      }
+    }
+
+    private static class computeShapeFeature_argsTupleScheme extends TupleScheme<computeShapeFeature_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, computeShapeFeature_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetRowKey()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetRowKey()) {
+          oprot.writeI64(struct.rowKey);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, computeShapeFeature_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.rowKey = iprot.readI64();
+          struct.setRowKeyIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class computeShapeFeature_result implements org.apache.thrift.TBase<computeShapeFeature_result, computeShapeFeature_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("computeShapeFeature_result");
+
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new computeShapeFeature_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new computeShapeFeature_resultTupleSchemeFactory());
+    }
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(computeShapeFeature_result.class, metaDataMap);
+    }
+
+    public computeShapeFeature_result() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public computeShapeFeature_result(computeShapeFeature_result other) {
+    }
+
+    public computeShapeFeature_result deepCopy() {
+      return new computeShapeFeature_result(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof computeShapeFeature_result)
+        return this.equals((computeShapeFeature_result)that);
+      return false;
+    }
+
+    public boolean equals(computeShapeFeature_result that) {
+      if (that == null)
+        return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(computeShapeFeature_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      computeShapeFeature_result typedOther = (computeShapeFeature_result)other;
+
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("computeShapeFeature_result(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class computeShapeFeature_resultStandardSchemeFactory implements SchemeFactory {
+      public computeShapeFeature_resultStandardScheme getScheme() {
+        return new computeShapeFeature_resultStandardScheme();
+      }
+    }
+
+    private static class computeShapeFeature_resultStandardScheme extends StandardScheme<computeShapeFeature_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, computeShapeFeature_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, computeShapeFeature_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class computeShapeFeature_resultTupleSchemeFactory implements SchemeFactory {
+      public computeShapeFeature_resultTupleScheme getScheme() {
+        return new computeShapeFeature_resultTupleScheme();
+      }
+    }
+
+    private static class computeShapeFeature_resultTupleScheme extends TupleScheme<computeShapeFeature_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, computeShapeFeature_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, computeShapeFeature_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
       }
     }

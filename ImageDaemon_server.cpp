@@ -55,18 +55,40 @@ public:
 	}
 
 	void computeColorFeature(const int64_t rowKey) {
-		Image image;
-		image.load(rowKey);
-		boost::shared_ptr<Feature> pFeature(new ColorFeature);
-		cv::Mat mask;
-		pFeature->segment(&mask, image.image);
-		pFeature->compute(image.image, mask);
-		std::string string;
-		pFeature->save(&string);
-		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
-				GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
+		boost::shared_ptr<Feature> pFeature(new ColorFeature(10));
+		pFeature->load(rowKey);
+		if (pFeature->empty()) {
+			Image image;
+			image.load(rowKey);
+			boost::shared_ptr<Feature> pFeature(new ColorFeature(10));
+			cv::Mat mask;
+			pFeature->segment(mask, image.image);
+			pFeature->compute(image.image, mask);
+			std::string string;
+			pFeature->save(&string);
+			boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+			dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
+					GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
+		}
 		Logger::instance()->log("RPC computeColorFeature");
+	}
+
+	void computeShapeFeature(const int64_t rowKey) {
+		boost::shared_ptr<Feature> pFeature(new ShapeFeature(20, 20));
+		pFeature->load(rowKey);
+		if (pFeature->empty()) {
+			Image image;
+			image.load(rowKey);
+			cv::Mat mask;
+			pFeature->segment(mask, image.image);
+			pFeature->compute(image.image, mask);
+			std::string string;
+			pFeature->save(&string);
+			boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+			dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
+					GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
+		}
+		Logger::instance()->log("RPC computeShapeFeature");
 	}
 
 	void query(std::vector<std::string> & _return,

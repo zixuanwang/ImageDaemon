@@ -32,6 +32,11 @@ class ImageDaemonHandler : virtual public ImageDaemonIf {
     printf("computeColorFeature\n");
   }
 
+  void computeShapeFeature(const int64_t rowKey) {
+    // Your implementation goes here
+    printf("computeShapeFeature\n");
+  }
+
   void query(std::vector<std::string> & _return, const std::string& imagePath) {
     // Your implementation goes here
     printf("query\n");

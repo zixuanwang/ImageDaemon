@@ -7,11 +7,22 @@
 
 #include "ColorFeature.h"
 
-ColorFeature::ColorFeature() {
+ColorFeature::ColorFeature(int channelbins) :
+		Feature(), mChannelbins(channelbins) {
 
 }
 
 ColorFeature::~ColorFeature() {
+
+}
+
+void ColorFeature::load(int64_t rowKey) {
+	mVector.clear();
+	std::string strVector;
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->loadCell(&strVector, GlobalConfig::IMAGE_TABLE, rowKey,
+			GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
+	Feature::load(strVector);
 }
 
 void ColorFeature::compute(cv::Mat& image, cv::Mat& mask) {
@@ -19,27 +30,19 @@ void ColorFeature::compute(cv::Mat& image, cv::Mat& mask) {
 	if (image.empty()) {
 		return;
 	}
-	cv::Mat hsv;
-	cv::cvtColor(image, hsv, CV_BGR2HSV);
-	// let's quantize the hue to 10 levels
-	// and the saturation to 10 levels
-	int hbins = 10, sbins = 10;
-	int histSize[] = { hbins, sbins };
-	// hue varies from 0 to 179, see cvtColor
-	float hranges[] = { 0, 180 };
-	// saturation varies from 0 (black-gray-white) to
-	// 255 (pure spectrum color)
-	float sranges[] = { 0, 256 };
-	const float* ranges[] = { hranges, sranges };
+	int histSize[] = { mChannelbins, mChannelbins, mChannelbins };
+	float hranges[] = { 0.0, 255.0 };
+	const float* ranges[] = { hranges, hranges, hranges };
+	int channels[] = { 0, 1, 2 };
 	cv::MatND hist;
-	int channels[] = { 0, 1 };
-	cv::calcHist(&hsv, 1, channels, mask, hist, 2, histSize, ranges, true,
-			false);
-	mVector.reserve(hbins * sbins);
-	for (int h = 0; h < hbins; h++) {
-		for (int s = 0; s < sbins; s++) {
-			float binVal = hist.at<float>(h, s);
-			mVector.push_back(binVal);
+	cv::calcHist(&image, 1, channels, mask, hist, 3, histSize, ranges);
+	mVector.reserve(mChannelbins * mChannelbins * mChannelbins);
+	for (int i = 0; i < mChannelbins; ++i) {
+		for (int j = 0; j < mChannelbins; ++j) {
+			for (int k = 0; k < mChannelbins; ++k) {
+				float value = hist.at<float>(i, j, k);
+				mVector.push_back(value);
+			}
 		}
 	}
 	normalize();

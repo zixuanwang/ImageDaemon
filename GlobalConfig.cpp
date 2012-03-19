@@ -17,6 +17,8 @@ const std::string GlobalConfig::IMAGE_FEATURE_COLUMN = COLUMN_FAMILY
 		+ "imageFeature";
 const std::string GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN = COLUMN_FAMILY
 		+ "imageColorFeature";
+const std::string GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN = COLUMN_FAMILY
+		+ "imageShapeFeature";
 const std::string GlobalConfig::IMAGE_BOW_HISTOGRAM_COLUMN = COLUMN_FAMILY
 		+ "imageBoWHistogram";
 const int GlobalConfig::VOCABULARY_SIZE = 1000000;
@@ -28,6 +30,7 @@ const std::string GlobalConfig::INVERT_INDEX_NEXT_COLUMN = COLUMN_FAMILY
 		+ "next";
 const std::string GlobalConfig::INVERTED_INDEX_SERVER = "node1";
 const bool GlobalConfig::USE_VERIFICATION = false;
+const float GlobalConfig::PI = 3.1415926;
 
 // TODO: obsolete
 const std::string GlobalConfig::MONGO_DATABASE = "image";

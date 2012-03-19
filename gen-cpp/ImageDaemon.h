@@ -17,6 +17,7 @@ class ImageDaemonIf {
   virtual ~ImageDaemonIf() {}
   virtual void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) = 0;
   virtual void computeColorFeature(const int64_t rowKey) = 0;
+  virtual void computeShapeFeature(const int64_t rowKey) = 0;
   virtual void query(std::vector<std::string> & _return, const std::string& imagePath) = 0;
   virtual void addImage(const std::string& imageHash, const int64_t rowKey) = 0;
   virtual void indexImage(const std::string& imageHash, const int64_t rowKey) = 0;
@@ -54,6 +55,9 @@ class ImageDaemonNull : virtual public ImageDaemonIf {
     return;
   }
   void computeColorFeature(const int64_t /* rowKey */) {
+    return;
+  }
+  void computeShapeFeature(const int64_t /* rowKey */) {
     return;
   }
   void query(std::vector<std::string> & /* _return */, const std::string& /* imagePath */) {
@@ -260,6 +264,94 @@ class ImageDaemon_computeColorFeature_presult {
 
 
   virtual ~ImageDaemon_computeColorFeature_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ImageDaemon_computeShapeFeature_args__isset {
+  _ImageDaemon_computeShapeFeature_args__isset() : rowKey(false) {}
+  bool rowKey;
+} _ImageDaemon_computeShapeFeature_args__isset;
+
+class ImageDaemon_computeShapeFeature_args {
+ public:
+
+  ImageDaemon_computeShapeFeature_args() : rowKey(0) {
+  }
+
+  virtual ~ImageDaemon_computeShapeFeature_args() throw() {}
+
+  int64_t rowKey;
+
+  _ImageDaemon_computeShapeFeature_args__isset __isset;
+
+  void __set_rowKey(const int64_t val) {
+    rowKey = val;
+  }
+
+  bool operator == (const ImageDaemon_computeShapeFeature_args & rhs) const
+  {
+    if (!(rowKey == rhs.rowKey))
+      return false;
+    return true;
+  }
+  bool operator != (const ImageDaemon_computeShapeFeature_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_computeShapeFeature_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_computeShapeFeature_pargs {
+ public:
+
+
+  virtual ~ImageDaemon_computeShapeFeature_pargs() throw() {}
+
+  const int64_t* rowKey;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_computeShapeFeature_result {
+ public:
+
+  ImageDaemon_computeShapeFeature_result() {
+  }
+
+  virtual ~ImageDaemon_computeShapeFeature_result() throw() {}
+
+
+  bool operator == (const ImageDaemon_computeShapeFeature_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ImageDaemon_computeShapeFeature_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_computeShapeFeature_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_computeShapeFeature_presult {
+ public:
+
+
+  virtual ~ImageDaemon_computeShapeFeature_presult() throw() {}
 
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
@@ -709,6 +801,9 @@ class ImageDaemonClient : virtual public ImageDaemonIf {
   void computeColorFeature(const int64_t rowKey);
   void send_computeColorFeature(const int64_t rowKey);
   void recv_computeColorFeature();
+  void computeShapeFeature(const int64_t rowKey);
+  void send_computeShapeFeature(const int64_t rowKey);
+  void recv_computeShapeFeature();
   void query(std::vector<std::string> & _return, const std::string& imagePath);
   void send_query(const std::string& imagePath);
   void recv_query(std::vector<std::string> & _return);
@@ -736,6 +831,7 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
   std::map<std::string, void (ImageDaemonProcessor::*)(int32_t, apache::thrift::protocol::TProtocol*, apache::thrift::protocol::TProtocol*, void*)> processMap_;
   void process_getBoWFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_computeColorFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_computeShapeFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_query(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_indexImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -745,6 +841,7 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
     iface_(iface) {
     processMap_["getBoWFeature"] = &ImageDaemonProcessor::process_getBoWFeature;
     processMap_["computeColorFeature"] = &ImageDaemonProcessor::process_computeColorFeature;
+    processMap_["computeShapeFeature"] = &ImageDaemonProcessor::process_computeShapeFeature;
     processMap_["query"] = &ImageDaemonProcessor::process_query;
     processMap_["addImage"] = &ImageDaemonProcessor::process_addImage;
     processMap_["indexImage"] = &ImageDaemonProcessor::process_indexImage;
@@ -794,6 +891,13 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
     size_t sz = ifaces_.size();
     for (size_t i = 0; i < sz; ++i) {
       ifaces_[i]->computeColorFeature(rowKey);
+    }
+  }
+
+  void computeShapeFeature(const int64_t rowKey) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->computeShapeFeature(rowKey);
     }
   }
 

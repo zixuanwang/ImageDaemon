@@ -22,13 +22,14 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
+#include <opencv2/opencv.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <opencv2/opencv.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem.hpp>
 #include <pthread.h>
 #include <log4cxx/logger.h>
 #include <log4cxx/xml/domconfigurator.h>
@@ -60,6 +61,7 @@ public:
 	const static std::string IMAGE_HASH_COLUMN;
 	const static std::string IMAGE_FEATURE_COLUMN;
 	const static std::string IMAGE_COLOR_FEATURE_COLUMN;
+	const static std::string IMAGE_SHAPE_FEATURE_COLUMN;
 	const static std::string IMAGE_BOW_HISTOGRAM_COLUMN;
 	const static std::string IMAGE_DIRECTORY;
 	const static int VOCABULARY_SIZE;
@@ -71,6 +73,7 @@ public:
 
 	const static std::string INVERTED_INDEX_SERVER;
 	const static bool USE_VERIFICATION;
+	const static float PI;
 
 
 	// TODO: obsolete

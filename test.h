@@ -16,6 +16,8 @@
 #include "Hbase.h"
 #include "Ticker.h"
 #include "ImageResizer.h"
+#include "ShapeFeature.h"
+#include "ColorFeature.h"
 using namespace ::ImageDaemon;
 void testFeature() {
 	int64_t rowKey = 0;
@@ -58,70 +60,10 @@ void testHistogram() {
 }
 
 void testResizer() {
-	std::string imagePath =
-			"/home/zixuan/Desktop/Firefox_wallpaper.png";
+	std::string imagePath = "/home/zixuan/Desktop/Firefox_wallpaper.png";
 	std::string cropImagePath = "/home/zixuan/Desktop/crop.jpg";
 	ImageResizer::crop(imagePath, cropImagePath, 160, 160);
 }
-
-//void testQuery() {
-//	std::string testImagePath = "/home/zixuan/Desktop/a.jpg";
-//	cv::Mat image = cv::imread(testImagePath, 0);
-//	LocalFeature localFeature;
-//	LocalFeatureExtractor localFeatureExtractor;
-//	localFeatureExtractor.extractFeature(image, localFeature.keypoint,
-//			localFeature.descriptor);
-//	BoWHistogram histogram;
-//	ANNVocabulary::instance()->quantizeFeature(localFeature, &histogram);
-//	const std::vector<int64_t>& visualwordIdArray =
-//			histogram.visualwordIdArray();
-//	std::cout << "histogram size: " << visualwordIdArray.size() << std::endl;
-////	for (int i = 0; i < visualwordIdArray.size(); ++i) {
-////		std::cout << visualwordIdArray[i] << "\t";
-////	}
-//	// TODO: add authority score to ranking.
-//	boost::unordered_set<int64_t> candidateIdSet;
-//	for (size_t i = 0; i < visualwordIdArray.size(); ++i) {
-//		std::vector<int64_t> imageIdArray;
-//		InvertedIndex::instance()->loadPostingList(&imageIdArray,
-//				visualwordIdArray[i]);
-//		candidateIdSet.insert(imageIdArray.begin(), imageIdArray.end());
-//	}
-//	std::cout << "candidate set size: " << candidateIdSet.size() << std::endl;
-//	for (boost::unordered_set<int64_t>::iterator iter = candidateIdSet.begin();
-//			iter != candidateIdSet.end(); ++iter) {
-//		std::cout << *iter << "\t";
-//	}
-//	std::cout << std::endl;
-//	std::vector<double> queryVector;
-//	histogram.flatten(&queryVector, ANNVocabulary::instance()->size());
-//	std::vector<RankItem<int64_t, double> > rankList;
-//	for (boost::unordered_set<int64_t>::iterator iter = candidateIdSet.begin();
-//			iter != candidateIdSet.end(); ++iter) {
-//		int64_t otherImageId = *iter;
-//		BoWHistogram otherHistogram;
-//		otherHistogram.load(otherImageId);
-//		double score = otherHistogram.innerProduct(queryVector);
-//		RankItem<int64_t, double> item(otherImageId, -1.0 * score);
-//		rankList.push_back(item);
-//		//otherHistogram.print();
-//		std::cout << score << std::endl;
-//	}
-//	if (rankList.size() < 10 + 1) {
-//		std::nth_element(rankList.begin(), rankList.end(), rankList.end());
-//	} else {
-//		std::nth_element(rankList.begin(), rankList.begin() + 10 + 1,
-//				rankList.end());
-//	}
-//	cv::namedWindow("test");
-//	for (int i = 0; i < 10 && i < (int) rankList.size(); ++i) {
-//		Image result;
-//		result.load(rankList[i].index);
-//		std::cout << rankList[i].value << std::endl;
-//		cv::imshow("test", result.image);
-//		cv::waitKey(0);
-//	}
-//}
 
 void testHbase() {
 	Ticker t;
@@ -141,41 +83,53 @@ struct PostingComparator {
 	}
 };
 
-void testMultiSet() {
-	std::string a(10, '0');
-	std::cout << a << std::endl;
-//	std::multiset<Posting, PostingComparator> mySet;
-//	Posting a;
-//	a.imageID = 1;
-//	a.score = -10;
-//	Posting b;
-//	b.imageID = 2;
-//	b.score = -1;
-//	Posting c;
-//	c.imageID = 3;
-//	c.score = -10;
-//	Posting d;
-//	d.imageID = 4;
-//	d.score = -2;
-//	mySet.insert(a);
-//	mySet.insert(b);
-//	mySet.insert(c);
-//	mySet.insert(d);
-//	for (std::multiset<Posting, PostingComparator>::iterator iter =
-//			mySet.begin(); iter != mySet.end(); ++iter) {
-//		std::cout << iter->imageID << "\t" << iter->score << std::endl;
+//void testShape() {
+//	std::string imageDirectory = "/home/zixuan/public_html/shoe/image";
+//	std::string shapeOutput = "/home/zixuan/public_html/shoe/feature/shape.txt";
+//	std::string colorOutput = "/home/zixuan/public_html/shoe/feature/color.txt";
+//	std::string list = "/home/zixuan/public_html/shoe/list.txt";
+//	std::ofstream outStream;
+//	outStream.open(shapeOutput.c_str());
+//	std::ofstream outStream2;
+//	outStream2.open(list.c_str());
+//	std::ofstream outStream3;
+//	outStream3.open(colorOutput.c_str());
+//	boost::filesystem::directory_iterator end_itr;
+//	for (boost::filesystem::directory_iterator itr(imageDirectory);
+//			itr != end_itr; ++itr) {
+//		if (!boost::filesystem::is_directory(itr->status())) {
+//			boost::shared_ptr<Feature> pFeature(new ShapeFeature(20, 20));
+//			boost::shared_ptr<Feature> pColor(new ColorFeature(10));
+//			std::string filePath = itr->path().string();
+//			cv::Mat image = cv::imread(filePath);
+//			cv::Mat colorMask;
+//			cv::Mat shapeMask;
+//			pFeature->segment(shapeMask, image);
+////			pColor->segment(colorMask, image);
+//			cv::Mat res;
+//			image.copyTo(res, shapeMask);
+//			pFeature->compute(image, shapeMask);
+//			pColor->compute(image, colorMask);
+//			const std::vector<float>& feature = pFeature->getFeature();
+//			size_t i = 0;
+//			for (; i < feature.size() - 1; ++i) {
+//				outStream << feature[i] << ",";
+//			}
+//			outStream << feature[i] << std::endl;
+//			std::vector<float> feature2 = pColor->getFeature();
+//			i = 0;
+//			for (; i < feature2.size() - 1; ++i) {
+//				outStream3 << feature2[i] << ",";
+//			}
+//			outStream3 << feature2[i] << std::endl;
+//			boost::filesystem::path bstPath = filePath;
+//			outStream2 << bstPath.filename().string() << std::endl;
+//			std::cout << "computing feature for " << filePath << std::endl;
+//			cv::imwrite(
+//					"/home/zixuan/Desktop/tmp/" + bstPath.filename().string(),
+//					res);
+//		}
 //	}
-//	std::multiset<Posting,PostingComparator>::reverse_iterator citer=mySet.rbegin();
-//	//citer.base();
-//	std::cout << mySet.size() << std::endl;
-//
-//	mySet.erase(--(citer.base()));
-//	for (std::multiset<Posting, PostingComparator>::iterator iter =
-//			mySet.begin(); iter != mySet.end(); ++iter) {
-//		std::cout << iter->imageID << "\t" << iter->score << std::endl;
-//	}
-//	std::cout << mySet.size() << std::endl;
-
-}
+//}
 
 #endif /* TEST_H_ */
