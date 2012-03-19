@@ -45,10 +45,7 @@
 #include <transport/TBufferTransports.h>
 #include <transport/TSocket.h>
 #include <transport/TTransportUtils.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <poll.h>
+#include <mysql/mysql.h>
 
 class GlobalConfig {
 public:

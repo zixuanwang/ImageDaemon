@@ -19,7 +19,7 @@ void ImageRecognizer::queryBoWFeature(std::vector<std::string>* pReturnArray,
 		const std::string& imagePath) {
 	pReturnArray->clear();
 	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-	cv::Mat image = cv::imread(imagePath, 0);
+	cv::Mat image = cv::imread(imagePath, 1);
 	LocalFeature localFeature;
 	LocalFeatureExtractor localFeatureExtractor;
 	localFeatureExtractor.extractFeature(image, localFeature.keypoint,
