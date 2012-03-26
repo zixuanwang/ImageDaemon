@@ -10,7 +10,7 @@ include_once $GLOBALS['THRIFT_ROOT'].'/Thrift.php';
 include_once $GLOBALS['THRIFT_ROOT'].'/packages/ImageDaemon/ImageDaemon_types.php';
 
 interface ImageDaemonIf {
-  public function getBoWFeature($rowKey);
+  public function computeBoWFeature($rowKey);
   public function computeColorFeature($rowKey);
   public function computeShapeFeature($rowKey);
   public function query($imagePath);
@@ -30,34 +30,34 @@ class ImageDaemonClient implements ImageDaemonIf {
     $this->output_ = $output ? $output : $input;
   }
 
-  public function getBoWFeature($rowKey)
+  public function computeBoWFeature($rowKey)
   {
-    $this->send_getBoWFeature($rowKey);
-    return $this->recv_getBoWFeature();
+    $this->send_computeBoWFeature($rowKey);
+    return $this->recv_computeBoWFeature();
   }
 
-  public function send_getBoWFeature($rowKey)
+  public function send_computeBoWFeature($rowKey)
   {
-    $args = new ImageDaemon_getBoWFeature_args();
+    $args = new ImageDaemon_computeBoWFeature_args();
     $args->rowKey = $rowKey;
     $bin_accel = ($this->output_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
-      thrift_protocol_write_binary($this->output_, 'getBoWFeature', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+      thrift_protocol_write_binary($this->output_, 'computeBoWFeature', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
     }
     else
     {
-      $this->output_->writeMessageBegin('getBoWFeature', TMessageType::CALL, $this->seqid_);
+      $this->output_->writeMessageBegin('computeBoWFeature', TMessageType::CALL, $this->seqid_);
       $args->write($this->output_);
       $this->output_->writeMessageEnd();
       $this->output_->getTransport()->flush();
     }
   }
 
-  public function recv_getBoWFeature()
+  public function recv_computeBoWFeature()
   {
     $bin_accel = ($this->input_ instanceof TProtocol::$TBINARYPROTOCOLACCELERATED) && function_exists('thrift_protocol_read_binary');
-    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_getBoWFeature_result', $this->input_->isStrictRead());
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, 'ImageDaemon_computeBoWFeature_result', $this->input_->isStrictRead());
     else
     {
       $rseqid = 0;
@@ -71,14 +71,14 @@ class ImageDaemonClient implements ImageDaemonIf {
         $this->input_->readMessageEnd();
         throw $x;
       }
-      $result = new ImageDaemon_getBoWFeature_result();
+      $result = new ImageDaemon_computeBoWFeature_result();
       $result->read($this->input_);
       $this->input_->readMessageEnd();
     }
     if ($result->success !== null) {
       return $result->success;
     }
-    throw new Exception("getBoWFeature failed: unknown result");
+    throw new Exception("computeBoWFeature failed: unknown result");
   }
 
   public function computeColorFeature($rowKey)
@@ -381,7 +381,7 @@ class ImageDaemonClient implements ImageDaemonIf {
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class ImageDaemon_getBoWFeature_args {
+class ImageDaemon_computeBoWFeature_args {
   static $_TSPEC;
 
   public $rowKey = null;
@@ -403,7 +403,7 @@ class ImageDaemon_getBoWFeature_args {
   }
 
   public function getName() {
-    return 'ImageDaemon_getBoWFeature_args';
+    return 'ImageDaemon_computeBoWFeature_args';
   }
 
   public function read($input)
@@ -440,7 +440,7 @@ class ImageDaemon_getBoWFeature_args {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_getBoWFeature_args');
+    $xfer += $output->writeStructBegin('ImageDaemon_computeBoWFeature_args');
     if ($this->rowKey !== null) {
       $xfer += $output->writeFieldBegin('rowKey', TType::I64, 1);
       $xfer += $output->writeI64($this->rowKey);
@@ -453,7 +453,7 @@ class ImageDaemon_getBoWFeature_args {
 
 }
 
-class ImageDaemon_getBoWFeature_result {
+class ImageDaemon_computeBoWFeature_result {
   static $_TSPEC;
 
   public $success = null;
@@ -480,7 +480,7 @@ class ImageDaemon_getBoWFeature_result {
   }
 
   public function getName() {
-    return 'ImageDaemon_getBoWFeature_result';
+    return 'ImageDaemon_computeBoWFeature_result';
   }
 
   public function read($input)
@@ -528,7 +528,7 @@ class ImageDaemon_getBoWFeature_result {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('ImageDaemon_getBoWFeature_result');
+    $xfer += $output->writeStructBegin('ImageDaemon_computeBoWFeature_result');
     if ($this->success !== null) {
       if (!is_array($this->success)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);

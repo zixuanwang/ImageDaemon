@@ -9,7 +9,7 @@
 
 #include "ImageDaemon_types.h"
 
-namespace ImageDaemon {
+namespace net { namespace walnutvision {
 
 class ImageDaemonConstants {
  public:
@@ -19,6 +19,6 @@ class ImageDaemonConstants {
 
 extern const ImageDaemonConstants g_ImageDaemon_constants;
 
-} // namespace
+}} // namespace
 
 #endif

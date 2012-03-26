@@ -10,12 +10,12 @@
 #include <TProcessor.h>
 #include "ImageDaemon_types.h"
 
-namespace ImageDaemon {
+namespace net { namespace walnutvision {
 
 class ImageDaemonIf {
  public:
   virtual ~ImageDaemonIf() {}
-  virtual void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) = 0;
+  virtual void computeBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) = 0;
   virtual void computeColorFeature(const int64_t rowKey) = 0;
   virtual void computeShapeFeature(const int64_t rowKey) = 0;
   virtual void query(std::vector<std::string> & _return, const std::string& imagePath) = 0;
@@ -51,7 +51,7 @@ class ImageDaemonIfSingletonFactory : virtual public ImageDaemonIfFactory {
 class ImageDaemonNull : virtual public ImageDaemonIf {
  public:
   virtual ~ImageDaemonNull() {}
-  void getBoWFeature(std::vector<Bin> & /* _return */, const int64_t /* rowKey */) {
+  void computeBoWFeature(std::vector<Bin> & /* _return */, const int64_t /* rowKey */) {
     return;
   }
   void computeColorFeature(const int64_t /* rowKey */) {
@@ -74,38 +74,38 @@ class ImageDaemonNull : virtual public ImageDaemonIf {
   }
 };
 
-typedef struct _ImageDaemon_getBoWFeature_args__isset {
-  _ImageDaemon_getBoWFeature_args__isset() : rowKey(false) {}
+typedef struct _ImageDaemon_computeBoWFeature_args__isset {
+  _ImageDaemon_computeBoWFeature_args__isset() : rowKey(false) {}
   bool rowKey;
-} _ImageDaemon_getBoWFeature_args__isset;
+} _ImageDaemon_computeBoWFeature_args__isset;
 
-class ImageDaemon_getBoWFeature_args {
+class ImageDaemon_computeBoWFeature_args {
  public:
 
-  ImageDaemon_getBoWFeature_args() : rowKey(0) {
+  ImageDaemon_computeBoWFeature_args() : rowKey(0) {
   }
 
-  virtual ~ImageDaemon_getBoWFeature_args() throw() {}
+  virtual ~ImageDaemon_computeBoWFeature_args() throw() {}
 
   int64_t rowKey;
 
-  _ImageDaemon_getBoWFeature_args__isset __isset;
+  _ImageDaemon_computeBoWFeature_args__isset __isset;
 
   void __set_rowKey(const int64_t val) {
     rowKey = val;
   }
 
-  bool operator == (const ImageDaemon_getBoWFeature_args & rhs) const
+  bool operator == (const ImageDaemon_computeBoWFeature_args & rhs) const
   {
     if (!(rowKey == rhs.rowKey))
       return false;
     return true;
   }
-  bool operator != (const ImageDaemon_getBoWFeature_args &rhs) const {
+  bool operator != (const ImageDaemon_computeBoWFeature_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const ImageDaemon_getBoWFeature_args & ) const;
+  bool operator < (const ImageDaemon_computeBoWFeature_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -113,11 +113,11 @@ class ImageDaemon_getBoWFeature_args {
 };
 
 
-class ImageDaemon_getBoWFeature_pargs {
+class ImageDaemon_computeBoWFeature_pargs {
  public:
 
 
-  virtual ~ImageDaemon_getBoWFeature_pargs() throw() {}
+  virtual ~ImageDaemon_computeBoWFeature_pargs() throw() {}
 
   const int64_t* rowKey;
 
@@ -125,58 +125,58 @@ class ImageDaemon_getBoWFeature_pargs {
 
 };
 
-typedef struct _ImageDaemon_getBoWFeature_result__isset {
-  _ImageDaemon_getBoWFeature_result__isset() : success(false) {}
+typedef struct _ImageDaemon_computeBoWFeature_result__isset {
+  _ImageDaemon_computeBoWFeature_result__isset() : success(false) {}
   bool success;
-} _ImageDaemon_getBoWFeature_result__isset;
+} _ImageDaemon_computeBoWFeature_result__isset;
 
-class ImageDaemon_getBoWFeature_result {
+class ImageDaemon_computeBoWFeature_result {
  public:
 
-  ImageDaemon_getBoWFeature_result() {
+  ImageDaemon_computeBoWFeature_result() {
   }
 
-  virtual ~ImageDaemon_getBoWFeature_result() throw() {}
+  virtual ~ImageDaemon_computeBoWFeature_result() throw() {}
 
   std::vector<Bin>  success;
 
-  _ImageDaemon_getBoWFeature_result__isset __isset;
+  _ImageDaemon_computeBoWFeature_result__isset __isset;
 
   void __set_success(const std::vector<Bin> & val) {
     success = val;
   }
 
-  bool operator == (const ImageDaemon_getBoWFeature_result & rhs) const
+  bool operator == (const ImageDaemon_computeBoWFeature_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const ImageDaemon_getBoWFeature_result &rhs) const {
+  bool operator != (const ImageDaemon_computeBoWFeature_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const ImageDaemon_getBoWFeature_result & ) const;
+  bool operator < (const ImageDaemon_computeBoWFeature_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _ImageDaemon_getBoWFeature_presult__isset {
-  _ImageDaemon_getBoWFeature_presult__isset() : success(false) {}
+typedef struct _ImageDaemon_computeBoWFeature_presult__isset {
+  _ImageDaemon_computeBoWFeature_presult__isset() : success(false) {}
   bool success;
-} _ImageDaemon_getBoWFeature_presult__isset;
+} _ImageDaemon_computeBoWFeature_presult__isset;
 
-class ImageDaemon_getBoWFeature_presult {
+class ImageDaemon_computeBoWFeature_presult {
  public:
 
 
-  virtual ~ImageDaemon_getBoWFeature_presult() throw() {}
+  virtual ~ImageDaemon_computeBoWFeature_presult() throw() {}
 
   std::vector<Bin> * success;
 
-  _ImageDaemon_getBoWFeature_presult__isset __isset;
+  _ImageDaemon_computeBoWFeature_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -795,9 +795,9 @@ class ImageDaemonClient : virtual public ImageDaemonIf {
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey);
-  void send_getBoWFeature(const int64_t rowKey);
-  void recv_getBoWFeature(std::vector<Bin> & _return);
+  void computeBoWFeature(std::vector<Bin> & _return, const int64_t rowKey);
+  void send_computeBoWFeature(const int64_t rowKey);
+  void recv_computeBoWFeature(std::vector<Bin> & _return);
   void computeColorFeature(const int64_t rowKey);
   void send_computeColorFeature(const int64_t rowKey);
   void recv_computeColorFeature();
@@ -829,7 +829,7 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
   virtual bool process_fn(apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, std::string& fname, int32_t seqid, void* callContext);
  private:
   std::map<std::string, void (ImageDaemonProcessor::*)(int32_t, apache::thrift::protocol::TProtocol*, apache::thrift::protocol::TProtocol*, void*)> processMap_;
-  void process_getBoWFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_computeBoWFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_computeColorFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_computeShapeFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_query(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -839,7 +839,7 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
  public:
   ImageDaemonProcessor(boost::shared_ptr<ImageDaemonIf> iface) :
     iface_(iface) {
-    processMap_["getBoWFeature"] = &ImageDaemonProcessor::process_getBoWFeature;
+    processMap_["computeBoWFeature"] = &ImageDaemonProcessor::process_computeBoWFeature;
     processMap_["computeColorFeature"] = &ImageDaemonProcessor::process_computeColorFeature;
     processMap_["computeShapeFeature"] = &ImageDaemonProcessor::process_computeShapeFeature;
     processMap_["query"] = &ImageDaemonProcessor::process_query;
@@ -875,14 +875,14 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
     ifaces_.push_back(iface);
   }
  public:
-  void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) {
+  void computeBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) {
     size_t sz = ifaces_.size();
     for (size_t i = 0; i < sz; ++i) {
       if (i == sz - 1) {
-        ifaces_[i]->getBoWFeature(_return, rowKey);
+        ifaces_[i]->computeBoWFeature(_return, rowKey);
         return;
       } else {
-        ifaces_[i]->getBoWFeature(_return, rowKey);
+        ifaces_[i]->computeBoWFeature(_return, rowKey);
       }
     }
   }
@@ -936,6 +936,6 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
 
 };
 
-} // namespace
+}} // namespace
 
 #endif

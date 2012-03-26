@@ -14,7 +14,7 @@ using namespace ::apache::thrift::server;
 
 using boost::shared_ptr;
 
-using namespace  ::ImageDaemon;
+using namespace  ::net::walnutvision;
 
 class ImageDaemonHandler : virtual public ImageDaemonIf {
  public:
@@ -22,9 +22,9 @@ class ImageDaemonHandler : virtual public ImageDaemonIf {
     // Your initialization goes here
   }
 
-  void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) {
+  void computeBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) {
     // Your implementation goes here
-    printf("getBoWFeature\n");
+    printf("computeBoWFeature\n");
   }
 
   void computeColorFeature(const int64_t rowKey) {
