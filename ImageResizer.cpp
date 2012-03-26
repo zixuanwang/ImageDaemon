@@ -41,13 +41,17 @@ void ImageResizer::crop(const std::string& imagePath,
 }
 
 void ImageResizer::resize(const cv::Mat& src, cv::Mat* pDst, int maxLength) {
-	int rows = src.rows;
-	int cols = src.cols;
 	*pDst = cv::Mat();
-	if (rows == 0 || cols == 0) {
+	if (src.empty()) {
 		return;
 	}
+	int rows = src.rows;
+	int cols = src.cols;
 	int length = rows > cols ? rows : cols;
 	double ratio = (double) maxLength / length;
-	cv::resize(src, *pDst, cv::Size(), ratio, ratio, cv::INTER_LINEAR);
+	try {
+		cv::resize(src, *pDst, cv::Size(), ratio, ratio, cv::INTER_LINEAR);
+	} catch (cv::Exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
 }

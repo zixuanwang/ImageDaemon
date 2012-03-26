@@ -14,7 +14,7 @@
 
 
 
-namespace InvertedIndexDaemon {
+namespace net { namespace walnutvision {
 
 typedef struct _Posting__isset {
   _Posting__isset() : imageId(false), score(false) {}
@@ -65,6 +65,6 @@ class Posting {
 
 };
 
-} // namespace
+}} // namespace
 
 #endif

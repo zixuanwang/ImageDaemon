@@ -11,7 +11,7 @@ IMAGE_OBJS =		ANNVocabulary.o BoWHistogram.o DBAdapter.o \
 					ColorFeature.o Feature.o Ticker.o RobustMatcher.o \
 					ImageRecognizer.o InvertedIndexClient.o InvertedIndexDaemon.o \
 					InvertedIndexDaemon_constants.o InvertedIndexDaemon_types.o \
-					ImageResizer.o ShapeFeature.o\
+					ImageResizer.o ShapeFeature.o SURFFeature.o \
 					
 					
 INVERTEDINDEX_OBJS = 	InvertedIndexDaemon_server.o InvertedIndex.o InvertedIndexDaemon_constants.o \
@@ -21,7 +21,9 @@ INVERTEDINDEX_OBJS = 	InvertedIndexDaemon_server.o InvertedIndex.o InvertedIndex
 						
 ANN_OBJS = 	ANNTreeDaemon.o ANNTreeDaemon_constants.o ANNTreeDaemon_server.o \
 			ANNTreeDaemon_types.o TypeConverter.o ANNTreeRoot.o ANNTreeSlave.o \
-			Hbase_constants.o Hbase_types.o Hbase.o GlobalConfig.o
+			Hbase_constants.o Hbase_types.o Hbase.o GlobalConfig.o Logger.o DBAdapter.o \
+			HbaseAdapter.o ANNTreeHelper.o Feature.o ColorFeature.o ShapeFeature.o \
+			SURFFeature.o ImageResizer.o
 
 LIBS =		-lthrift -lboost_system -lboost_filesystem \
 			-lopencv_core -lopencv_imgproc -lopencv_highgui \

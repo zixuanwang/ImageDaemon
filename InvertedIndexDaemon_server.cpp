@@ -11,7 +11,7 @@ using namespace ::apache::thrift::concurrency;
 
 using boost::shared_ptr;
 
-using namespace ::InvertedIndexDaemon;
+using namespace ::net::walnutvision;
 
 class InvertedIndexDaemonHandler: virtual public InvertedIndexDaemonIf {
 public:
@@ -45,7 +45,6 @@ public:
 };
 
 int main(int argc, char **argv) {
-	int port = 9991;
 	shared_ptr<InvertedIndexDaemonHandler> handler(
 			new InvertedIndexDaemonHandler());
 	shared_ptr<TProcessor> processor(new InvertedIndexDaemonProcessor(handler));
@@ -56,7 +55,8 @@ int main(int argc, char **argv) {
 			shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
 	threadManager->threadFactory(threadFactory);
 	threadManager->start();
-	TNonblockingServer server(processor, protocolFactory, port, threadManager);
+	TNonblockingServer server(processor, protocolFactory,
+			GlobalConfig::INVERTED_INDEX_SERVER_PORT, threadManager);
 	server.serve();
 	return 0;
 }

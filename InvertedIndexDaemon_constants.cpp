@@ -6,12 +6,12 @@
  */
 #include "InvertedIndexDaemon_constants.h"
 
-namespace InvertedIndexDaemon {
+namespace net { namespace walnutvision {
 
 const InvertedIndexDaemonConstants g_InvertedIndexDaemon_constants;
 
 InvertedIndexDaemonConstants::InvertedIndexDaemonConstants() {
 }
 
-} // namespace
+}} // namespace
 

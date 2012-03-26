@@ -9,7 +9,7 @@
 
 #include "InvertedIndexDaemon_types.h"
 
-namespace InvertedIndexDaemon {
+namespace net { namespace walnutvision {
 
 class InvertedIndexDaemonConstants {
  public:
@@ -19,6 +19,6 @@ class InvertedIndexDaemonConstants {
 
 extern const InvertedIndexDaemonConstants g_InvertedIndexDaemon_constants;
 
-} // namespace
+}} // namespace
 
 #endif

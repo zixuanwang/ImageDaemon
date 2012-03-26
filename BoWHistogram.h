@@ -10,7 +10,7 @@
 #include "GlobalConfig.h"
 #include "ImageDaemon_types.h"
 #include "HbaseAdapter.h"
-using namespace ::ImageDaemon;
+using namespace  ::net::walnutvision;
 class BoWHistogram {
 public:
 	BoWHistogram();

@@ -21,7 +21,7 @@ using namespace ::apache::thrift::server;
 using namespace ::apache::thrift::concurrency;
 
 using boost::shared_ptr;
-using namespace ::ImageDaemon;
+using namespace ::net::walnutvision;
 
 class ImageDaemonHandler: virtual public ImageDaemonIf {
 public:
@@ -29,65 +29,46 @@ public:
 		ANNVocabulary::instance()->init("/export/c/voc/surf.1m.voc.dat");
 		Logger::instance()->log("Initialization Done.");
 	}
-	void getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) {
-		// called by the mapper and the querier
+	void computeBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) {
 		BoWHistogram histogram;
-		histogram.load(rowKey);
-		if (!histogram.empty()) {
-			histogram.convert(&_return);
-		} else {
-			Image image;
-			image.load(rowKey);
-			//compute the feature
-			LocalFeatureExtractor localFeatureExtractor;
-			LocalFeature localFeature;
-			localFeatureExtractor.extractFeature(image.image,
-					localFeature.keypoint, localFeature.descriptor);
-			localFeature.save(rowKey);
-			//quantization
-			BoWHistogram histogram;
-			ANNVocabulary::instance()->quantizeFeature(localFeature,
-					&histogram);
-			histogram.save(rowKey);
-			histogram.convert(&_return);
-		}
-		Logger::instance()->log("RPC getBoWFeature");
+		Image image;
+		image.load(rowKey);
+		//compute the feature
+		LocalFeatureExtractor localFeatureExtractor;
+		LocalFeature localFeature;
+		localFeatureExtractor.extractFeature(image.image, localFeature.keypoint,
+				localFeature.descriptor);
+		localFeature.save(rowKey);
+		//quantization
+		ANNVocabulary::instance()->quantizeFeature(localFeature, &histogram);
+		histogram.save(rowKey);
+		histogram.convert(&_return);
+		Logger::instance()->log("RPC computeBoWFeature");
 	}
 
 	void computeColorFeature(const int64_t rowKey) {
 		boost::shared_ptr<Feature> pFeature(new ColorFeature(10));
-		pFeature->load(rowKey);
-		if (pFeature->empty()) {
-			Image image;
-			image.load(rowKey);
-			boost::shared_ptr<Feature> pFeature(new ColorFeature(10));
-			cv::Mat mask;
-			pFeature->segment(mask, image.image);
-			pFeature->compute(image.image, mask);
-			std::string string;
-			pFeature->save(&string);
-			boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-			dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
-					GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
-		}
+		Image image;
+		image.load(rowKey);
+		pFeature->compute(image.image);
+		std::string string;
+		pFeature->save(&string);
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
+				GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
 		Logger::instance()->log("RPC computeColorFeature");
 	}
 
 	void computeShapeFeature(const int64_t rowKey) {
 		boost::shared_ptr<Feature> pFeature(new ShapeFeature(20, 20));
-		pFeature->load(rowKey);
-		if (pFeature->empty()) {
-			Image image;
-			image.load(rowKey);
-			cv::Mat mask;
-			pFeature->segment(mask, image.image);
-			pFeature->compute(image.image, mask);
-			std::string string;
-			pFeature->save(&string);
-			boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-			dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
-					GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
-		}
+		Image image;
+		image.load(rowKey);
+		pFeature->compute(image.image);
+		std::string string;
+		pFeature->save(&string);
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
+				GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN);
 		Logger::instance()->log("RPC computeShapeFeature");
 	}
 
@@ -107,6 +88,7 @@ public:
 		Logger::instance()->log("RPC addImage");
 	}
 
+	/// This function is called for real time indexing
 	void indexImage(const std::string& imageHash, const int64_t rowKey) {
 		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
 		std::string strRowKey;

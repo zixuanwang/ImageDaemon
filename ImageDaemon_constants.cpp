@@ -6,12 +6,12 @@
  */
 #include "ImageDaemon_constants.h"
 
-namespace ImageDaemon {
+namespace net { namespace walnutvision {
 
 const ImageDaemonConstants g_ImageDaemon_constants;
 
 ImageDaemonConstants::ImageDaemonConstants() {
 }
 
-} // namespace
+}} // namespace
 

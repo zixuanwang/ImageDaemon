@@ -6,7 +6,7 @@
  */
 #include "InvertedIndexDaemon.h"
 
-namespace InvertedIndexDaemon {
+namespace net { namespace walnutvision {
 
 uint32_t InvertedIndexDaemon_init_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1133,5 +1133,5 @@ void InvertedIndexDaemonProcessor::process_addPosting(int32_t seqid, ::apache::t
   ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new InvertedIndexDaemonProcessor(handler));
   return processor;
 }
-} // namespace
+}} // namespace
 

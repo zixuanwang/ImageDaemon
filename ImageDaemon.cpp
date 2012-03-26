@@ -6,9 +6,9 @@
  */
 #include "ImageDaemon.h"
 
-namespace ImageDaemon {
+namespace net { namespace walnutvision {
 
-uint32_t ImageDaemon_getBoWFeature_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_computeBoWFeature_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -48,9 +48,9 @@ uint32_t ImageDaemon_getBoWFeature_args::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeature_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_computeBoWFeature_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeature_args");
+  xfer += oprot->writeStructBegin("ImageDaemon_computeBoWFeature_args");
   xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->rowKey);
   xfer += oprot->writeFieldEnd();
@@ -59,9 +59,9 @@ uint32_t ImageDaemon_getBoWFeature_args::write(::apache::thrift::protocol::TProt
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeature_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_computeBoWFeature_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeature_pargs");
+  xfer += oprot->writeStructBegin("ImageDaemon_computeBoWFeature_pargs");
   xfer += oprot->writeFieldBegin("rowKey", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->rowKey)));
   xfer += oprot->writeFieldEnd();
@@ -70,7 +70,7 @@ uint32_t ImageDaemon_getBoWFeature_pargs::write(::apache::thrift::protocol::TPro
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeature_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_computeBoWFeature_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -122,11 +122,11 @@ uint32_t ImageDaemon_getBoWFeature_result::read(::apache::thrift::protocol::TPro
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeature_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ImageDaemon_computeBoWFeature_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("ImageDaemon_getBoWFeature_result");
+  xfer += oprot->writeStructBegin("ImageDaemon_computeBoWFeature_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
@@ -146,7 +146,7 @@ uint32_t ImageDaemon_getBoWFeature_result::write(::apache::thrift::protocol::TPr
   return xfer;
 }
 
-uint32_t ImageDaemon_getBoWFeature_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ImageDaemon_computeBoWFeature_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -1143,18 +1143,18 @@ uint32_t ImageDaemon_cropImage_presult::read(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
-void ImageDaemonClient::getBoWFeature(std::vector<Bin> & _return, const int64_t rowKey)
+void ImageDaemonClient::computeBoWFeature(std::vector<Bin> & _return, const int64_t rowKey)
 {
-  send_getBoWFeature(rowKey);
-  recv_getBoWFeature(_return);
+  send_computeBoWFeature(rowKey);
+  recv_computeBoWFeature(_return);
 }
 
-void ImageDaemonClient::send_getBoWFeature(const int64_t rowKey)
+void ImageDaemonClient::send_computeBoWFeature(const int64_t rowKey)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("getBoWFeature", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("computeBoWFeature", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  ImageDaemon_getBoWFeature_pargs args;
+  ImageDaemon_computeBoWFeature_pargs args;
   args.rowKey = &rowKey;
   args.write(oprot_);
 
@@ -1163,7 +1163,7 @@ void ImageDaemonClient::send_getBoWFeature(const int64_t rowKey)
   oprot_->getTransport()->flush();
 }
 
-void ImageDaemonClient::recv_getBoWFeature(std::vector<Bin> & _return)
+void ImageDaemonClient::recv_computeBoWFeature(std::vector<Bin> & _return)
 {
 
   int32_t rseqid = 0;
@@ -1183,12 +1183,12 @@ void ImageDaemonClient::recv_getBoWFeature(std::vector<Bin> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("getBoWFeature") != 0) {
+  if (fname.compare("computeBoWFeature") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  ImageDaemon_getBoWFeature_presult result;
+  ImageDaemon_computeBoWFeature_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1198,7 +1198,7 @@ void ImageDaemonClient::recv_getBoWFeature(std::vector<Bin> & _return)
     // _return pointer has now been filled
     return;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getBoWFeature failed: unknown result");
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "computeBoWFeature failed: unknown result");
 }
 
 void ImageDaemonClient::computeColorFeature(const int64_t rowKey)
@@ -1574,38 +1574,38 @@ bool ImageDaemonProcessor::process_fn(apache::thrift::protocol::TProtocol* iprot
   return true;
 }
 
-void ImageDaemonProcessor::process_getBoWFeature(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ImageDaemonProcessor::process_computeBoWFeature(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ImageDaemon.getBoWFeature", callContext);
+    ctx = this->eventHandler_->getContext("ImageDaemon.computeBoWFeature", callContext);
   }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.getBoWFeature");
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ImageDaemon.computeBoWFeature");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ImageDaemon.getBoWFeature");
+    this->eventHandler_->preRead(ctx, "ImageDaemon.computeBoWFeature");
   }
 
-  ImageDaemon_getBoWFeature_args args;
+  ImageDaemon_computeBoWFeature_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ImageDaemon.getBoWFeature", bytes);
+    this->eventHandler_->postRead(ctx, "ImageDaemon.computeBoWFeature", bytes);
   }
 
-  ImageDaemon_getBoWFeature_result result;
+  ImageDaemon_computeBoWFeature_result result;
   try {
-    iface_->getBoWFeature(result.success, args.rowKey);
+    iface_->computeBoWFeature(result.success, args.rowKey);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ImageDaemon.getBoWFeature");
+      this->eventHandler_->handlerError(ctx, "ImageDaemon.computeBoWFeature");
     }
 
     apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("getBoWFeature", apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("computeBoWFeature", apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -1614,17 +1614,17 @@ void ImageDaemonProcessor::process_getBoWFeature(int32_t seqid, ::apache::thrift
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ImageDaemon.getBoWFeature");
+    this->eventHandler_->preWrite(ctx, "ImageDaemon.computeBoWFeature");
   }
 
-  oprot->writeMessageBegin("getBoWFeature", apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("computeBoWFeature", apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ImageDaemon.getBoWFeature", bytes);
+    this->eventHandler_->postWrite(ctx, "ImageDaemon.computeBoWFeature", bytes);
   }
 }
 
@@ -1953,5 +1953,5 @@ void ImageDaemonProcessor::process_cropImage(int32_t seqid, ::apache::thrift::pr
   ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new ImageDaemonProcessor(handler));
   return processor;
 }
-} // namespace
+}} // namespace
 

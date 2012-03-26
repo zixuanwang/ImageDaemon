@@ -18,70 +18,20 @@
 #include "ImageResizer.h"
 #include "ShapeFeature.h"
 #include "ColorFeature.h"
-using namespace ::ImageDaemon;
-void testFeature() {
-	int64_t rowKey = 0;
-	Image image;
-	image.load(rowKey);
-	LocalFeatureExtractor localFeatureExtractor;
-	LocalFeature localFeature;
-	localFeatureExtractor.extractFeature(image.image, localFeature.keypoint,
-			localFeature.descriptor);
-	localFeature.save(rowKey);
-	LocalFeature localFeature2;
-	localFeature2.load(rowKey);
-	for (size_t i = 0; i < localFeature2.keypoint.size(); ++i) {
-		cv::circle(image.image, localFeature2.keypoint[i].pt,
-				localFeature2.keypoint[i].size, CV_RGB(255,0,0), 1, CV_AA, 0);
-	}
-	cv::namedWindow("test");
-	cv::imshow("test", image.image);
-	cv::waitKey(0);
-	cv::destroyAllWindows();
-}
+using namespace ::net::walnutvision;
 
-void testHistogram() {
-	int64_t rowKey = 0;
-	Image image;
-	image.load(rowKey);
-	LocalFeature localFeature;
-	LocalFeatureExtractor localFeatureExtractor;
-	localFeatureExtractor.extractFeature(image.image, localFeature.keypoint,
-			localFeature.descriptor);
-	localFeature.save(rowKey);
-	BoWHistogram histogram;
-	ANNVocabulary::instance()->quantizeFeature(localFeature, &histogram);
-	std::vector<Bin> _return;
-	histogram.convert(&_return);
-	for (size_t i = 0; i < _return.size(); ++i) {
-		std::cout << _return[i].visualwordID << "\t" << _return[i].frequency
-				<< std::endl;
-	}
+void test25() {
+	int64_t rowKey = 25;
+	std::string strRowKey;
+	TypeConverter::readNumToString(&strRowKey, rowKey);
+	std::string string;
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->loadCell(&string, GlobalConfig::IMAGE_TABLE, strRowKey,
+			GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
+	std::vector<float> data;
+	TypeConverter::readStringToArray(&data, string);
+	std::cout << data.size() << std::endl;
 }
-
-void testResizer() {
-	std::string imagePath = "/home/zixuan/Desktop/Firefox_wallpaper.png";
-	std::string cropImagePath = "/home/zixuan/Desktop/crop.jpg";
-	ImageResizer::crop(imagePath, cropImagePath, 160, 160);
-}
-
-void testHbase() {
-	Ticker t;
-	t.start();
-	boost::shared_ptr<TSocket> socket(new TSocket("localhost", 9090));
-	boost::shared_ptr<TTransport> transport(new TFramedTransport(socket));
-	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-
-	HbaseClient client(protocol);
-	transport->open();
-	transport->close();
-	t.stop();
-}
-struct PostingComparator {
-	bool operator()(const Posting &i, const Posting &j) {
-		return (i.score < j.score);
-	}
-};
 
 //void testShape() {
 //	std::string imageDirectory = "/home/zixuan/public_html/shoe/image";

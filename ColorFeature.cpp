@@ -25,17 +25,32 @@ void ColorFeature::load(int64_t rowKey) {
 	Feature::load(strVector);
 }
 
-void ColorFeature::compute(cv::Mat& image, cv::Mat& mask) {
+void ColorFeature::save(int64_t rowKey){
+	std::string strVector;
+	Feature::save(&strVector);
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->saveCell(strVector, GlobalConfig::IMAGE_TABLE, rowKey,
+			GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
+}
+
+void ColorFeature::compute(const cv::Mat& image) {
+	// clear the data vector
 	mVector.clear();
 	if (image.empty()) {
 		return;
 	}
+	// resize image to have the same max dimension
+	cv::Mat resizedImage;
+	ImageResizer::resize(image, &resizedImage, GlobalConfig::IMAGE_LENGTH);
+	// compute the segmentation, mask could be empty
+	cv::Mat mask;
+	segment(&mask, resizedImage);
 	int histSize[] = { mChannelbins, mChannelbins, mChannelbins };
 	float hranges[] = { 0.0, 255.0 };
 	const float* ranges[] = { hranges, hranges, hranges };
 	int channels[] = { 0, 1, 2 };
 	cv::MatND hist;
-	cv::calcHist(&image, 1, channels, mask, hist, 3, histSize, ranges);
+	cv::calcHist(&resizedImage, 1, channels, mask, hist, 3, histSize, ranges);
 	mVector.reserve(mChannelbins * mChannelbins * mChannelbins);
 	for (int i = 0; i < mChannelbins; ++i) {
 		for (int j = 0; j < mChannelbins; ++j) {

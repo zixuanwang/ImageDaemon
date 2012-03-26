@@ -18,22 +18,24 @@
 class ANNTreeSlave {
 public:
 	static ANNTreeSlave* instance();
-	void init();
-	void addFeature(int64_t id, const std::vector<float>& feature);
-	void index();
+	/// Clear all data
+	void clear();
+	void init(int treeIndex);
+	int addTree();
+	int treeCount();
+	void addFeature(int treeIndex, int64_t id, const std::vector<float>& feature);
+	void index(int treeIndex);
 	void knnSearch(std::vector<int64_t>* pNeighborIdArray,
-			std::vector<float>* pDistArray, const std::vector<float>& feature,
+			std::vector<float>* pDistArray, int treeIndex, const std::vector<float>& feature,
 			int k);
-	int64_t featureCount();
+	int featureCount(int treeIndex);
 private:
-	cv::Mat mMat;
-	std::vector<float> mData;
-	boost::unordered_map<int, int64_t> mIdMap;
-	int64_t mFeatureCount;
-	boost::shared_ptr<cv::flann::Index> mpIndex;
+	std::vector<cv::Mat> mMatArray;
+	std::vector<std::vector<float> > mDataArray;
+	std::vector<boost::unordered_map<int, int64_t> > mIdMapArray;
+	std::vector<int> mFeatureCountArray;
+	std::vector<boost::shared_ptr<cv::flann::Index> > mpIndexArray;
 	static ANNTreeSlave* pInstance;
-	// Default constuctor, copy constructor and assignment operators should be as private so that nobody
-	// from outside can call those functions and instantiate it
 	ANNTreeSlave();
 	ANNTreeSlave(const ANNTreeSlave&);
 	ANNTreeSlave& operator=(const ANNTreeSlave&);

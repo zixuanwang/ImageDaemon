@@ -6,7 +6,7 @@
  */
 #include "InvertedIndexDaemon_types.h"
 
-namespace InvertedIndexDaemon {
+namespace net { namespace walnutvision {
 
 const char* Posting::ascii_fingerprint = "056BD45B5249CAA453D3C7B115F349DB";
 const uint8_t Posting::binary_fingerprint[16] = {0x05,0x6B,0xD4,0x5B,0x52,0x49,0xCA,0xA4,0x53,0xD3,0xC7,0xB1,0x15,0xF3,0x49,0xDB};
@@ -73,4 +73,4 @@ uint32_t Posting::write(::apache::thrift::protocol::TProtocol* oprot) const {
   return xfer;
 }
 
-} // namespace
+}} // namespace

@@ -13,7 +13,7 @@
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
-using namespace ::InvertedIndexDaemon;
+using namespace  ::net::walnutvision;
 class InvertedIndexClient {
 public:
 	InvertedIndexClient();

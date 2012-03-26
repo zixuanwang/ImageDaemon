@@ -1,4 +1,5 @@
-namespace cpp InvertedIndexDaemon
+namespace cpp net.walnutvision
+namespace java net.walnutvision
 
 struct Posting{
 	1:i64 imageId,

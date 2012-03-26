@@ -25,8 +25,25 @@ void ShapeFeature::load(int64_t rowKey) {
 	Feature::load(strVector);
 }
 
-void ShapeFeature::compute(cv::Mat& image, cv::Mat& mask) {
+void ShapeFeature::save(int64_t rowKey) {
+	std::string strVector;
+	Feature::save(&strVector);
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->saveCell(strVector, GlobalConfig::IMAGE_TABLE, rowKey,
+			GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN);
+}
+
+void ShapeFeature::compute(const cv::Mat& image) {
 	mVector.clear();
+	if (image.empty()) {
+		return;
+	}
+	// resize image to have the same max dimension
+	cv::Mat resizedImage;
+	ImageResizer::resize(image, &resizedImage, GlobalConfig::IMAGE_LENGTH);
+	// compute the segmentation, mask could be empty
+	cv::Mat mask;
+	segment(&mask, resizedImage);
 	if (mask.empty() || mask.type() != CV_8UC1) {
 		return;
 	}
@@ -45,8 +62,12 @@ void ShapeFeature::compute(cv::Mat& image, cv::Mat& mask) {
 	}
 	float radius = 0.0;
 	cv::Point2f center;
-	cv::minEnclosingCircle(cv::Mat(foregroundPointArray), center, radius);
-	if (radius == 0.0) {
+	try {
+		cv::minEnclosingCircle(cv::Mat(foregroundPointArray), center, radius);
+	} catch (cv::Exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+	if (radius < 1.0) {
 		return;
 	}
 	float rStep = exp(log(radius) / mRbins);

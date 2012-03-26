@@ -10,7 +10,7 @@
 #include <TProcessor.h>
 #include "InvertedIndexDaemon_types.h"
 
-namespace InvertedIndexDaemon {
+namespace net { namespace walnutvision {
 
 class InvertedIndexDaemonIf {
  public:
@@ -558,6 +558,6 @@ class InvertedIndexDaemonMultiface : virtual public InvertedIndexDaemonIf {
 
 };
 
-} // namespace
+}} // namespace
 
 #endif

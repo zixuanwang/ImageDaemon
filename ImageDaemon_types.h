@@ -14,7 +14,7 @@
 
 
 
-namespace ImageDaemon {
+namespace net { namespace walnutvision {
 
 typedef struct _Bin__isset {
   _Bin__isset() : visualwordID(false), frequency(false) {}
@@ -65,6 +65,6 @@ class Bin {
 
 };
 
-} // namespace
+}} // namespace
 
 #endif

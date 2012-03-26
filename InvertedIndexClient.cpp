@@ -9,7 +9,9 @@
 
 InvertedIndexClient::InvertedIndexClient() {
 	try {
-		mSocket.reset(new TSocket(GlobalConfig::INVERTED_INDEX_SERVER, 9991));
+		mSocket.reset(
+				new TSocket(GlobalConfig::INVERTED_INDEX_SERVER_NAME,
+						GlobalConfig::INVERTED_INDEX_SERVER_PORT));
 		mTransport.reset(new TFramedTransport(mSocket));
 		mProtocol.reset(new TBinaryProtocol(mTransport));
 		mClient.reset(new InvertedIndexDaemonClient(mProtocol));

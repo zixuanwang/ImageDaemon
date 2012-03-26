@@ -11,7 +11,7 @@
 #include "HbaseAdapter.h"
 #include "InvertedIndexDaemon_types.h"
 
-using namespace ::InvertedIndexDaemon;
+using namespace  ::net::walnutvision;
 class InvertedIndex {
 public:
 	static InvertedIndex* instance();

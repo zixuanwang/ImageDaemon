@@ -1,11 +1,12 @@
-namespace cpp ImageDaemon
+namespace cpp net.walnutvision
+namespace java net.walnutvision
 struct Bin{
 	1:i64 visualwordID,
 	2:double frequency
 }
 
 service ImageDaemon{
-	list<Bin> getBoWFeature(1:i64 rowKey),
+	list<Bin> computeBoWFeature(1:i64 rowKey),
 	void computeColorFeature(1:i64 rowKey),
 	void computeShapeFeature(1:i64 rowKey),
 	list<string> query(1:string imagePath),

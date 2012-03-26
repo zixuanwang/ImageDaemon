@@ -21,6 +21,7 @@
 #include <poll.h>
 #include <iostream>
 #include <algorithm>
+#include <functional>
 #include <numeric>
 #include <opencv2/opencv.hpp>
 #include <boost/lexical_cast.hpp>
@@ -53,22 +54,28 @@ public:
 	~GlobalConfig();
 	const static std::string IMAGE_TABLE;
 	const static std::string INVERT_INDEX_TABLE;
+	const static std::string CATEGORY_INDEX_TABLE;
 	const static std::string COLUMN_FAMILY;
-	const static std::string IMAGE_DATA_COLUMN;
 	const static std::string IMAGE_HASH_COLUMN;
 	const static std::string IMAGE_FEATURE_COLUMN;
 	const static std::string IMAGE_COLOR_FEATURE_COLUMN;
 	const static std::string IMAGE_SHAPE_FEATURE_COLUMN;
+	const static std::string IMAGE_SURF_FEATURE_COLUMN;
 	const static std::string IMAGE_BOW_HISTOGRAM_COLUMN;
+	const static std::string CATEGORY_INDEX_NEXT_COLUMN;
 	const static std::string IMAGE_DIRECTORY;
 	const static int VOCABULARY_SIZE;
 	const static int SHORT_LIST_SIZE;
 	const static int IMAGE_LENGTH;
 	const static int CANDIDATE_COUNT;
 	const static int VERIFICATION_COUNT;
+	const static int STATIC_RANK_SIZE;
+	const static int SURF_FEATURE_COUNT_PER_IMAGE;
+	const static int SURF_FEATURE_DIMENSION;
 	const static std::string INVERT_INDEX_NEXT_COLUMN;
 
-	const static std::string INVERTED_INDEX_SERVER;
+	const static std::string INVERTED_INDEX_SERVER_NAME;
+	const static int INVERTED_INDEX_SERVER_PORT;
 	const static bool USE_VERIFICATION;
 	const static float PI;
 
