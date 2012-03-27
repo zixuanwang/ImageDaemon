@@ -20,9 +20,9 @@ ANNTreeHelper* ANNTreeHelper::instance() {
 }
 
 void ANNTreeHelper::computeYPTree() {
-	std::string dbFilePath = "/home/zixuan/public_html/shoes/dbfile";
-	std::string imageDirectory = "/home/zixuan/public_html/shoes/imgs/";
-	std::string type = "shoes";
+	std::string dbFilePath = "/home/zixuan/public_html/bags/dbfile";
+	std::string imageDirectory = "/home/zixuan/public_html/bags/imgs/";
+	std::string type = "bags";
 	boost::unordered_map<int, std::vector<float> > colorFeatureMap;
 	boost::unordered_map<int, std::vector<float> > shapeFeatureMap;
 	// compute feature
@@ -125,7 +125,7 @@ void ANNTreeHelper::computeYPTree() {
 void ANNTreeHelper::similarSearch(std::vector<Neighbor>* pReturn, int treeIndex,
 		int64_t id, int k) {
 	pReturn->clear();
-	std::string type = "shoes";
+	std::string type = "bags";
 	MYSQL *connect;
 	connect = mysql_init(NULL);
 	connect = mysql_real_connect(connect, "localhost", "root", "myhome515",

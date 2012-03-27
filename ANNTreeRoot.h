@@ -73,11 +73,13 @@ private:
 	std::vector<cv::Mat> mMatArray;
 	std::vector<boost::shared_ptr<cv::flann::Index> > mpIndexArray;
 	std::vector<std::vector<int> > mLabelArray;
-//	cv::Mat mMat;
-//	boost::shared_ptr<cv::flann::Index> mpIndex;
-//	std::vector<int> mLabelArray;
 	static pthread_mutex_t sMutex;
 	std::string mConfPath;
+	struct NeighborComparator {
+		bool operator()(const Neighbor &i, const Neighbor &j) {
+			return (i.distance < j.distance);
+		}
+	};
 };
 
 #endif /* ANNTREEROOT_H_ */

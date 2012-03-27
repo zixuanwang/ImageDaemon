@@ -95,6 +95,7 @@ public:
 	void slaveKnnSearch(std::vector<Neighbor> & _return,
 			const int32_t treeIndex, const std::string& feature,
 			const int32_t k) {
+		std::cout << "RPC slaveKnnSearch" << std::endl;
 		std::vector<int64_t> neighborIdArray;
 		std::vector<float> distArray;
 		std::vector<float> fFeature;

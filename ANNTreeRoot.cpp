@@ -149,8 +149,9 @@ void ANNTreeRoot::addFeature(int treeIndex, int64_t id,
 	TypeConverter::readArrayToString(&strFeature, feature);
 	std::vector<int> slaveArray;
 	getSlave(&slaveArray, treeIndex, feature);
-	for (size_t i = 0; i < slaveArray.size(); ++i) {
-		mSlaveArray[slaveArray[i]]->slaveAddFeature(treeIndex, id, strFeature);
+	// Each feature is stored in memory only once.
+	if (!slaveArray.empty()) {
+		mSlaveArray[slaveArray[0]]->slaveAddFeature(treeIndex, id, strFeature);
 	}
 }
 
@@ -167,9 +168,26 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn, int treeIndex,
 	TypeConverter::readArrayToString(&strFeature, feature);
 	std::vector<int> slaveArray;
 	getSlave(&slaveArray, treeIndex, feature);
-	for (size_t i = 0; i < slaveArray.size(); ++i) {
-		mSlaveArray[slaveArray[i]]->slaveKnnSearch(*pReturn, treeIndex,
+	if (slaveArray.size() == 1) {
+		mSlaveArray[slaveArray[0]]->slaveKnnSearch(*pReturn, treeIndex,
 				strFeature, k);
+	}
+	if (slaveArray.size() == 2) {
+		std::vector<Neighbor> candidateArray1;
+		std::vector<Neighbor> candidateArray2;
+		mSlaveArray[slaveArray[0]]->slaveKnnSearch(candidateArray1, treeIndex,
+				strFeature, k);
+		mSlaveArray[slaveArray[1]]->slaveKnnSearch(candidateArray2, treeIndex,
+				strFeature, k);
+		int mergeCandidateArraySize = (int) candidateArray1.size()
+				+ (int) candidateArray2.size();
+		std::vector<Neighbor> mergeCandidateArray(mergeCandidateArraySize);
+		std::merge(candidateArray1.begin(), candidateArray1.end(),
+				candidateArray2.begin(), candidateArray2.end(),
+				mergeCandidateArray.begin(), NeighborComparator());
+		int length = k < mergeCandidateArraySize ? k : mergeCandidateArraySize;
+		pReturn->assign(mergeCandidateArray.begin(),
+				mergeCandidateArray.begin() + length);
 	}
 }
 
@@ -183,11 +201,19 @@ void ANNTreeRoot::getSlave(std::vector<int>* pSlaveArray, int treeIndex,
 	if (mMatArray[treeIndex].empty() || feature.empty()) {
 		return;
 	}
-	std::vector<int> indices(1);
-	std::vector<float> dists(1);
-	mpIndexArray[treeIndex]->knnSearch(feature, indices, dists, 1,
+	int k = mMatArray[treeIndex].rows;
+	k = k < 2 ? k : 2;
+	std::vector<int> indices(k);
+	std::vector<float> dists(k);
+	mpIndexArray[treeIndex]->knnSearch(feature, indices, dists, k,
 			cv::flann::SearchParams(32));
 	pSlaveArray->push_back(mLabelArray[treeIndex][indices[0]]);
+	// dealing with points near Voronoi edges
+	if (k == 2) {
+		if (dists[0] > 0.9 * dists[1] && indices[0] != indices[1]) {
+			pSlaveArray->push_back(mLabelArray[treeIndex][indices[1]]);
+		}
+	}
 }
 
 //void ANNTreeRoot::sampleFromCategory(std::vector<int64_t>* pSampleImageKeyArray,
