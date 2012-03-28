@@ -11,6 +11,7 @@
 #include "GlobalConfig.h"
 #include "ANNTreeDaemon.h"
 #include "TypeConverter.h"
+#include "RankItem.h"
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
@@ -28,8 +29,11 @@ public:
 	void addFeature(int64_t id, const std::vector<float>& feature);
 	/// Create ANN structure on each slave. Called after adding all features. After index, should not add more features.
 	void index();
-	void knnSearch(std::vector<Neighbor>* pReturn, const std::vector<float>& feature,
-			int k);
+	/// This is for the regular knn search. e.g. color and shape
+	void knnSearch(std::vector<Neighbor>* pReturn,
+			const std::vector<float>& feature, int k);
+	void knnSearch(std::vector<Neighbor>* pReturn,
+			const std::vector<std::vector<float> >& featureArray, int k);
 private:
 	void getSlave(std::vector<int>* pSlaveArray,
 			const std::vector<float>& feature);

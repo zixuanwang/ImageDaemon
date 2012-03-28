@@ -7,6 +7,8 @@
 #include "LocalFeature.h"
 #include "BoWHistogram.h"
 #include "ColorFeature.h"
+#include "ShapeFeature.h"
+#include "SURFFeature.h"
 #include "ImageRecognizer.h"
 #include "InvertedIndexClient.h"
 #include "Ticker.h"
@@ -70,6 +72,19 @@ public:
 		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
 				GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN);
 		Logger::instance()->log("RPC computeShapeFeature");
+	}
+
+	void computeSURFFeature(const int64_t rowKey) {
+		boost::shared_ptr<Feature> pFeature(new SURFFeature(50));
+		Image image;
+		image.load(rowKey);
+		pFeature->compute(image.image);
+		std::string string;
+		pFeature->save(&string);
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
+				GlobalConfig::IMAGE_SURF_FEATURE_COLUMN);
+		Logger::instance()->log("RPC computeSURFFeature");
 	}
 
 	void query(std::vector<std::string> & _return,

@@ -74,8 +74,10 @@ public:
 	const static int STATIC_RANK_SIZE;
 	const static int SURF_FEATURE_COUNT_PER_IMAGE;
 	const static int SURF_FEATURE_DIMENSION;
+	const static int COLOR_TREE_INDEX;
+	const static int SHAPE_TREE_INDEX;
+	const static int SURF_TREE_INDEX;
 	const static std::string INVERT_INDEX_NEXT_COLUMN;
-
 	const static std::string INVERTED_INDEX_SERVER_NAME;
 	const static int INVERTED_INDEX_SERVER_PORT;
 	const static bool USE_VERIFICATION;

@@ -166,3 +166,41 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 				mergeCandidateArray.begin() + length);
 	}
 }
+
+void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
+		const std::vector<std::vector<float> >& featureArray, int k) {
+	pReturn->clear();
+	boost::unordered_map<int64_t, double> idDistanceMap;
+	int subK = 5 * k / featureArray.size();
+	for (size_t i = 0; i < featureArray.size(); ++i) {
+		std::vector<Neighbor> returnCandidate;
+		knnSearch(&returnCandidate, featureArray[i], subK);
+		for (size_t j = 0; j < returnCandidate.size(); ++j) {
+			std::cout << returnCandidate[j].distance << std::endl;
+			idDistanceMap[returnCandidate[j].id] -= exp(
+					-1.0 * returnCandidate[j].distance);
+		}
+	}
+	std::vector<RankItem<int64_t, double> > rankList;
+	rankList.reserve(idDistanceMap.size());
+	for (boost::unordered_map<int64_t, double>::iterator iter =
+			idDistanceMap.begin(); iter != idDistanceMap.end(); ++iter) {
+		RankItem<int64_t, double> item(iter->first, iter->second);
+		rankList.push_back(item);
+	}
+	int rankListSize = (int) rankList.size();
+	if (rankListSize <= k) {
+		std::sort(rankList.begin(), rankList.end());
+	} else {
+		std::partial_sort(rankList.begin(), rankList.begin() + k,
+				rankList.end());
+	}
+	int returnSize = rankListSize < k ? rankListSize : k;
+	pReturn->reserve(returnSize);
+	for (int i = 0; i < returnSize; ++i) {
+		Neighbor neighbor;
+		neighbor.id = rankList[i].index;
+		neighbor.distance = rankList[i].value;
+		pReturn->push_back(neighbor);
+	}
+}

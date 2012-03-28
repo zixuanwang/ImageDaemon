@@ -30,6 +30,9 @@ const int GlobalConfig::SHORT_LIST_SIZE = 50;
 const int GlobalConfig::IMAGE_LENGTH = 320;
 const int GlobalConfig::CANDIDATE_COUNT = 100;
 const int GlobalConfig::VERIFICATION_COUNT = 5;
+const int GlobalConfig::COLOR_TREE_INDEX = -1;
+const int GlobalConfig::SHAPE_TREE_INDEX = -2;
+const int GlobalConfig::SURF_TREE_INDEX = -3;
 const std::string GlobalConfig::INVERT_INDEX_NEXT_COLUMN = COLUMN_FAMILY
 		+ "next";
 const std::string GlobalConfig::INVERTED_INDEX_SERVER_NAME = "node1";
