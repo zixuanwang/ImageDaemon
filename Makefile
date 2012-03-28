@@ -23,7 +23,7 @@ ANN_OBJS = 	ANNTreeDaemon.o ANNTreeDaemon_constants.o ANNTreeDaemon_server.o \
 			ANNTreeDaemon_types.o TypeConverter.o ANNTreeRoot.o ANNTreeSlave.o \
 			Hbase_constants.o Hbase_types.o Hbase.o GlobalConfig.o Logger.o DBAdapter.o \
 			HbaseAdapter.o ANNTreeHelper.o Feature.o ColorFeature.o ShapeFeature.o \
-			SURFFeature.o ImageResizer.o
+			SURFFeature.o ImageResizer.o ANNTreeRootPool.o ANNTreeSlavePool.o
 
 LIBS =		-lthrift -lboost_system -lboost_filesystem \
 			-lopencv_core -lopencv_imgproc -lopencv_highgui \

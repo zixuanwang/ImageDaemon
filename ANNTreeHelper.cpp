@@ -83,9 +83,12 @@ void ANNTreeHelper::computeYPTree() {
 	}
 	mysql_close(connect);
 	// build the tree
-	ANNTreeRoot::instance()->clear();
-	int colorTreeIndex = ANNTreeRoot::instance()->addTree();
-	int shapeTreeIndex = ANNTreeRoot::instance()->addTree();
+	int colorTreeIndex = 0;
+	int shapeTreeIndex = 1;
+	boost::shared_ptr<ANNTreeRoot> pColorRoot;
+	boost::shared_ptr<ANNTreeRoot> pShapeRoot;
+	ANNTreeRootPool::instance()->get(&pColorRoot, colorTreeIndex);
+	ANNTreeRootPool::instance()->get(&pShapeRoot, shapeTreeIndex);
 	int colorSampleCount = 0;
 	std::vector<float> colorSampleArray;
 	for (boost::unordered_map<int, std::vector<float> >::iterator iter =
@@ -95,12 +98,10 @@ void ANNTreeHelper::computeYPTree() {
 		std::copy(iter->second.begin(), iter->second.end(),
 				std::back_inserter(colorSampleArray));
 	}
-	ANNTreeRoot::instance()->loadSample(colorTreeIndex, colorSampleArray,
-			colorSampleCount);
+	pColorRoot->loadSample(colorSampleArray, colorSampleCount);
 	for (boost::unordered_map<int, std::vector<float> >::iterator iter =
 			colorFeatureMap.begin(); iter != colorFeatureMap.end(); ++iter) {
-		ANNTreeRoot::instance()->addFeature(colorTreeIndex, iter->first,
-				iter->second);
+		pColorRoot->addFeature(iter->first, iter->second);
 	}
 	int shapeSampleCount = 0;
 	std::vector<float> shapeSampleArray;
@@ -111,15 +112,13 @@ void ANNTreeHelper::computeYPTree() {
 		std::copy(iter->second.begin(), iter->second.end(),
 				std::back_inserter(shapeSampleArray));
 	}
-	ANNTreeRoot::instance()->loadSample(shapeTreeIndex, shapeSampleArray,
-			shapeSampleCount);
+	pShapeRoot->loadSample(shapeSampleArray, shapeSampleCount);
 	for (boost::unordered_map<int, std::vector<float> >::iterator iter =
 			shapeFeatureMap.begin(); iter != shapeFeatureMap.end(); ++iter) {
-		ANNTreeRoot::instance()->addFeature(shapeTreeIndex, iter->first,
-				iter->second);
+		pShapeRoot->addFeature(iter->first, iter->second);
 	}
-	ANNTreeRoot::instance()->index(colorTreeIndex);
-	ANNTreeRoot::instance()->index(shapeTreeIndex);
+	pColorRoot->index();
+	pShapeRoot->index();
 }
 
 void ANNTreeHelper::similarSearch(std::vector<Neighbor>* pReturn, int treeIndex,
@@ -156,8 +155,158 @@ void ANNTreeHelper::similarSearch(std::vector<Neighbor>* pReturn, int treeIndex,
 	if (lengths[0] > 0) {
 		std::vector<float> feature(lengths[0] / sizeof(float));
 		memcpy((char*) &feature[0], row[0], lengths[0]);
-		ANNTreeRoot::instance()->knnSearch(pReturn, treeIndex, feature, k);
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		pRoot->knnSearch(pReturn, feature, k);
 	}
 	mysql_free_result(result);
 	mysql_close(connect);
+}
+
+void ANNTreeHelper::sampleFromCategory(
+		std::vector<int64_t>* pSampleImageKeyArray,
+		const std::string& strRowKey, int sampleSize) {
+	// first pass, sampling
+	int columnIndex = 0;
+	srand(time(NULL));
+	pSampleImageKeyArray->reserve(sampleSize);
+	int imageKeyCount = 0;
+	while (true) {
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		std::string string;
+		dbAdapter->loadCell(
+				&string,
+				GlobalConfig::CATEGORY_INDEX_TABLE,
+				strRowKey,
+				GlobalConfig::COLUMN_FAMILY
+						+ boost::lexical_cast<std::string>(columnIndex));
+		if (string.empty()) {
+			break;
+		}
+		std::vector<int64_t> imageKeyArray;
+		TypeConverter::readStringToArray(&imageKeyArray, string);
+		for (size_t i = 0; i < imageKeyArray.size(); ++i) {
+			if (imageKeyCount < sampleSize) {
+				pSampleImageKeyArray->push_back(imageKeyArray[i]);
+			} else if ((float) rand() / RAND_MAX
+					< (float) sampleSize / imageKeyCount) {
+				int dropIndex = rand() % sampleSize;
+				(*pSampleImageKeyArray)[dropIndex] = imageKeyArray[i];
+			}
+			++imageKeyCount;
+		}
+		++columnIndex;
+	}
+}
+
+void ANNTreeHelper::buildFromCategory(const std::string& strRowKey,
+		const std::string& featureColumn) {
+	std::vector<int64_t> sampleImageKeyArray;
+	sampleFromCategory(&sampleImageKeyArray, strRowKey, 10000);
+	// remove duplicate elements
+	std::set<int64_t> uniqueSet(sampleImageKeyArray.begin(),
+			sampleImageKeyArray.end());
+	// load feature data;
+	std::vector<float> dataArray;
+	int sampleCount = 0;
+	for (std::set<int64_t>::iterator iter = uniqueSet.begin();
+			iter != uniqueSet.end(); ++iter) {
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		std::string strImageKey;
+		TypeConverter::readNumToString(&strImageKey, *iter);
+		std::string string;
+		dbAdapter->loadCell(&string, GlobalConfig::IMAGE_TABLE, strImageKey,
+				featureColumn);
+		if (!string.empty()) {
+			std::vector<float> data;
+			TypeConverter::readStringToArray(&data, string);
+			std::copy(data.begin(), data.end(), std::back_inserter(dataArray));
+			++sampleCount;
+		}
+	}
+	if (sampleCount == 0) {
+		return;
+	}
+	int treeIndex = 100;
+	boost::shared_ptr<ANNTreeRoot> pRoot;
+	ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+	pRoot->loadSample(dataArray, sampleCount);
+	// second pass, build slave structure
+	int columnIndex = 0;
+	while (true) {
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		std::string string;
+		dbAdapter->loadCell(
+				&string,
+				GlobalConfig::CATEGORY_INDEX_TABLE,
+				strRowKey,
+				GlobalConfig::COLUMN_FAMILY
+						+ boost::lexical_cast<std::string>(columnIndex));
+		if (string.empty()) {
+			break;
+		}
+		std::vector<int64_t> imageKeyArray;
+		TypeConverter::readStringToArray(&imageKeyArray, string);
+		for (size_t i = 0; i < imageKeyArray.size(); ++i) {
+			int64_t imageKey = imageKeyArray[i];
+			std::string strImageKey;
+			TypeConverter::readNumToString(&strImageKey, imageKey);
+			std::string strFeature;
+			dbAdapter->loadCell(&strFeature, GlobalConfig::IMAGE_TABLE,
+					strImageKey, featureColumn);
+			std::vector<float> fFeature;
+			TypeConverter::readStringToArray(&fFeature, strFeature);
+			pRoot->addFeature(imageKey, fFeature);
+		}
+		++columnIndex;
+	}
+	pRoot->index();
+}
+
+void ANNTreeHelper::rankFromCategory(const std::string& strRowKey,
+		const std::string& featureColumn) {
+	int columnIndex = 0;
+	while (true) {
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		std::string string;
+		dbAdapter->loadCell(
+				&string,
+				GlobalConfig::CATEGORY_INDEX_TABLE,
+				strRowKey,
+				GlobalConfig::COLUMN_FAMILY
+						+ boost::lexical_cast<std::string>(columnIndex));
+		if (string.empty()) {
+			break;
+		}
+		int treeIndex = 100;
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		std::vector<int64_t> imageKeyArray;
+		TypeConverter::readStringToArray(&imageKeyArray, string);
+		for (size_t i = 0; i < imageKeyArray.size(); ++i) {
+			int64_t imageKey = imageKeyArray[i];
+			std::string strImageKey;
+			TypeConverter::readNumToString(&strImageKey, imageKey);
+			std::string strFeature;
+			dbAdapter->loadCell(&strFeature, GlobalConfig::IMAGE_TABLE,
+					strImageKey, featureColumn);
+			std::vector<float> fFeature;
+			TypeConverter::readStringToArray(&fFeature, strFeature);
+			std::vector<Neighbor> neighborArray;
+			pRoot->knnSearch(&neighborArray, fFeature,
+					GlobalConfig::STATIC_RANK_SIZE);
+			// save rank
+			std::vector<int64_t> neighborIdArray;
+			neighborIdArray.reserve(neighborArray.size());
+			for (size_t j = 0; j < neighborArray.size(); ++j) {
+				neighborIdArray.push_back(neighborArray[j].id);
+			}
+			std::string strNeighborIdArray;
+			TypeConverter::readArrayToString(&strNeighborIdArray,
+					neighborIdArray);
+			dbAdapter->saveCell(strNeighborIdArray, GlobalConfig::IMAGE_TABLE,
+					strImageKey, featureColumn + "_r");
+		}
+		++columnIndex;
+	}
 }

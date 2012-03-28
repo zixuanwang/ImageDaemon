@@ -131,7 +131,69 @@ uint32_t ANNTreeDaemon_clear_presult::read(::apache::thrift::protocol::TProtocol
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_addTree_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ANNTreeDaemon_putTree_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->treeIndex);
+          this->__isset.treeIndex = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ANNTreeDaemon_putTree_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ANNTreeDaemon_putTree_args");
+  xfer += oprot->writeFieldBegin("treeIndex", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->treeIndex);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ANNTreeDaemon_putTree_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("ANNTreeDaemon_putTree_pargs");
+  xfer += oprot->writeFieldBegin("treeIndex", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((*(this->treeIndex)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t ANNTreeDaemon_putTree_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -163,23 +225,18 @@ uint32_t ANNTreeDaemon_addTree_args::read(::apache::thrift::protocol::TProtocol*
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_addTree_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ANNTreeDaemon_putTree_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_addTree_args");
+
+  xfer += oprot->writeStructBegin("ANNTreeDaemon_putTree_result");
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_addTree_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_addTree_pargs");
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_addTree_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ANNTreeDaemon_putTree_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -199,70 +256,6 @@ uint32_t ANNTreeDaemon_addTree_result::read(::apache::thrift::protocol::TProtoco
     }
     switch (fid)
     {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_addTree_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_addTree_result");
-
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I32, 0);
-    xfer += oprot->writeI32(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_addTree_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -1178,274 +1171,7 @@ uint32_t ANNTreeDaemon_similarSearch_presult::read(::apache::thrift::protocol::T
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_slaveClear_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveClear_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveClear_args");
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveClear_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveClear_pargs");
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveClear_result::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveClear_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveClear_result");
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveClear_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveAddTree_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveAddTree_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveAddTree_args");
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveAddTree_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveAddTree_pargs");
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveAddTree_result::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveAddTree_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveAddTree_result");
-
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I32, 0);
-    xfer += oprot->writeI32(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveAddTree_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t ANNTreeDaemon_slaveInit_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ANNTreeDaemon_slavePutTree_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -1485,9 +1211,9 @@ uint32_t ANNTreeDaemon_slaveInit_args::read(::apache::thrift::protocol::TProtoco
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_slaveInit_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ANNTreeDaemon_slavePutTree_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveInit_args");
+  xfer += oprot->writeStructBegin("ANNTreeDaemon_slavePutTree_args");
   xfer += oprot->writeFieldBegin("treeIndex", ::apache::thrift::protocol::T_I32, 1);
   xfer += oprot->writeI32(this->treeIndex);
   xfer += oprot->writeFieldEnd();
@@ -1496,9 +1222,9 @@ uint32_t ANNTreeDaemon_slaveInit_args::write(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_slaveInit_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ANNTreeDaemon_slavePutTree_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveInit_pargs");
+  xfer += oprot->writeStructBegin("ANNTreeDaemon_slavePutTree_pargs");
   xfer += oprot->writeFieldBegin("treeIndex", ::apache::thrift::protocol::T_I32, 1);
   xfer += oprot->writeI32((*(this->treeIndex)));
   xfer += oprot->writeFieldEnd();
@@ -1507,7 +1233,7 @@ uint32_t ANNTreeDaemon_slaveInit_pargs::write(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_slaveInit_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ANNTreeDaemon_slavePutTree_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -1539,18 +1265,18 @@ uint32_t ANNTreeDaemon_slaveInit_result::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_slaveInit_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ANNTreeDaemon_slavePutTree_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("ANNTreeDaemon_slaveInit_result");
+  xfer += oprot->writeStructBegin("ANNTreeDaemon_slavePutTree_result");
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t ANNTreeDaemon_slaveInit_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ANNTreeDaemon_slavePutTree_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -2154,18 +1880,19 @@ void ANNTreeDaemonClient::recv_clear()
   return;
 }
 
-int32_t ANNTreeDaemonClient::addTree()
+void ANNTreeDaemonClient::putTree(const int32_t treeIndex)
 {
-  send_addTree();
-  return recv_addTree();
+  send_putTree(treeIndex);
+  recv_putTree();
 }
 
-void ANNTreeDaemonClient::send_addTree()
+void ANNTreeDaemonClient::send_putTree(const int32_t treeIndex)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("addTree", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("putTree", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  ANNTreeDaemon_addTree_pargs args;
+  ANNTreeDaemon_putTree_pargs args;
+  args.treeIndex = &treeIndex;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2173,7 +1900,7 @@ void ANNTreeDaemonClient::send_addTree()
   oprot_->getTransport()->flush();
 }
 
-int32_t ANNTreeDaemonClient::recv_addTree()
+void ANNTreeDaemonClient::recv_putTree()
 {
 
   int32_t rseqid = 0;
@@ -2193,22 +1920,17 @@ int32_t ANNTreeDaemonClient::recv_addTree()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("addTree") != 0) {
+  if (fname.compare("putTree") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int32_t _return;
-  ANNTreeDaemon_addTree_presult result;
-  result.success = &_return;
+  ANNTreeDaemon_putTree_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.success) {
-    return _return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "addTree failed: unknown result");
+  return;
 }
 
 void ANNTreeDaemonClient::loadSample(const int32_t treeIndex, const std::string& sampleArray, const int32_t sampleCount)
@@ -2494,127 +2216,18 @@ void ANNTreeDaemonClient::recv_similarSearch(std::vector<Neighbor> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "similarSearch failed: unknown result");
 }
 
-void ANNTreeDaemonClient::slaveClear()
+void ANNTreeDaemonClient::slavePutTree(const int32_t treeIndex)
 {
-  send_slaveClear();
-  recv_slaveClear();
+  send_slavePutTree(treeIndex);
+  recv_slavePutTree();
 }
 
-void ANNTreeDaemonClient::send_slaveClear()
+void ANNTreeDaemonClient::send_slavePutTree(const int32_t treeIndex)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("slaveClear", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("slavePutTree", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  ANNTreeDaemon_slaveClear_pargs args;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-}
-
-void ANNTreeDaemonClient::recv_slaveClear()
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  if (fname.compare("slaveClear") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  ANNTreeDaemon_slaveClear_presult result;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  return;
-}
-
-int32_t ANNTreeDaemonClient::slaveAddTree()
-{
-  send_slaveAddTree();
-  return recv_slaveAddTree();
-}
-
-void ANNTreeDaemonClient::send_slaveAddTree()
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("slaveAddTree", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  ANNTreeDaemon_slaveAddTree_pargs args;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-}
-
-int32_t ANNTreeDaemonClient::recv_slaveAddTree()
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  if (fname.compare("slaveAddTree") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  int32_t _return;
-  ANNTreeDaemon_slaveAddTree_presult result;
-  result.success = &_return;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  if (result.__isset.success) {
-    return _return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "slaveAddTree failed: unknown result");
-}
-
-void ANNTreeDaemonClient::slaveInit(const int32_t treeIndex)
-{
-  send_slaveInit(treeIndex);
-  recv_slaveInit();
-}
-
-void ANNTreeDaemonClient::send_slaveInit(const int32_t treeIndex)
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("slaveInit", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  ANNTreeDaemon_slaveInit_pargs args;
+  ANNTreeDaemon_slavePutTree_pargs args;
   args.treeIndex = &treeIndex;
   args.write(oprot_);
 
@@ -2623,7 +2236,7 @@ void ANNTreeDaemonClient::send_slaveInit(const int32_t treeIndex)
   oprot_->getTransport()->flush();
 }
 
-void ANNTreeDaemonClient::recv_slaveInit()
+void ANNTreeDaemonClient::recv_slavePutTree()
 {
 
   int32_t rseqid = 0;
@@ -2643,12 +2256,12 @@ void ANNTreeDaemonClient::recv_slaveInit()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("slaveInit") != 0) {
+  if (fname.compare("slavePutTree") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  ANNTreeDaemon_slaveInit_presult result;
+  ANNTreeDaemon_slavePutTree_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
@@ -2922,38 +2535,37 @@ void ANNTreeDaemonProcessor::process_clear(int32_t seqid, ::apache::thrift::prot
   }
 }
 
-void ANNTreeDaemonProcessor::process_addTree(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ANNTreeDaemonProcessor::process_putTree(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ANNTreeDaemon.addTree", callContext);
+    ctx = this->eventHandler_->getContext("ANNTreeDaemon.putTree", callContext);
   }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ANNTreeDaemon.addTree");
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ANNTreeDaemon.putTree");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ANNTreeDaemon.addTree");
+    this->eventHandler_->preRead(ctx, "ANNTreeDaemon.putTree");
   }
 
-  ANNTreeDaemon_addTree_args args;
+  ANNTreeDaemon_putTree_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ANNTreeDaemon.addTree", bytes);
+    this->eventHandler_->postRead(ctx, "ANNTreeDaemon.putTree", bytes);
   }
 
-  ANNTreeDaemon_addTree_result result;
+  ANNTreeDaemon_putTree_result result;
   try {
-    result.success = iface_->addTree();
-    result.__isset.success = true;
+    iface_->putTree(args.treeIndex);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ANNTreeDaemon.addTree");
+      this->eventHandler_->handlerError(ctx, "ANNTreeDaemon.putTree");
     }
 
     apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("addTree", apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("putTree", apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -2962,17 +2574,17 @@ void ANNTreeDaemonProcessor::process_addTree(int32_t seqid, ::apache::thrift::pr
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ANNTreeDaemon.addTree");
+    this->eventHandler_->preWrite(ctx, "ANNTreeDaemon.putTree");
   }
 
-  oprot->writeMessageBegin("addTree", apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("putTree", apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ANNTreeDaemon.addTree", bytes);
+    this->eventHandler_->postWrite(ctx, "ANNTreeDaemon.putTree", bytes);
   }
 }
 
@@ -3243,37 +2855,37 @@ void ANNTreeDaemonProcessor::process_similarSearch(int32_t seqid, ::apache::thri
   }
 }
 
-void ANNTreeDaemonProcessor::process_slaveClear(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ANNTreeDaemonProcessor::process_slavePutTree(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ANNTreeDaemon.slaveClear", callContext);
+    ctx = this->eventHandler_->getContext("ANNTreeDaemon.slavePutTree", callContext);
   }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ANNTreeDaemon.slaveClear");
+  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ANNTreeDaemon.slavePutTree");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ANNTreeDaemon.slaveClear");
+    this->eventHandler_->preRead(ctx, "ANNTreeDaemon.slavePutTree");
   }
 
-  ANNTreeDaemon_slaveClear_args args;
+  ANNTreeDaemon_slavePutTree_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ANNTreeDaemon.slaveClear", bytes);
+    this->eventHandler_->postRead(ctx, "ANNTreeDaemon.slavePutTree", bytes);
   }
 
-  ANNTreeDaemon_slaveClear_result result;
+  ANNTreeDaemon_slavePutTree_result result;
   try {
-    iface_->slaveClear();
+    iface_->slavePutTree(args.treeIndex);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ANNTreeDaemon.slaveClear");
+      this->eventHandler_->handlerError(ctx, "ANNTreeDaemon.slavePutTree");
     }
 
     apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("slaveClear", apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("slavePutTree", apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -3282,124 +2894,17 @@ void ANNTreeDaemonProcessor::process_slaveClear(int32_t seqid, ::apache::thrift:
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ANNTreeDaemon.slaveClear");
+    this->eventHandler_->preWrite(ctx, "ANNTreeDaemon.slavePutTree");
   }
 
-  oprot->writeMessageBegin("slaveClear", apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("slavePutTree", apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ANNTreeDaemon.slaveClear", bytes);
-  }
-}
-
-void ANNTreeDaemonProcessor::process_slaveAddTree(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
-{
-  void* ctx = NULL;
-  if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ANNTreeDaemon.slaveAddTree", callContext);
-  }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ANNTreeDaemon.slaveAddTree");
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ANNTreeDaemon.slaveAddTree");
-  }
-
-  ANNTreeDaemon_slaveAddTree_args args;
-  args.read(iprot);
-  iprot->readMessageEnd();
-  uint32_t bytes = iprot->getTransport()->readEnd();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ANNTreeDaemon.slaveAddTree", bytes);
-  }
-
-  ANNTreeDaemon_slaveAddTree_result result;
-  try {
-    result.success = iface_->slaveAddTree();
-    result.__isset.success = true;
-  } catch (const std::exception& e) {
-    if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ANNTreeDaemon.slaveAddTree");
-    }
-
-    apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("slaveAddTree", apache::thrift::protocol::T_EXCEPTION, seqid);
-    x.write(oprot);
-    oprot->writeMessageEnd();
-    oprot->getTransport()->writeEnd();
-    oprot->getTransport()->flush();
-    return;
-  }
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ANNTreeDaemon.slaveAddTree");
-  }
-
-  oprot->writeMessageBegin("slaveAddTree", apache::thrift::protocol::T_REPLY, seqid);
-  result.write(oprot);
-  oprot->writeMessageEnd();
-  bytes = oprot->getTransport()->writeEnd();
-  oprot->getTransport()->flush();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ANNTreeDaemon.slaveAddTree", bytes);
-  }
-}
-
-void ANNTreeDaemonProcessor::process_slaveInit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
-{
-  void* ctx = NULL;
-  if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("ANNTreeDaemon.slaveInit", callContext);
-  }
-  apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ANNTreeDaemon.slaveInit");
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "ANNTreeDaemon.slaveInit");
-  }
-
-  ANNTreeDaemon_slaveInit_args args;
-  args.read(iprot);
-  iprot->readMessageEnd();
-  uint32_t bytes = iprot->getTransport()->readEnd();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "ANNTreeDaemon.slaveInit", bytes);
-  }
-
-  ANNTreeDaemon_slaveInit_result result;
-  try {
-    iface_->slaveInit(args.treeIndex);
-  } catch (const std::exception& e) {
-    if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "ANNTreeDaemon.slaveInit");
-    }
-
-    apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("slaveInit", apache::thrift::protocol::T_EXCEPTION, seqid);
-    x.write(oprot);
-    oprot->writeMessageEnd();
-    oprot->getTransport()->writeEnd();
-    oprot->getTransport()->flush();
-    return;
-  }
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "ANNTreeDaemon.slaveInit");
-  }
-
-  oprot->writeMessageBegin("slaveInit", apache::thrift::protocol::T_REPLY, seqid);
-  result.write(oprot);
-  oprot->writeMessageEnd();
-  bytes = oprot->getTransport()->writeEnd();
-  oprot->getTransport()->flush();
-
-  if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "ANNTreeDaemon.slaveInit", bytes);
+    this->eventHandler_->postWrite(ctx, "ANNTreeDaemon.slavePutTree", bytes);
   }
 }
 

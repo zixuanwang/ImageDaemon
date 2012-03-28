@@ -1,7 +1,8 @@
 #include "GlobalConfig.h"
 #include "ANNTreeDaemon.h"
 #include "ANNTreeRoot.h"
-#include "ANNTreeSlave.h"
+#include "ANNTreeSlavePool.h"
+#include "ANNTreeRootPool.h"
 #include "HbaseAdapter.h"
 #include "ANNTreeHelper.h"
 #include "test.h"
@@ -21,37 +22,43 @@ public:
 	ANNTreeDaemonHandler(const std::string& confPath, bool root,
 			int slavePort) {
 		if (root) {
-			ANNTreeRoot::instance()->init(confPath, slavePort);
+			ANNTreeRoot::init(confPath, slavePort);
 			ANNTreeHelper::instance()->computeYPTree();
 		}
 	}
 
-	/// Clear all data in root and all slaves
+	/// delete all data in root and all slaves
 	void clear() {
-		ANNTreeRoot::instance()->clear();
+		ANNTreeRootPool::instance()->clear();
 	}
 
-	int32_t addTree() {
-		return ANNTreeRoot::instance()->addTree();
+	/// delete one rootTree and its corresponding slave trees
+	void putTree(const int32_t treeIndex) {
+		ANNTreeRootPool::instance()->put(treeIndex);
 	}
 
 	void loadSample(const int32_t treeIndex, const std::string& sampleArray,
 			const int32_t sampleCount) {
 		std::vector<float> fSampleArray;
 		TypeConverter::readStringToArray(&fSampleArray, sampleArray);
-		ANNTreeRoot::instance()->loadSample(treeIndex, fSampleArray,
-				sampleCount);
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		pRoot->loadSample(fSampleArray, sampleCount);
 	}
 
 	void addFeature(const int32_t treeIndex, const int64_t id,
 			const std::string& feature) {
 		std::vector<float> fFeature;
 		TypeConverter::readStringToArray(&fFeature, feature);
-		ANNTreeRoot::instance()->addFeature(treeIndex, id, fFeature);
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		pRoot->addFeature(id, fFeature);
 	}
 
 	void index(const int32_t treeIndex) {
-		ANNTreeRoot::instance()->index(treeIndex);
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		pRoot->index();
 	}
 
 	void knnSearch(std::vector<Neighbor> & _return, const int32_t treeIndex,
@@ -59,7 +66,9 @@ public:
 		std::cout << "RPC knnSearch" << std::endl;
 		std::vector<float> fFeature;
 		TypeConverter::readStringToArray(&fFeature, feature);
-		ANNTreeRoot::instance()->knnSearch(&_return, treeIndex, fFeature, k);
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		pRoot->knnSearch(&_return, fFeature, k);
 	}
 
 	void similarSearch(std::vector<Neighbor> & _return, const int32_t treeIndex,
@@ -68,28 +77,25 @@ public:
 		ANNTreeHelper::instance()->similarSearch(&_return, treeIndex, id, k);
 	}
 
-	void slaveClear() {
-		ANNTreeSlave::instance()->clear();
-	}
-
-	int32_t slaveAddTree() {
-		return ANNTreeSlave::instance()->addTree();
-	}
-
-	void slaveInit(const int32_t treeIndex) {
-		ANNTreeSlave::instance()->init(treeIndex);
+	/// delete one slaveTree
+	void slavePutTree(const int32_t treeIndex) {
+		ANNTreeSlavePool::instance()->put(treeIndex);
 	}
 
 	void slaveAddFeature(const int32_t treeIndex, const int64_t id,
 			const std::string& feature) {
 		std::vector<float> fFeature;
 		TypeConverter::readStringToArray(&fFeature, feature);
-		ANNTreeSlave::instance()->addFeature(treeIndex, id, fFeature);
+		boost::shared_ptr<ANNTreeSlave> pSlave;
+		ANNTreeSlavePool::instance()->get(&pSlave, treeIndex);
+		pSlave->addFeature(id, fFeature);
 	}
 
 	void slaveIndex(const int32_t treeIndex) {
 		std::cout << "RPC slaveIndex" << std::endl;
-		ANNTreeSlave::instance()->index(treeIndex);
+		boost::shared_ptr<ANNTreeSlave> pSlave;
+		ANNTreeSlavePool::instance()->get(&pSlave, treeIndex);
+		pSlave->index();
 	}
 
 	void slaveKnnSearch(std::vector<Neighbor> & _return,
@@ -100,8 +106,9 @@ public:
 		std::vector<float> distArray;
 		std::vector<float> fFeature;
 		TypeConverter::readStringToArray(&fFeature, feature);
-		ANNTreeSlave::instance()->knnSearch(&neighborIdArray, &distArray,
-				treeIndex, fFeature, k);
+		boost::shared_ptr<ANNTreeSlave> pSlave;
+		ANNTreeSlavePool::instance()->get(&pSlave, treeIndex);
+		pSlave->knnSearch(&neighborIdArray, &distArray, fFeature, k);
 		for (size_t i = 0; i < neighborIdArray.size(); ++i) {
 			Neighbor neighbor;
 			neighbor.id = neighborIdArray[i];
