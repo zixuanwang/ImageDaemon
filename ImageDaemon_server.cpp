@@ -49,7 +49,8 @@ public:
 	}
 
 	void computeColorFeature(const int64_t rowKey) {
-		boost::shared_ptr<Feature> pFeature(new ColorFeature(10));
+		boost::shared_ptr<Feature> pFeature(
+				new ColorFeature(GlobalConfig::COLOR_FEATURE_BINSIZE));
 		Image image;
 		image.load(rowKey);
 		pFeature->compute(image.image);
@@ -62,7 +63,9 @@ public:
 	}
 
 	void computeShapeFeature(const int64_t rowKey) {
-		boost::shared_ptr<Feature> pFeature(new ShapeFeature(20, 20));
+		boost::shared_ptr<Feature> pFeature(
+				new ShapeFeature(GlobalConfig::SHAPE_FEATURE_BINSIZE,
+						GlobalConfig::SHAPE_FEATURE_BINSIZE));
 		Image image;
 		image.load(rowKey);
 		pFeature->compute(image.image);
@@ -75,7 +78,7 @@ public:
 	}
 
 	void computeSURFFeature(const int64_t rowKey) {
-		boost::shared_ptr<Feature> pFeature(new SURFFeature(50));
+		boost::shared_ptr<Feature> pFeature(new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
 		Image image;
 		image.load(rowKey);
 		pFeature->compute(image.image);

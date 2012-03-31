@@ -124,7 +124,7 @@ void HbaseAdapter::scannerGet(std::string* pString,
 			}
 		}
 	} catch (const IOError &ioe) {
-		std::cerr << "FATAL: Scanner raised IOError" << std::endl;
+		std::cerr << "FATAL: Scanner raised IOError"  << std::endl;
 	} catch (const TException& tx) {
 		std::cerr << tx.what() << std::endl;
 	}

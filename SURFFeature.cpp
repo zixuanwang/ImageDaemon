@@ -80,6 +80,34 @@ void SURFFeature::compute(const cv::Mat& image) {
 	} catch (const cv::Exception& e) {
 		std::cerr << e.what() << std::endl;
 	}
-	//TODO: other normalization
-//	normalize();
+}
+
+void SURFFeature::add(boost::shared_ptr<ANNTreeRoot> pRoot, int64_t imageId) {
+	for (int i = 0; i < mFeatureCount; ++i) {
+		std::vector<float> feature;
+		getFeature(&feature, i);
+		pRoot->addFeature(imageId, feature);
+	}
+}
+void SURFFeature::knnSearch(std::vector<Neighbor>* pNeighborArray,
+		boost::shared_ptr<ANNTreeRoot> pRoot, int k) {
+	pNeighborArray->clear();
+	std::vector<std::vector<float> > featureArray;
+	featureArray.reserve(mFeatureCount);
+	for (int i = 0; i < mFeatureCount; ++i) {
+		std::vector<float> feature;
+		getFeature(&feature, i);
+		featureArray.push_back(feature);
+	}
+	pRoot->knnSearch(pNeighborArray, featureArray, k);
+}
+
+void SURFFeature::getFeature(std::vector<float>* pFeature, int index) {
+	pFeature->clear();
+	if (index >= 0 && index < mFeatureCount) {
+		pFeature->assign(
+				mVector.begin() + index * GlobalConfig::SURF_FEATURE_DIMENSION,
+				mVector.begin()
+						+ (index + 1) * GlobalConfig::SURF_FEATURE_DIMENSION);
+	}
 }

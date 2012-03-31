@@ -12,6 +12,9 @@ IMAGE_OBJS =		ANNVocabulary.o BoWHistogram.o DBAdapter.o \
 					ImageRecognizer.o InvertedIndexClient.o InvertedIndexDaemon.o \
 					InvertedIndexDaemon_constants.o InvertedIndexDaemon_types.o \
 					ImageResizer.o ShapeFeature.o SURFFeature.o \
+					ANNTreeDaemon.o ANNTreeDaemon_constants.o \
+					ANNTreeDaemon_types.o ANNTreeRoot.o ANNTreeSlave.o \
+					ANNTreeRootPool.o ANNTreeSlavePool.o
 					
 					
 INVERTEDINDEX_OBJS = 	InvertedIndexDaemon_server.o InvertedIndex.o InvertedIndexDaemon_constants.o \

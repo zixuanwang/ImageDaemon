@@ -72,8 +72,11 @@ public:
 	const static int CANDIDATE_COUNT;
 	const static int VERIFICATION_COUNT;
 	const static int STATIC_RANK_SIZE;
+	const static int STATIC_RANK_SIZE_PER_PAGE;
 	const static int SURF_FEATURE_COUNT_PER_IMAGE;
 	const static int SURF_FEATURE_DIMENSION;
+	const static int COLOR_FEATURE_BINSIZE;
+	const static int SHAPE_FEATURE_BINSIZE;
 	const static int COLOR_TREE_INDEX;
 	const static int SHAPE_TREE_INDEX;
 	const static int SURF_TREE_INDEX;

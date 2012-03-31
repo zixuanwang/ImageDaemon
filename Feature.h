@@ -9,6 +9,7 @@
 #define FEATURE_H_
 #include "GlobalConfig.h"
 #include "TypeConverter.h"
+#include "ANNTreeRoot.h"
 class Feature {
 public:
 	Feature();
@@ -22,7 +23,13 @@ public:
 	void normalize();
 	int size();
 	bool empty();
+	virtual void add(boost::shared_ptr<ANNTreeRoot> pRoot,
+			int64_t imageId);
+	virtual void knnSearch(std::vector<Neighbor>* pNeighborArray,
+			boost::shared_ptr<ANNTreeRoot> pRoot, int k);
 	const std::vector<float>& getFeature();
+	virtual void getFeature(std::vector<float>* pFeature,
+				int index);
 protected:
 	std::vector<float> mVector;
 	/// By default GrabCut is used for segmentation.

@@ -39,8 +39,11 @@ const std::string GlobalConfig::INVERTED_INDEX_SERVER_NAME = "node1";
 const int GlobalConfig::INVERTED_INDEX_SERVER_PORT = 9991;
 const bool GlobalConfig::USE_VERIFICATION = false;
 const int GlobalConfig::STATIC_RANK_SIZE = 1000;
+const int GlobalConfig::STATIC_RANK_SIZE_PER_PAGE = 16;
 const int GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE = 50;
 const int GlobalConfig::SURF_FEATURE_DIMENSION = 64;
+const int GlobalConfig::COLOR_FEATURE_BINSIZE = 8;
+const int GlobalConfig::SHAPE_FEATURE_BINSIZE = 20;
 const float GlobalConfig::PI = 3.1415926;
 
 // TODO: obsolete

@@ -74,3 +74,19 @@ void Feature::normalize() {
 const std::vector<float>& Feature::getFeature() {
 	return mVector;
 }
+
+void Feature::getFeature(std::vector<float>* pFeature, int index) {
+	pFeature->assign(mVector.begin(), mVector.end());
+}
+
+void Feature::add(boost::shared_ptr<ANNTreeRoot> pRoot, int64_t imageId) {
+	if (!empty()) {
+		pRoot->addFeature(imageId, mVector);
+	}
+}
+void Feature::knnSearch(std::vector<Neighbor>* pNeighborArray,
+		boost::shared_ptr<ANNTreeRoot> pRoot, int k) {
+	if(!empty()){
+		pRoot->knnSearch(pNeighborArray, mVector, k);
+	}
+}
