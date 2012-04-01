@@ -37,6 +37,7 @@ public:
 private:
 	void getSlave(std::vector<int>* pSlaveArray,
 			const std::vector<float>& feature);
+	void removeDuplicate(std::vector<Neighbor>* pNeighborArray);
 	int mTreeIndex;
 	cv::Mat mMat;
 	boost::shared_ptr<cv::flann::Index> mpIndex;
@@ -49,6 +50,11 @@ private:
 	struct NeighborComparator {
 		bool operator()(const Neighbor &i, const Neighbor &j) {
 			return (i.distance < j.distance);
+		}
+	};
+	struct NeighborIdComparator {
+		bool operator()(const Neighbor &i, const Neighbor &j) {
+			return (i.id == j.id);
 		}
 	};
 };

@@ -116,6 +116,13 @@ void ANNTreeRoot::getSlave(std::vector<int>* pSlaveArray,
 	}
 }
 
+void ANNTreeRoot::removeDuplicate(std::vector<Neighbor>* pNeighborArray) {
+	pNeighborArray->erase(
+			std::unique(pNeighborArray->begin(), pNeighborArray->end(),
+					NeighborIdComparator()), pNeighborArray->end());
+
+}
+
 void ANNTreeRoot::addFeature(int64_t id, const std::vector<float>& feature) {
 	if (mMat.empty()) {
 		std::cerr << "Call loadSample() first." << std::endl;
@@ -140,6 +147,9 @@ void ANNTreeRoot::index() {
 void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 		const std::vector<float>& feature, int k) {
 	pReturn->clear();
+	if (feature.empty()) {
+		return;
+	}
 	std::string strFeature;
 	TypeConverter::readArrayToString(&strFeature, feature);
 	std::vector<int> slaveArray;
@@ -165,18 +175,21 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 		pReturn->assign(mergeCandidateArray.begin(),
 				mergeCandidateArray.begin() + length);
 	}
+	removeDuplicate(pReturn);
 }
 
 void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 		const std::vector<std::vector<float> >& featureArray, int k) {
 	pReturn->clear();
+	if (featureArray.empty()) {
+		return;
+	}
 	boost::unordered_map<int64_t, double> idDistanceMap;
 	int subK = 5 * k / featureArray.size();
 	for (size_t i = 0; i < featureArray.size(); ++i) {
 		std::vector<Neighbor> returnCandidate;
 		knnSearch(&returnCandidate, featureArray[i], subK);
 		for (size_t j = 0; j < returnCandidate.size(); ++j) {
-			std::cout << returnCandidate[j].distance << std::endl;
 			idDistanceMap[returnCandidate[j].id] -= exp(
 					-1.0 * returnCandidate[j].distance);
 		}
@@ -203,4 +216,5 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 		neighbor.distance = rankList[i].value;
 		pReturn->push_back(neighbor);
 	}
+	removeDuplicate(pReturn);
 }

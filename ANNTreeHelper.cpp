@@ -21,18 +21,25 @@ ANNTreeHelper* ANNTreeHelper::instance() {
 }
 
 void ANNTreeHelper::buildAllCategory() {
+	std::vector<std::string> strRowKeyArray;
 	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
 	std::vector<std::string> columnNameArray;
 	columnNameArray.push_back(GlobalConfig::CATEGORY_INDEX_NEXT_COLUMN);
 	int scanner = dbAdapter->scannerOpen(GlobalConfig::CATEGORY_INDEX_TABLE, "",
 			columnNameArray);
-	while (true) {
+	while(true){
 		std::string strRowKey;
 		std::map<std::string, std::string> rowMap;
 		dbAdapter->scannerGet(&strRowKey, &rowMap, scanner);
 		if (rowMap.empty()) {
 			break;
 		}
+		strRowKeyArray.push_back(strRowKey);
+	}
+	dbAdapter->scannerClose(scanner);
+	for(size_t i=0;i<strRowKeyArray.size();++i){
+		const std::string& strRowKey=strRowKeyArray[i];
+				std::cout << strRowKey << std::endl;
 		std::vector<int64_t> sampleImageKeyArray;
 		sampleFromCategory(&sampleImageKeyArray, strRowKey, 10000);
 		boost::shared_ptr<Feature> pFeature(
@@ -51,9 +58,7 @@ void ANNTreeHelper::buildAllCategory() {
 		buildCategoryTree(sampleImageKeyArray, strRowKey, pFeature);
 		rankCategory(strRowKey, pFeature,
 				GlobalConfig::IMAGE_SURF_FEATURE_COLUMN);
-
 	}
-	dbAdapter->scannerClose(scanner);
 }
 
 bool ANNTreeHelper::buildCategoryTree(
@@ -93,6 +98,8 @@ bool ANNTreeHelper::buildCategoryTree(
 		}
 		std::vector<int64_t> imageKeyArray;
 		TypeConverter::readStringToArray(&imageKeyArray, string);
+		std::set<int64_t> uniqueSet(imageKeyArray.begin(), imageKeyArray.end());
+		imageKeyArray.assign(uniqueSet.begin(), uniqueSet.end());
 		for (size_t i = 0; i < imageKeyArray.size(); ++i) {
 			int64_t imageKey = imageKeyArray[i];
 			pFeature->load(imageKey);
@@ -123,6 +130,8 @@ void ANNTreeHelper::rankCategory(const std::string& strRowKey,
 		ANNTreeRootPool::instance()->get(&pRoot, mTreeIndex);
 		std::vector<int64_t> imageKeyArray;
 		TypeConverter::readStringToArray(&imageKeyArray, string);
+		std::set<int64_t> uniqueSet(imageKeyArray.begin(), imageKeyArray.end());
+		imageKeyArray.assign(uniqueSet.begin(), uniqueSet.end());
 		for (size_t i = 0; i < imageKeyArray.size(); ++i) {
 			std::vector<Neighbor> neighborArray;
 			int64_t imageKey = imageKeyArray[i];

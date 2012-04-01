@@ -24,7 +24,7 @@ const std::string GlobalConfig::IMAGE_SURF_FEATURE_COLUMN = COLUMN_FAMILY
 const std::string GlobalConfig::IMAGE_BOW_HISTOGRAM_COLUMN = COLUMN_FAMILY
 		+ "bow";
 const std::string GlobalConfig::CATEGORY_INDEX_NEXT_COLUMN = COLUMN_FAMILY
-		+ "c";
+		+ "next";
 const int GlobalConfig::VOCABULARY_SIZE = 1000000;
 const int GlobalConfig::SHORT_LIST_SIZE = 50;
 const int GlobalConfig::IMAGE_LENGTH = 320;
