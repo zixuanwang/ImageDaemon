@@ -23,7 +23,8 @@ public:
 			int slavePort) {
 		if (root) {
 			ANNTreeRoot::init(confPath, slavePort);
-			ANNTreeHelper::instance()->buildAllCategory();
+//			ANNTreeHelper::instance()->buildAllCategory();
+			ANNTreeHelper::instance()->computeYPTree();
 		}
 	}
 
