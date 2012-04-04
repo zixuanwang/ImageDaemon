@@ -24,7 +24,8 @@ public:
 		if (root) {
 			ANNTreeRoot::init(confPath, slavePort);
 //			ANNTreeHelper::instance()->buildAllCategory();
-			ANNTreeHelper::instance()->computeYPTree();
+//			ANNTreeHelper::instance()->computeYPTree();
+			testSURF();
 		}
 	}
 

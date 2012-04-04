@@ -18,19 +18,15 @@
 #include "ImageResizer.h"
 #include "ShapeFeature.h"
 #include "ColorFeature.h"
+#include "SURFFeature.h"
 using namespace ::net::walnutvision;
 
-void test25() {
-	int64_t rowKey = 25;
-	std::string strRowKey;
-	TypeConverter::readNumToString(&strRowKey, rowKey);
-	std::string string;
-	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-	dbAdapter->loadCell(&string, GlobalConfig::IMAGE_TABLE, strRowKey,
-			GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
-	std::vector<float> data;
-	TypeConverter::readStringToArray(&data, string);
-	std::cout << data.size() << std::endl;
+void testSURF() {
+	std::string imagePath = "/home/zixuan/Desktop/test.jpg";
+	cv::Mat image = cv::imread(imagePath);
+	boost::shared_ptr<Feature> pFeature(
+			new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
+	pFeature->compute(image);
 }
 
 //void testShape() {

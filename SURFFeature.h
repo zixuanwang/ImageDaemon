@@ -14,7 +14,7 @@
 
 class SURFFeature: public Feature {
 public:
-	SURFFeature(int featureCount, int maxIter = 20);
+	SURFFeature(int featureCount, int maxIter = 30);
 	virtual ~SURFFeature();
 	virtual void load(int64_t rowKey);
 	virtual void save(int64_t rowKey);

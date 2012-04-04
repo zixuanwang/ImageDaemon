@@ -15,7 +15,6 @@ SURFFeature::SURFFeature(int featureCount, int maxIter) :
 }
 
 SURFFeature::~SURFFeature() {
-
 }
 
 void SURFFeature::load(int64_t rowKey) {
@@ -68,6 +67,11 @@ void SURFFeature::compute(const cv::Mat& image) {
 			}
 		}
 		// compute the feature descriptor
+		// if too many keypoints, only keep first mMaxFeatureCount
+		if ((int) keypoints.size() > mMaxFeatureCount) {
+			keypoints.erase(keypoints.begin() + mMaxFeatureCount,
+					keypoints.end());
+		}
 		cv::Ptr<cv::DescriptorExtractor> extractor =
 				new cv::SurfDescriptorExtractor();
 		cv::Mat descriptors;
@@ -77,6 +81,7 @@ void SURFFeature::compute(const cv::Mat& image) {
 		// assign the data
 		float* ptr = (float*) descriptors.data;
 		mVector.assign(ptr, ptr + descriptors.rows * descriptors.cols);
+		std::cout << "SURF keypoints count: " << keypoints.size() << std::endl;
 	} catch (const cv::Exception& e) {
 		std::cerr << e.what() << std::endl;
 	}

@@ -158,7 +158,6 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 	if (slaveArray.size() == 1) {
 		sSlaveArray[slaveArray[0]]->slaveKnnSearch(*pReturn, mTreeIndex,
 				strFeature, k);
-		std::cout << pReturn->size() << std::endl;
 	}
 	if (slaveArray.size() == 2) {
 		std::vector<Neighbor> candidateArray1;
@@ -167,16 +166,6 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 				strFeature, k);
 		sSlaveArray[slaveArray[1]]->slaveKnnSearch(candidateArray2, mTreeIndex,
 				strFeature, k);
-		std::cout << "slaveArray[0]: " << slaveArray[0] << std::endl;
-		std::cout << "slaveArray[1]: " << slaveArray[1] << std::endl;
-		for (size_t i = 0; i < candidateArray1.size(); ++i) {
-			std::cout << i << ": " << candidateArray1[i].id << std::endl;
-		}
-		for (size_t i = 0; i < candidateArray2.size(); ++i) {
-			std::cout << i << ": " << candidateArray2[i].id << std::endl;
-		}
-		std::cout << "candidate1: " << candidateArray1.size() << std::endl;
-		std::cout << "candidate2: " << candidateArray2.size() << std::endl;
 		int mergeCandidateArraySize = (int) candidateArray1.size()
 				+ (int) candidateArray2.size();
 		std::vector<Neighbor> mergeCandidateArray(mergeCandidateArraySize);
@@ -186,7 +175,6 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 		int length = k < mergeCandidateArraySize ? k : mergeCandidateArraySize;
 		pReturn->assign(mergeCandidateArray.begin(),
 				mergeCandidateArray.begin() + length);
-		std::cout << "array: " << pReturn->size() << std::endl;
 	}
 	removeDuplicate(pReturn);
 }
