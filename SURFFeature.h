@@ -19,7 +19,7 @@ public:
 	virtual void load(int64_t rowKey);
 	virtual void save(int64_t rowKey);
 	virtual void compute(const cv::Mat& image);
-	virtual void add(boost::shared_ptr<ANNTreeRoot> pRoot, int64_t imageId);
+	virtual void add(const boost::shared_ptr<ANNTreeRoot>& pRoot, int64_t imageId);
 	virtual void knnSearch(std::vector<Neighbor>* pNeighborArray,
 			boost::shared_ptr<ANNTreeRoot> pRoot, int k);
 	virtual void getFeature(std::vector<float>* pFeature,

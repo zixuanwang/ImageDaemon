@@ -10,6 +10,7 @@
 std::vector<std::string> ANNTreeRoot::sSlaveNameArray;
 std::vector<boost::shared_ptr<ANNTreeDaemonClient> > ANNTreeRoot::sSlaveArray;
 std::string ANNTreeRoot::sConfPath;
+boost::mutex ANNTreeRoot::sThriftMutex;
 
 ANNTreeRoot::ANNTreeRoot(int treeIndex) :
 		mTreeIndex(treeIndex) {
@@ -19,6 +20,7 @@ ANNTreeRoot::ANNTreeRoot(int treeIndex) :
 ANNTreeRoot::~ANNTreeRoot() {
 	// delete corresponding slaves
 	for (size_t i = 0; i < sSlaveArray.size(); ++i) {
+		boost::mutex::scoped_lock lock(sThriftMutex);
 		sSlaveArray[i]->slavePutTree(mTreeIndex);
 	}
 }
@@ -135,12 +137,14 @@ void ANNTreeRoot::addFeature(int64_t id, const std::vector<float>& feature) {
 	getSlave(&slaveArray, feature);
 	// Each feature is stored in memory only once.
 	if (!slaveArray.empty()) {
+		boost::mutex::scoped_lock lock(sThriftMutex);
 		sSlaveArray[slaveArray[0]]->slaveAddFeature(mTreeIndex, id, strFeature);
 	}
 }
 
 void ANNTreeRoot::index() {
 	for (size_t i = 0; i < sSlaveArray.size(); ++i) {
+		boost::mutex::scoped_lock lock(sThriftMutex);
 		sSlaveArray[i]->slaveIndex(mTreeIndex);
 	}
 }
@@ -148,7 +152,7 @@ void ANNTreeRoot::index() {
 void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 		const std::vector<float>& feature, int k) {
 	pReturn->clear();
-	if (feature.empty()) {
+	if (feature.empty() || k < 1) {
 		return;
 	}
 	std::string strFeature;
@@ -156,16 +160,19 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 	std::vector<int> slaveArray;
 	getSlave(&slaveArray, feature);
 	if (slaveArray.size() == 1) {
+		boost::mutex::scoped_lock lock(sThriftMutex);
 		sSlaveArray[slaveArray[0]]->slaveKnnSearch(*pReturn, mTreeIndex,
 				strFeature, k);
-	}
-	if (slaveArray.size() == 2) {
+	} else {
 		std::vector<Neighbor> candidateArray1;
 		std::vector<Neighbor> candidateArray2;
-		sSlaveArray[slaveArray[0]]->slaveKnnSearch(candidateArray1, mTreeIndex,
-				strFeature, k);
-		sSlaveArray[slaveArray[1]]->slaveKnnSearch(candidateArray2, mTreeIndex,
-				strFeature, k);
+		if (slaveArray.size() == 2) {
+			boost::mutex::scoped_lock lock(sThriftMutex);
+			sSlaveArray[slaveArray[0]]->slaveKnnSearch(candidateArray1,
+					mTreeIndex, strFeature, k);
+			sSlaveArray[slaveArray[1]]->slaveKnnSearch(candidateArray2,
+					mTreeIndex, strFeature, k);
+		}
 		int mergeCandidateArraySize = (int) candidateArray1.size()
 				+ (int) candidateArray2.size();
 		std::vector<Neighbor> mergeCandidateArray(mergeCandidateArraySize);
@@ -182,11 +189,14 @@ void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 void ANNTreeRoot::knnSearch(std::vector<Neighbor>* pReturn,
 		const std::vector<std::vector<float> >& featureArray, int k) {
 	pReturn->clear();
-	if (featureArray.empty()) {
+	if (featureArray.empty() || k < 1) {
 		return;
 	}
 	boost::unordered_map<int64_t, double> idDistanceMap;
 	int subK = 5 * k / featureArray.size();
+	if (subK < 1) {
+		subK = 1;
+	}
 	for (size_t i = 0; i < featureArray.size(); ++i) {
 		std::vector<Neighbor> returnCandidate;
 		knnSearch(&returnCandidate, featureArray[i], subK);

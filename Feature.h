@@ -23,7 +23,7 @@ public:
 	void normalize();
 	int size();
 	bool empty();
-	virtual void add(boost::shared_ptr<ANNTreeRoot> pRoot,
+	virtual void add(const boost::shared_ptr<ANNTreeRoot>& pRoot,
 			int64_t imageId);
 	virtual void knnSearch(std::vector<Neighbor>* pNeighborArray,
 			boost::shared_ptr<ANNTreeRoot> pRoot, int k);

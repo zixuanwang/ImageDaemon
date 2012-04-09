@@ -43,6 +43,7 @@ private:
 	boost::shared_ptr<cv::flann::Index> mpIndex;
 	std::vector<int> mLabelArray;
 	boost::mutex mMutex;
+	static boost::mutex sThriftMutex;
 	// static variables, shared by all instances
 	static std::vector<std::string> sSlaveNameArray;
 	static std::vector<boost::shared_ptr<ANNTreeDaemonClient> > sSlaveArray;

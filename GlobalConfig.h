@@ -49,6 +49,7 @@
 #include <transport/TSocket.h>
 #include <transport/TTransportUtils.h>
 #include <mysql/mysql.h>
+#include <tbb/tbb.h>
 
 class GlobalConfig {
 public:
@@ -64,7 +65,10 @@ public:
 	const static std::string IMAGE_SHAPE_FEATURE_COLUMN;
 	const static std::string IMAGE_SURF_FEATURE_COLUMN;
 	const static std::string IMAGE_BOW_HISTOGRAM_COLUMN;
-	const static std::string CATEGORY_INDEX_NEXT_COLUMN;
+	const static std::string BUILD_TREEINDEX_COLUMN;
+	const static std::string COLOR_TREEINDEX_COLUMN;
+	const static std::string SHAPE_TREEINDEX_COLUMN;
+	const static std::string SURF_TREEINDEX_COLUMN;
 	const static std::string IMAGE_DIRECTORY;
 	const static int VOCABULARY_SIZE;
 	const static int SHORT_LIST_SIZE;
@@ -77,15 +81,11 @@ public:
 	const static int SURF_FEATURE_DIMENSION;
 	const static int COLOR_FEATURE_BINSIZE;
 	const static int SHAPE_FEATURE_BINSIZE;
-	const static int COLOR_TREE_INDEX;
-	const static int SHAPE_TREE_INDEX;
-	const static int SURF_TREE_INDEX;
 	const static std::string INVERT_INDEX_NEXT_COLUMN;
 	const static std::string INVERTED_INDEX_SERVER_NAME;
 	const static int INVERTED_INDEX_SERVER_PORT;
 	const static bool USE_VERIFICATION;
 	const static float PI;
-
 
 	// TODO: obsolete
 	const static std::string MONGO_DATABASE;

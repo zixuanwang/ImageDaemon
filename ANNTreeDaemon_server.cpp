@@ -23,9 +23,7 @@ public:
 			int slavePort) {
 		if (root) {
 			ANNTreeRoot::init(confPath, slavePort);
-//			ANNTreeHelper::instance()->buildAllCategory();
-//			ANNTreeHelper::instance()->computeYPTree();
-			testSURF();
+			ANNTreeHelper::instance()->buildAllCategory();
 		}
 	}
 
@@ -116,6 +114,56 @@ public:
 			neighbor.id = neighborIdArray[i];
 			neighbor.distance = (double) distArray[i];
 			_return.push_back(neighbor);
+		}
+	}
+	void buildCategory(const std::string& categoryName) {
+		std::cout << "RPC buildCategory" << std::endl;
+		ANNTreeHelper::instance()->buildCategory(categoryName);
+	}
+
+	void buildAllCategory() {
+		std::cout << "RPC buildAllCategory" << std::endl;
+		ANNTreeHelper::instance()->buildAllCategory();
+	}
+
+	void query(std::vector<std::string> & _return, const std::string& imagePath,
+			const int32_t treeIndex, const std::string& featureType,
+			const int32_t k) {
+		std::cout << "RPC query" << std::endl;
+		if (featureType != "color" && featureType != "shape"
+				&& featureType != "surf") {
+			return;
+		}
+		boost::shared_ptr<Feature> pFeature;
+		if (featureType == "color") {
+			pFeature.reset(
+					new ColorFeature(GlobalConfig::COLOR_FEATURE_BINSIZE));
+		}
+		if (featureType == "shape") {
+			pFeature.reset(
+					new ShapeFeature(GlobalConfig::SHAPE_FEATURE_BINSIZE,
+							GlobalConfig::SHAPE_FEATURE_BINSIZE));
+		}
+		if (featureType == "surf") {
+			pFeature.reset(
+					new SURFFeature(
+							GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
+		}
+		cv::Mat image = cv::imread(imagePath);
+		if (image.empty()) {
+			return;
+		}
+		pFeature->compute(image);
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		std::vector<Neighbor> neighborArray;
+		pFeature->knnSearch(&neighborArray, pRoot, k);
+		std::cout << "treeIndex " << treeIndex << " neighborArray size: "
+				<< neighborArray.size() << std::endl;
+		_return.reserve(neighborArray.size());
+		for (size_t i = 0; i < neighborArray.size(); ++i) {
+			_return.push_back(
+					boost::lexical_cast<std::string>(neighborArray[i].id));
 		}
 	}
 

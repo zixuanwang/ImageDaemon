@@ -87,7 +87,7 @@ void SURFFeature::compute(const cv::Mat& image) {
 	}
 }
 
-void SURFFeature::add(boost::shared_ptr<ANNTreeRoot> pRoot, int64_t imageId) {
+void SURFFeature::add(const boost::shared_ptr<ANNTreeRoot>& pRoot, int64_t imageId) {
 	for (int i = 0; i < mFeatureCount; ++i) {
 		std::vector<float> feature;
 		getFeature(&feature, i);

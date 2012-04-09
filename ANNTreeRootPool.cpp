@@ -24,7 +24,8 @@ void ANNTreeRootPool::get(boost::shared_ptr<ANNTreeRoot>* pRoot,
 		int treeIndex) {
 	boost::mutex::scoped_lock lock(mMutex);
 	if (mPool.find(treeIndex) == mPool.end()) {
-		mPool[treeIndex] = boost::shared_ptr<ANNTreeRoot>(new ANNTreeRoot(treeIndex));
+		mPool[treeIndex] = boost::shared_ptr<ANNTreeRoot>(
+				new ANNTreeRoot(treeIndex));
 	}
 	*pRoot = mPool[treeIndex];
 }

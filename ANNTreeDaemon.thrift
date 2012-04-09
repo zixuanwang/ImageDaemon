@@ -17,5 +17,8 @@ service ANNTreeDaemon{
 	void slavePutTree(1:i32 treeIndex),
 	void slaveAddFeature(1:i32 treeIndex, 2:i64 id, 3:string feature),
 	void slaveIndex(1:i32 treeIndex),
-	list<Neighbor> slaveKnnSearch(1:i32 treeIndex, 2:string feature, 3:i32 k)
+	list<Neighbor> slaveKnnSearch(1:i32 treeIndex, 2:string feature, 3:i32 k),
+	void buildCategory(1:string categoryName),
+	void buildAllCategory(),
+	list<string> query(1:string imagePath, 2:i32 treeIndex, 3:string featureType, 4:i32 k)
 }

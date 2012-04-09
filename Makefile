@@ -26,13 +26,13 @@ ANN_OBJS = 	ANNTreeDaemon.o ANNTreeDaemon_constants.o ANNTreeDaemon_server.o \
 			ANNTreeDaemon_types.o TypeConverter.o ANNTreeRoot.o ANNTreeSlave.o \
 			Hbase_constants.o Hbase_types.o Hbase.o GlobalConfig.o Logger.o DBAdapter.o \
 			HbaseAdapter.o ANNTreeHelper.o Feature.o ColorFeature.o ShapeFeature.o \
-			SURFFeature.o ImageResizer.o ANNTreeRootPool.o ANNTreeSlavePool.o
+			SURFFeature.o ImageResizer.o ANNTreeRootPool.o ANNTreeSlavePool.o ApplyBuildCategoryTree.o \
 
 LIBS =		-lthrift -lboost_system -lboost_filesystem \
 			-lopencv_core -lopencv_imgproc -lopencv_highgui \
 			-lopencv_features2d -lopencv_flann -lopencv_objdetect \
 			-lboost_thread -lboost_program_options -levent -lthriftnb \
-			-llog4cxx -lapr-1 -laprutil-1 -lmysqlclient
+			-llog4cxx -lapr-1 -laprutil-1 -lmysqlclient -ltbb
 
 IMAGE_TARGET = ImageDaemon
 INVERTEDINDEX_TARGET = InvertedIndexDaemon

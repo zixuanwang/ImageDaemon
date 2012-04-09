@@ -36,23 +36,28 @@ void Feature::segment(cv::Mat* pMask, const cv::Mat& image) {
 	if (image.empty()) {
 		return;
 	}
-	/// flooding is used
-	cv::Mat imageCpy = image.clone();
-	cv::floodFill(imageCpy, cv::Point(0, 0), cv::Scalar(0), 0,
-			cv::Scalar(5, 5, 5, 0), cv::Scalar(5, 5, 5, 0), 8);
-	cv::cvtColor(imageCpy, *pMask, CV_BGR2GRAY, 1);
-	/// grab cut is used
-//	int centerX = image.cols / 2;
-//	int centerY = image.rows / 2;
-//	float ratio = 0.85;
-//	int width = (int) (ratio * image.cols);
-//	int height = (int) (ratio * image.rows);
-//	cv::Rect rectangle(centerX - width / 2, centerY - height / 2, width,
-//			height);
-//	cv::Mat bgModel, fgModel;
-//	cv::grabCut(image, *pMask, rectangle, bgModel, fgModel, 3,
-//			cv::GC_INIT_WITH_RECT);
-//	*pMask = (*pMask) & 1;
+	try {
+		/// flooding is used
+		//	cv::Mat imageCpy = image.clone();
+		//	cv::floodFill(imageCpy, cv::Point(0, 0), cv::Scalar(0), 0,
+		//			cv::Scalar(5, 5, 5, 0), cv::Scalar(5, 5, 5, 0), 8);
+		//	cv::cvtColor(imageCpy, *pMask, CV_BGR2GRAY, 1);
+		/// grab cut is used
+		int centerX = image.cols / 2;
+		int centerY = image.rows / 2;
+		float ratio = 0.85;
+		int width = (int) (ratio * image.cols);
+		int height = (int) (ratio * image.rows);
+		cv::Rect rectangle(centerX - width / 2, centerY - height / 2, width,
+				height);
+		cv::Mat bgModel, fgModel;
+		cv::grabCut(image, *pMask, rectangle, bgModel, fgModel, 3,
+				cv::GC_INIT_WITH_RECT);
+		*pMask = (*pMask) & 1;
+	} catch (cv::Exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+
 }
 
 float Feature::norm() {
@@ -79,14 +84,14 @@ void Feature::getFeature(std::vector<float>* pFeature, int index) {
 	pFeature->assign(mVector.begin(), mVector.end());
 }
 
-void Feature::add(boost::shared_ptr<ANNTreeRoot> pRoot, int64_t imageId) {
+void Feature::add(const boost::shared_ptr<ANNTreeRoot>& pRoot, int64_t imageId) {
 	if (!empty()) {
 		pRoot->addFeature(imageId, mVector);
 	}
 }
 void Feature::knnSearch(std::vector<Neighbor>* pNeighborArray,
 		boost::shared_ptr<ANNTreeRoot> pRoot, int k) {
-	if(!empty()){
+	if (!empty()) {
 		pRoot->knnSearch(pNeighborArray, mVector, k);
 	}
 }

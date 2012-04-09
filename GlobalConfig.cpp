@@ -23,22 +23,23 @@ const std::string GlobalConfig::IMAGE_SURF_FEATURE_COLUMN = COLUMN_FAMILY
 		+ "surf";
 const std::string GlobalConfig::IMAGE_BOW_HISTOGRAM_COLUMN = COLUMN_FAMILY
 		+ "bow";
-const std::string GlobalConfig::CATEGORY_INDEX_NEXT_COLUMN = COLUMN_FAMILY
-		+ "next";
+const std::string GlobalConfig::BUILD_TREEINDEX_COLUMN = COLUMN_FAMILY + "id";
+const std::string GlobalConfig::COLOR_TREEINDEX_COLUMN = COLUMN_FAMILY
+		+ "color";
+const std::string GlobalConfig::SHAPE_TREEINDEX_COLUMN = COLUMN_FAMILY
+		+ "shape";
+const std::string GlobalConfig::SURF_TREEINDEX_COLUMN = COLUMN_FAMILY + "surf";
 const int GlobalConfig::VOCABULARY_SIZE = 1000000;
 const int GlobalConfig::SHORT_LIST_SIZE = 50;
 const int GlobalConfig::IMAGE_LENGTH = 320;
 const int GlobalConfig::CANDIDATE_COUNT = 100;
 const int GlobalConfig::VERIFICATION_COUNT = 5;
-const int GlobalConfig::COLOR_TREE_INDEX = -1;
-const int GlobalConfig::SHAPE_TREE_INDEX = -2;
-const int GlobalConfig::SURF_TREE_INDEX = -3;
 const std::string GlobalConfig::INVERT_INDEX_NEXT_COLUMN = COLUMN_FAMILY
 		+ "next";
 const std::string GlobalConfig::INVERTED_INDEX_SERVER_NAME = "node1";
 const int GlobalConfig::INVERTED_INDEX_SERVER_PORT = 9991;
 const bool GlobalConfig::USE_VERIFICATION = false;
-const int GlobalConfig::STATIC_RANK_SIZE = 1000;
+const int GlobalConfig::STATIC_RANK_SIZE = 160;
 const int GlobalConfig::STATIC_RANK_SIZE_PER_PAGE = 16;
 const int GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE = 50;
 const int GlobalConfig::SURF_FEATURE_DIMENSION = 64;

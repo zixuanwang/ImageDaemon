@@ -24,9 +24,10 @@ using namespace ::net::walnutvision;
 void testSURF() {
 	std::string imagePath = "/home/zixuan/Desktop/test.jpg";
 	cv::Mat image = cv::imread(imagePath);
-	boost::shared_ptr<Feature> pFeature(
-			new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
-	pFeature->compute(image);
+	std::cout << image.rows << std::endl;
+//	boost::shared_ptr<Feature> pFeature(
+//			new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
+//	pFeature->compute(image);
 }
 
 //void testShape() {
