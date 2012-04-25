@@ -50,3 +50,30 @@ void ANNTreeSlave::knnSearch(std::vector<int64_t>* pNeighborIdArray,
 		pNeighborIdArray->push_back(mIdMap[indices[i]]);
 	}
 }
+
+void ANNTreeSlave::save() {
+	if (mFeatureCount == 0) {
+		return;
+	}
+	boost::mutex::scoped_lock lock(mMutex);
+	std::string fileName = GlobalConfig::ANNTREE_SLAVE_FILE + "_"
+			+ boost::lexical_cast<std::string>(mTreeIndex);
+	mpIndex->save(fileName + ".index");
+	Serializer::save(mMat, fileName + ".mat");
+	Serializer::save(mIdMap, fileName + ".map");
+}
+
+void ANNTreeSlave::load() {
+	boost::mutex::scoped_lock lock(mMutex);
+	std::string fileName = GlobalConfig::ANNTREE_SLAVE_FILE + "_"
+			+ boost::lexical_cast<std::string>(mTreeIndex);
+	Serializer::load(&mMat, fileName + ".mat");
+	Serializer::load(&mIdMap, fileName + ".map");
+	mFeatureCount = mMat.rows;
+	if (mMat.empty() || mFeatureCount == 0) {
+		return;
+	}
+	mpIndex.reset(
+			new cv::flann::Index(mMat,
+					cv::flann::SavedIndexParams(fileName + ".index")));
+}

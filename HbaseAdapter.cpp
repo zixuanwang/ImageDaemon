@@ -19,7 +19,6 @@ HbaseAdapter::HbaseAdapter() {
 	}
 }
 
-
 HbaseAdapter::~HbaseAdapter() {
 	mTransport->close();
 }
@@ -124,7 +123,7 @@ void HbaseAdapter::scannerGet(std::string* pString,
 			}
 		}
 	} catch (const IOError &ioe) {
-		std::cerr << "FATAL: Scanner raised IOError"  << std::endl;
+		std::cerr << "FATAL: Scanner raised IOError" << std::endl;
 	} catch (const TException& tx) {
 		std::cerr << tx.what() << std::endl;
 	}
@@ -132,6 +131,36 @@ void HbaseAdapter::scannerGet(std::string* pString,
 void HbaseAdapter::scannerClose(int scanner) {
 	try {
 		mClient->scannerClose(scanner);
+	} catch (const TException& tx) {
+		std::cerr << tx.what() << std::endl;
+	}
+}
+
+void HbaseAdapter::deleteRow(const std::string& tableName,
+		const std::string& strRowKey) {
+	try {
+		mClient->deleteAllRow(tableName, strRowKey);
+	} catch (const TException& tx) {
+		std::cerr << tx.what() << std::endl;
+	}
+}
+
+void HbaseAdapter::copyRow(const std::string& srcTableName,
+		const std::string& dstTableName, const std::string& strRowKey) {
+	try {
+		std::vector<TRowResult> value;
+		mClient->getRow(value, srcTableName, strRowKey);
+		std::vector<Mutation> mutations;
+		for (size_t i = 0; i < value.size(); i++) {
+			for (std::map<std::string, TCell>::const_iterator it =
+					value[i].columns.begin(); it != value[i].columns.end();
+					++it) {
+				mutations.push_back(Mutation());
+				mutations.back().column = it->first;
+				mutations.back().value = it->second.value;
+			}
+		}
+		mClient->mutateRow(dstTableName, strRowKey, mutations);
 	} catch (const TException& tx) {
 		std::cerr << tx.what() << std::endl;
 	}

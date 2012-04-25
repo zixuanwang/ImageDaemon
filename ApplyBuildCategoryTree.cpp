@@ -7,7 +7,7 @@
 
 #include "ApplyBuildCategoryTree.h"
 
-ApplyBuildCategoryTree::ApplyBuildCategoryTree(){
+ApplyBuildCategoryTree::ApplyBuildCategoryTree() {
 
 }
 
@@ -21,7 +21,8 @@ ApplyBuildCategoryTree::~ApplyBuildCategoryTree() {
 
 }
 
-void ApplyBuildCategoryTree::buildCategory(const std::string& categoryName) const {
+void ApplyBuildCategoryTree::buildCategory(
+		const std::string& categoryName) const {
 	std::cout << categoryName << std::endl;
 	std::vector<int64_t> sampleImageKeyArray;
 	sampleFromCategory(&sampleImageKeyArray, categoryName, 10000);
@@ -35,20 +36,20 @@ void ApplyBuildCategoryTree::buildCategory(const std::string& categoryName) cons
 			new ColorFeature(GlobalConfig::COLOR_FEATURE_BINSIZE));
 	buildCategoryTree(sampleImageKeyArray, categoryName, pFeature,
 			colorTreeIndex);
-//	rankCategory(categoryName, pFeature,
-//			GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN, colorTreeIndex);
+	rankCategory(categoryName, pFeature,
+			GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN, colorTreeIndex);
 	pFeature.reset(
 			new ShapeFeature(GlobalConfig::SHAPE_FEATURE_BINSIZE,
 					GlobalConfig::SHAPE_FEATURE_BINSIZE));
 	buildCategoryTree(sampleImageKeyArray, categoryName, pFeature,
 			shapeTreeIndex);
-//	rankCategory(categoryName, pFeature,
-//			GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN, shapeTreeIndex);
+	rankCategory(categoryName, pFeature,
+			GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN, shapeTreeIndex);
 	pFeature.reset(new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
 	buildCategoryTree(sampleImageKeyArray, categoryName, pFeature,
 			surfTreeIndex);
-//	rankCategory(categoryName, pFeature,
-//			GlobalConfig::IMAGE_SURF_FEATURE_COLUMN, surfTreeIndex);
+	rankCategory(categoryName, pFeature,
+			GlobalConfig::IMAGE_SURF_FEATURE_COLUMN, surfTreeIndex);
 }
 
 bool ApplyBuildCategoryTree::buildCategoryTree(
@@ -99,6 +100,7 @@ bool ApplyBuildCategoryTree::buildCategoryTree(
 		++columnIndex;
 	}
 	pBuildRoot->index();
+	pBuildRoot->save();
 	return true;
 }
 

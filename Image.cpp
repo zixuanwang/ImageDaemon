@@ -14,18 +14,79 @@ Image::~Image() {
 
 }
 
-void Image::load(int64_t rowKey) {
+void Image::load(int64_t rowKey, const std::string& columnName) {
+	image = cv::Mat();
 	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-	std::string strImageHash;
-	dbAdapter->loadCell(&strImageHash, GlobalConfig::IMAGE_TABLE, rowKey,
-			GlobalConfig::IMAGE_HASH_COLUMN);
-	image = cv::imread(GlobalConfig::IMAGE_DIRECTORY + strImageHash + ".jpg",
-			1);
+	std::string strImageData;
+	dbAdapter->loadCell(&strImageData, GlobalConfig::IMAGE_TABLE, rowKey,
+			columnName);
+	if (!strImageData.empty()) {
+		std::vector<char> buf(strImageData.begin(), strImageData.end());
+		image = cv::imdecode(cv::Mat(buf), 1);
+	}
 }
 
-void Image::load(const std::string& imageHash){
-	image = cv::imread(GlobalConfig::IMAGE_DIRECTORY + imageHash + ".jpg",
-			1);
+void Image::save(int64_t rowKey, const std::string& columnName) {
+	if (!empty()) {
+		std::vector<uchar> buf;
+		cv::imencode(".jpg", image, buf);
+		std::string strImageData(buf.begin(), buf.end());
+		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+		dbAdapter->saveCell(strImageData, GlobalConfig::IMAGE_TABLE, rowKey,
+				columnName);
+	}
+}
+
+void Image::load(const std::string& imagePath, int flag) {
+	image = cv::imread(imagePath, flag);
+}
+
+void Image::save(const std::string& imagePath) {
+	cv::imwrite(imagePath, image);
+}
+
+void Image::loadImage(int64_t imageKey) {
+	std::string imageHash;
+	getImageHash(&imageHash, imageKey);
+	load(GlobalConfig::IMAGE_DIRECTORY + imageHash + ".jpg");
+}
+
+void Image::loadCropImage(int64_t imageKey) {
+	std::string imageHash;
+	getImageHash(&imageHash, imageKey);
+	load(GlobalConfig::IMAGE_CROP_DIRECTORY + imageHash + ".jpg");
+}
+void Image::saveCropImage(int64_t imageKey) {
+	std::string imageHash;
+	getImageHash(&imageHash, imageKey);
+	save(GlobalConfig::IMAGE_CROP_DIRECTORY + imageHash + ".jpg");
+}
+void Image::loadMaskImage(int64_t imageKey) {
+	std::string imageHash;
+	getImageHash(&imageHash, imageKey);
+	load(GlobalConfig::IMAGE_MASK_DIRECTORY + imageHash + ".png", 0);
+}
+void Image::saveMaskImage(int64_t imageKey) {
+	image *= 255;
+	std::string imageHash;
+	getImageHash(&imageHash, imageKey);
+	save(GlobalConfig::IMAGE_MASK_DIRECTORY + imageHash + ".png");
+}
+
+void Image::getImageHash(std::string* pImageHash, int64_t imageKey) {
+	boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
+	dbAdapter->loadCell(pImageHash, GlobalConfig::IMAGE_TABLE, imageKey,
+			GlobalConfig::IMAGE_HASH_COLUMN);
+}
+
+bool Image::empty() {
+	return image.empty();
+}
+
+// deprecated functions
+
+void Image::load(int64_t rowKey) {
+	loadImage(rowKey);
 }
 
 //void Image::uniqueId() {

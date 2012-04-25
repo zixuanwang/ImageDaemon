@@ -26,6 +26,10 @@ public:
 	virtual void saveCell(const std::string& string,
 			const std::string& tableName, const std::string& rowKey,
 			const std::string& columnName)=0;
+	virtual void deleteRow(const std::string& tableName,
+			const std::string& strRowKey)=0;
+	virtual void copyRow(const std::string& srcTableName,
+			const std::string& dstTableName, const std::string& strRowKey)=0;
 
 	virtual int scannerOpen(const std::string& tableName,
 			const std::string& startRow,

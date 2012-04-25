@@ -11,7 +11,9 @@ service ImageDaemon{
 	void computeShapeFeature(1:i64 rowKey),
 	void computeSURFFeature(1:i64 rowKey),
 	list<string> query(1:string imagePath),
-	void addImage(1:string imageHash, 2:i64 rowKey),
 	void indexImage(1:string imageHash, 2:i64 rowKey),
-	void cropImage(1:string imagePath, 2:string cropImagePath, 3:i32 width, 4:i32 height)
+	void addImage(1:string imageHash, 2:i64 rowKey),
+	void cropImage(1:i64 rowKey, 2:i32 width, 3:i32 height),
+	void cropUploadImage(1:string srcPath, 2:string dstPath, 3:i32 width, 4:i32 height),
+	void segment(1:i64 rowKey)
 }

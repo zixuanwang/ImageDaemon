@@ -17,7 +17,7 @@ public:
 	virtual ~ShapeFeature();
 	virtual void load(int64_t rowKey);
 	virtual void save(int64_t rowKey);
-	virtual void compute(const cv::Mat& image);
+	virtual void compute(const cv::Mat& image, const cv::Mat& mask);
 private:
 	int mRbins; //radius bins
 	int mAbins; //angle bins

@@ -31,6 +31,9 @@ public:
 			const std::string& rowKey, const std::string& columnName);
 	void saveCell(const std::string& string, const std::string& tableName,
 			const std::string& rowKey, const std::string& columnName);
+	void deleteRow(const std::string& tableName, const std::string& strRowKey);
+	void copyRow(const std::string& srcTableName,
+			const std::string& dstTableName, const std::string& strRowKey);
 
 	int scannerOpen(const std::string& tableName, const std::string& startRow,
 			const std::vector<std::string>& columnNameArray);

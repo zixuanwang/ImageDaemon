@@ -20,9 +20,11 @@ class ImageDaemonIf {
   virtual void computeShapeFeature(const int64_t rowKey) = 0;
   virtual void computeSURFFeature(const int64_t rowKey) = 0;
   virtual void query(std::vector<std::string> & _return, const std::string& imagePath) = 0;
-  virtual void addImage(const std::string& imageHash, const int64_t rowKey) = 0;
   virtual void indexImage(const std::string& imageHash, const int64_t rowKey) = 0;
-  virtual void cropImage(const std::string& imagePath, const std::string& cropImagePath, const int32_t width, const int32_t height) = 0;
+  virtual void addImage(const std::string& imageHash, const int64_t rowKey) = 0;
+  virtual void cropImage(const int64_t rowKey, const int32_t width, const int32_t height) = 0;
+  virtual void cropUploadImage(const std::string& srcPath, const std::string& dstPath, const int32_t width, const int32_t height) = 0;
+  virtual void segment(const int64_t rowKey) = 0;
 };
 
 class ImageDaemonIfFactory {
@@ -67,13 +69,19 @@ class ImageDaemonNull : virtual public ImageDaemonIf {
   void query(std::vector<std::string> & /* _return */, const std::string& /* imagePath */) {
     return;
   }
-  void addImage(const std::string& /* imageHash */, const int64_t /* rowKey */) {
-    return;
-  }
   void indexImage(const std::string& /* imageHash */, const int64_t /* rowKey */) {
     return;
   }
-  void cropImage(const std::string& /* imagePath */, const std::string& /* cropImagePath */, const int32_t /* width */, const int32_t /* height */) {
+  void addImage(const std::string& /* imageHash */, const int64_t /* rowKey */) {
+    return;
+  }
+  void cropImage(const int64_t /* rowKey */, const int32_t /* width */, const int32_t /* height */) {
+    return;
+  }
+  void cropUploadImage(const std::string& /* srcPath */, const std::string& /* dstPath */, const int32_t /* width */, const int32_t /* height */) {
+    return;
+  }
+  void segment(const int64_t /* rowKey */) {
     return;
   }
 };
@@ -558,103 +566,6 @@ class ImageDaemon_query_presult {
 
 };
 
-typedef struct _ImageDaemon_addImage_args__isset {
-  _ImageDaemon_addImage_args__isset() : imageHash(false), rowKey(false) {}
-  bool imageHash;
-  bool rowKey;
-} _ImageDaemon_addImage_args__isset;
-
-class ImageDaemon_addImage_args {
- public:
-
-  ImageDaemon_addImage_args() : imageHash(""), rowKey(0) {
-  }
-
-  virtual ~ImageDaemon_addImage_args() throw() {}
-
-  std::string imageHash;
-  int64_t rowKey;
-
-  _ImageDaemon_addImage_args__isset __isset;
-
-  void __set_imageHash(const std::string& val) {
-    imageHash = val;
-  }
-
-  void __set_rowKey(const int64_t val) {
-    rowKey = val;
-  }
-
-  bool operator == (const ImageDaemon_addImage_args & rhs) const
-  {
-    if (!(imageHash == rhs.imageHash))
-      return false;
-    if (!(rowKey == rhs.rowKey))
-      return false;
-    return true;
-  }
-  bool operator != (const ImageDaemon_addImage_args &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const ImageDaemon_addImage_args & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addImage_pargs {
- public:
-
-
-  virtual ~ImageDaemon_addImage_pargs() throw() {}
-
-  const std::string* imageHash;
-  const int64_t* rowKey;
-
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addImage_result {
- public:
-
-  ImageDaemon_addImage_result() {
-  }
-
-  virtual ~ImageDaemon_addImage_result() throw() {}
-
-
-  bool operator == (const ImageDaemon_addImage_result & /* rhs */) const
-  {
-    return true;
-  }
-  bool operator != (const ImageDaemon_addImage_result &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const ImageDaemon_addImage_result & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class ImageDaemon_addImage_presult {
- public:
-
-
-  virtual ~ImageDaemon_addImage_presult() throw() {}
-
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-
-};
-
 typedef struct _ImageDaemon_indexImage_args__isset {
   _ImageDaemon_indexImage_args__isset() : imageHash(false), rowKey(false) {}
   bool imageHash;
@@ -752,10 +663,106 @@ class ImageDaemon_indexImage_presult {
 
 };
 
+typedef struct _ImageDaemon_addImage_args__isset {
+  _ImageDaemon_addImage_args__isset() : imageHash(false), rowKey(false) {}
+  bool imageHash;
+  bool rowKey;
+} _ImageDaemon_addImage_args__isset;
+
+class ImageDaemon_addImage_args {
+ public:
+
+  ImageDaemon_addImage_args() : imageHash(""), rowKey(0) {
+  }
+
+  virtual ~ImageDaemon_addImage_args() throw() {}
+
+  std::string imageHash;
+  int64_t rowKey;
+
+  _ImageDaemon_addImage_args__isset __isset;
+
+  void __set_imageHash(const std::string& val) {
+    imageHash = val;
+  }
+
+  void __set_rowKey(const int64_t val) {
+    rowKey = val;
+  }
+
+  bool operator == (const ImageDaemon_addImage_args & rhs) const
+  {
+    if (!(imageHash == rhs.imageHash))
+      return false;
+    if (!(rowKey == rhs.rowKey))
+      return false;
+    return true;
+  }
+  bool operator != (const ImageDaemon_addImage_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_addImage_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_addImage_pargs {
+ public:
+
+
+  virtual ~ImageDaemon_addImage_pargs() throw() {}
+
+  const std::string* imageHash;
+  const int64_t* rowKey;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_addImage_result {
+ public:
+
+  ImageDaemon_addImage_result() {
+  }
+
+  virtual ~ImageDaemon_addImage_result() throw() {}
+
+
+  bool operator == (const ImageDaemon_addImage_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ImageDaemon_addImage_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_addImage_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_addImage_presult {
+ public:
+
+
+  virtual ~ImageDaemon_addImage_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 typedef struct _ImageDaemon_cropImage_args__isset {
-  _ImageDaemon_cropImage_args__isset() : imagePath(false), cropImagePath(false), width(false), height(false) {}
-  bool imagePath;
-  bool cropImagePath;
+  _ImageDaemon_cropImage_args__isset() : rowKey(false), width(false), height(false) {}
+  bool rowKey;
   bool width;
   bool height;
 } _ImageDaemon_cropImage_args__isset;
@@ -763,24 +770,19 @@ typedef struct _ImageDaemon_cropImage_args__isset {
 class ImageDaemon_cropImage_args {
  public:
 
-  ImageDaemon_cropImage_args() : imagePath(""), cropImagePath(""), width(0), height(0) {
+  ImageDaemon_cropImage_args() : rowKey(0), width(0), height(0) {
   }
 
   virtual ~ImageDaemon_cropImage_args() throw() {}
 
-  std::string imagePath;
-  std::string cropImagePath;
+  int64_t rowKey;
   int32_t width;
   int32_t height;
 
   _ImageDaemon_cropImage_args__isset __isset;
 
-  void __set_imagePath(const std::string& val) {
-    imagePath = val;
-  }
-
-  void __set_cropImagePath(const std::string& val) {
-    cropImagePath = val;
+  void __set_rowKey(const int64_t val) {
+    rowKey = val;
   }
 
   void __set_width(const int32_t val) {
@@ -793,9 +795,7 @@ class ImageDaemon_cropImage_args {
 
   bool operator == (const ImageDaemon_cropImage_args & rhs) const
   {
-    if (!(imagePath == rhs.imagePath))
-      return false;
-    if (!(cropImagePath == rhs.cropImagePath))
+    if (!(rowKey == rhs.rowKey))
       return false;
     if (!(width == rhs.width))
       return false;
@@ -821,8 +821,7 @@ class ImageDaemon_cropImage_pargs {
 
   virtual ~ImageDaemon_cropImage_pargs() throw() {}
 
-  const std::string* imagePath;
-  const std::string* cropImagePath;
+  const int64_t* rowKey;
   const int32_t* width;
   const int32_t* height;
 
@@ -867,6 +866,209 @@ class ImageDaemon_cropImage_presult {
 
 };
 
+typedef struct _ImageDaemon_cropUploadImage_args__isset {
+  _ImageDaemon_cropUploadImage_args__isset() : srcPath(false), dstPath(false), width(false), height(false) {}
+  bool srcPath;
+  bool dstPath;
+  bool width;
+  bool height;
+} _ImageDaemon_cropUploadImage_args__isset;
+
+class ImageDaemon_cropUploadImage_args {
+ public:
+
+  ImageDaemon_cropUploadImage_args() : srcPath(""), dstPath(""), width(0), height(0) {
+  }
+
+  virtual ~ImageDaemon_cropUploadImage_args() throw() {}
+
+  std::string srcPath;
+  std::string dstPath;
+  int32_t width;
+  int32_t height;
+
+  _ImageDaemon_cropUploadImage_args__isset __isset;
+
+  void __set_srcPath(const std::string& val) {
+    srcPath = val;
+  }
+
+  void __set_dstPath(const std::string& val) {
+    dstPath = val;
+  }
+
+  void __set_width(const int32_t val) {
+    width = val;
+  }
+
+  void __set_height(const int32_t val) {
+    height = val;
+  }
+
+  bool operator == (const ImageDaemon_cropUploadImage_args & rhs) const
+  {
+    if (!(srcPath == rhs.srcPath))
+      return false;
+    if (!(dstPath == rhs.dstPath))
+      return false;
+    if (!(width == rhs.width))
+      return false;
+    if (!(height == rhs.height))
+      return false;
+    return true;
+  }
+  bool operator != (const ImageDaemon_cropUploadImage_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_cropUploadImage_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_cropUploadImage_pargs {
+ public:
+
+
+  virtual ~ImageDaemon_cropUploadImage_pargs() throw() {}
+
+  const std::string* srcPath;
+  const std::string* dstPath;
+  const int32_t* width;
+  const int32_t* height;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_cropUploadImage_result {
+ public:
+
+  ImageDaemon_cropUploadImage_result() {
+  }
+
+  virtual ~ImageDaemon_cropUploadImage_result() throw() {}
+
+
+  bool operator == (const ImageDaemon_cropUploadImage_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ImageDaemon_cropUploadImage_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_cropUploadImage_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_cropUploadImage_presult {
+ public:
+
+
+  virtual ~ImageDaemon_cropUploadImage_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ImageDaemon_segment_args__isset {
+  _ImageDaemon_segment_args__isset() : rowKey(false) {}
+  bool rowKey;
+} _ImageDaemon_segment_args__isset;
+
+class ImageDaemon_segment_args {
+ public:
+
+  ImageDaemon_segment_args() : rowKey(0) {
+  }
+
+  virtual ~ImageDaemon_segment_args() throw() {}
+
+  int64_t rowKey;
+
+  _ImageDaemon_segment_args__isset __isset;
+
+  void __set_rowKey(const int64_t val) {
+    rowKey = val;
+  }
+
+  bool operator == (const ImageDaemon_segment_args & rhs) const
+  {
+    if (!(rowKey == rhs.rowKey))
+      return false;
+    return true;
+  }
+  bool operator != (const ImageDaemon_segment_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_segment_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_segment_pargs {
+ public:
+
+
+  virtual ~ImageDaemon_segment_pargs() throw() {}
+
+  const int64_t* rowKey;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_segment_result {
+ public:
+
+  ImageDaemon_segment_result() {
+  }
+
+  virtual ~ImageDaemon_segment_result() throw() {}
+
+
+  bool operator == (const ImageDaemon_segment_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ImageDaemon_segment_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ImageDaemon_segment_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ImageDaemon_segment_presult {
+ public:
+
+
+  virtual ~ImageDaemon_segment_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class ImageDaemonClient : virtual public ImageDaemonIf {
  public:
   ImageDaemonClient(boost::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) :
@@ -902,15 +1104,21 @@ class ImageDaemonClient : virtual public ImageDaemonIf {
   void query(std::vector<std::string> & _return, const std::string& imagePath);
   void send_query(const std::string& imagePath);
   void recv_query(std::vector<std::string> & _return);
-  void addImage(const std::string& imageHash, const int64_t rowKey);
-  void send_addImage(const std::string& imageHash, const int64_t rowKey);
-  void recv_addImage();
   void indexImage(const std::string& imageHash, const int64_t rowKey);
   void send_indexImage(const std::string& imageHash, const int64_t rowKey);
   void recv_indexImage();
-  void cropImage(const std::string& imagePath, const std::string& cropImagePath, const int32_t width, const int32_t height);
-  void send_cropImage(const std::string& imagePath, const std::string& cropImagePath, const int32_t width, const int32_t height);
+  void addImage(const std::string& imageHash, const int64_t rowKey);
+  void send_addImage(const std::string& imageHash, const int64_t rowKey);
+  void recv_addImage();
+  void cropImage(const int64_t rowKey, const int32_t width, const int32_t height);
+  void send_cropImage(const int64_t rowKey, const int32_t width, const int32_t height);
   void recv_cropImage();
+  void cropUploadImage(const std::string& srcPath, const std::string& dstPath, const int32_t width, const int32_t height);
+  void send_cropUploadImage(const std::string& srcPath, const std::string& dstPath, const int32_t width, const int32_t height);
+  void recv_cropUploadImage();
+  void segment(const int64_t rowKey);
+  void send_segment(const int64_t rowKey);
+  void recv_segment();
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -929,9 +1137,11 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
   void process_computeShapeFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_computeSURFFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_query(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_addImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_indexImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_cropImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_cropUploadImage(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_segment(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   ImageDaemonProcessor(boost::shared_ptr<ImageDaemonIf> iface) :
     iface_(iface) {
@@ -940,9 +1150,11 @@ class ImageDaemonProcessor : public ::apache::thrift::TProcessor {
     processMap_["computeShapeFeature"] = &ImageDaemonProcessor::process_computeShapeFeature;
     processMap_["computeSURFFeature"] = &ImageDaemonProcessor::process_computeSURFFeature;
     processMap_["query"] = &ImageDaemonProcessor::process_query;
-    processMap_["addImage"] = &ImageDaemonProcessor::process_addImage;
     processMap_["indexImage"] = &ImageDaemonProcessor::process_indexImage;
+    processMap_["addImage"] = &ImageDaemonProcessor::process_addImage;
     processMap_["cropImage"] = &ImageDaemonProcessor::process_cropImage;
+    processMap_["cropUploadImage"] = &ImageDaemonProcessor::process_cropUploadImage;
+    processMap_["segment"] = &ImageDaemonProcessor::process_segment;
   }
 
   virtual bool process(boost::shared_ptr<apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr<apache::thrift::protocol::TProtocol> poprot, void* callContext);
@@ -1017,13 +1229,6 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
     }
   }
 
-  void addImage(const std::string& imageHash, const int64_t rowKey) {
-    size_t sz = ifaces_.size();
-    for (size_t i = 0; i < sz; ++i) {
-      ifaces_[i]->addImage(imageHash, rowKey);
-    }
-  }
-
   void indexImage(const std::string& imageHash, const int64_t rowKey) {
     size_t sz = ifaces_.size();
     for (size_t i = 0; i < sz; ++i) {
@@ -1031,10 +1236,31 @@ class ImageDaemonMultiface : virtual public ImageDaemonIf {
     }
   }
 
-  void cropImage(const std::string& imagePath, const std::string& cropImagePath, const int32_t width, const int32_t height) {
+  void addImage(const std::string& imageHash, const int64_t rowKey) {
     size_t sz = ifaces_.size();
     for (size_t i = 0; i < sz; ++i) {
-      ifaces_[i]->cropImage(imagePath, cropImagePath, width, height);
+      ifaces_[i]->addImage(imageHash, rowKey);
+    }
+  }
+
+  void cropImage(const int64_t rowKey, const int32_t width, const int32_t height) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->cropImage(rowKey, width, height);
+    }
+  }
+
+  void cropUploadImage(const std::string& srcPath, const std::string& dstPath, const int32_t width, const int32_t height) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->cropUploadImage(srcPath, dstPath, width, height);
+    }
+  }
+
+  void segment(const int64_t rowKey) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->segment(rowKey);
     }
   }
 

@@ -36,10 +36,6 @@ void ANNTreeHelper::buildAllCategory() const {
 		strRowKeyArray.push_back(strRowKey);
 	}
 	dbAdapter->scannerClose(scanner);
-//	ApplyBuildCategoryTree aTree;
-//	for (size_t i = 0; i < strRowKeyArray.size(); ++i) {
-//		aTree.buildCategory(strRowKeyArray[i]);
-//	}
 	tbb::parallel_for(tbb::blocked_range<size_t>(0, strRowKeyArray.size()),
 			ApplyBuildCategoryTree(strRowKeyArray));
 }

@@ -33,23 +33,13 @@ void ShapeFeature::save(int64_t rowKey) {
 			GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN);
 }
 
-void ShapeFeature::compute(const cv::Mat& image) {
-	mVector.clear();
-	if (image.empty()) {
-		return;
-	}
-	// resize image to have the same max dimension
-	cv::Mat resizedImage;
-	ImageResizer::resize(image, &resizedImage, GlobalConfig::IMAGE_LENGTH);
-	// compute the segmentation, mask could be empty
-	cv::Mat mask;
-	segment(&mask, resizedImage);
+void ShapeFeature::compute(const cv::Mat& image, const cv::Mat& mask) {
 	if (mask.empty() || mask.type() != CV_8UC1) {
 		return;
 	}
 	std::vector<cv::Point> foregroundPointArray;
 	for (int i = 0; i < mask.rows; ++i) {
-		char* ptr = mask.ptr<char>(i);
+		const char* ptr = mask.ptr<char>(i);
 		for (int j = 0; j < mask.cols; ++j) {
 			if (ptr[j] != 0) {
 				cv::Point point(j, i);

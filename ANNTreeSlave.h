@@ -8,6 +8,7 @@
 #ifndef ANNTREESLAVE_H_
 #define ANNTREESLAVE_H_
 #include "GlobalConfig.h"
+#include "Serializer.h"
 class ANNTreeSlave {
 public:
 	ANNTreeSlave(int treeIndex);
@@ -18,6 +19,8 @@ public:
 	void knnSearch(std::vector<int64_t>* pNeighborIdArray,
 			std::vector<float>* pDistArray, const std::vector<float>& feature,
 			int k);
+	void save();
+	void load();
 private:
 	int mTreeIndex;
 	cv::Mat mMat;

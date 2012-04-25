@@ -22,6 +22,7 @@ public:
 	ANNTreeDaemonHandler(const std::string& confPath, bool root,
 			int slavePort) {
 		if (root) {
+//			testRemoveHead();
 			ANNTreeRoot::init(confPath, slavePort);
 			ANNTreeHelper::instance()->buildAllCategory();
 		}
@@ -61,6 +62,18 @@ public:
 		pRoot->index();
 	}
 
+	void save(const int32_t treeIndex) {
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		pRoot->save();
+	}
+
+	void load(const int32_t treeIndex) {
+		boost::shared_ptr<ANNTreeRoot> pRoot;
+		ANNTreeRootPool::instance()->get(&pRoot, treeIndex);
+		pRoot->load();
+	}
+
 	void knnSearch(std::vector<Neighbor> & _return, const int32_t treeIndex,
 			const std::string& feature, const int32_t k) {
 		std::cout << "RPC knnSearch" << std::endl;
@@ -92,7 +105,7 @@ public:
 	}
 
 	void slaveIndex(const int32_t treeIndex) {
-		std::cout << "RPC slaveIndex" << std::endl;
+		std::cout << "RPC slaveIndex: " << treeIndex << std::endl;
 		boost::shared_ptr<ANNTreeSlave> pSlave;
 		ANNTreeSlavePool::instance()->get(&pSlave, treeIndex);
 		pSlave->index();
@@ -101,7 +114,7 @@ public:
 	void slaveKnnSearch(std::vector<Neighbor> & _return,
 			const int32_t treeIndex, const std::string& feature,
 			const int32_t k) {
-		std::cout << "RPC slaveKnnSearch" << std::endl;
+		std::cout << "RPC slaveKnnSearch: " << treeIndex << std::endl;
 		std::vector<int64_t> neighborIdArray;
 		std::vector<float> distArray;
 		std::vector<float> fFeature;
@@ -116,6 +129,21 @@ public:
 			_return.push_back(neighbor);
 		}
 	}
+
+	void slaveSave(const int32_t treeIndex) {
+		std::cout << "RPC slaveSave: " << treeIndex << std::endl;
+		boost::shared_ptr<ANNTreeSlave> pSlave;
+		ANNTreeSlavePool::instance()->get(&pSlave, treeIndex);
+		pSlave->save();
+	}
+
+	void slaveLoad(const int32_t treeIndex) {
+		std::cout << "RPC slaveLoad: " << treeIndex << std::endl;
+		boost::shared_ptr<ANNTreeSlave> pSlave;
+		ANNTreeSlavePool::instance()->get(&pSlave, treeIndex);
+		pSlave->load();
+	}
+
 	void buildCategory(const std::string& categoryName) {
 		std::cout << "RPC buildCategory" << std::endl;
 		ANNTreeHelper::instance()->buildCategory(categoryName);
@@ -129,7 +157,7 @@ public:
 	void query(std::vector<std::string> & _return, const std::string& imagePath,
 			const int32_t treeIndex, const std::string& featureType,
 			const int32_t k) {
-		std::cout << "RPC query" << std::endl;
+		std::cout << "RPC query: " << treeIndex << std::endl;
 		if (featureType != "color" && featureType != "shape"
 				&& featureType != "surf") {
 			return;

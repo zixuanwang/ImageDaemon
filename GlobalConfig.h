@@ -59,17 +59,26 @@ public:
 	const static std::string INVERT_INDEX_TABLE;
 	const static std::string CATEGORY_INDEX_TABLE;
 	const static std::string COLUMN_FAMILY;
+	const static std::string IMAGE_ORIGINAL_DATA;
+	const static std::string IMAGE_CROP_DATA;
+	const static std::string IMAGE_RESIZE_DATA;
+	const static std::string IMAGE_MASK_DATA;
 	const static std::string IMAGE_HASH_COLUMN;
 	const static std::string IMAGE_FEATURE_COLUMN;
 	const static std::string IMAGE_COLOR_FEATURE_COLUMN;
 	const static std::string IMAGE_SHAPE_FEATURE_COLUMN;
 	const static std::string IMAGE_SURF_FEATURE_COLUMN;
+	const static std::string IMAGE_SURF_KEYPOINT_COLUMN;
 	const static std::string IMAGE_BOW_HISTOGRAM_COLUMN;
 	const static std::string BUILD_TREEINDEX_COLUMN;
 	const static std::string COLOR_TREEINDEX_COLUMN;
 	const static std::string SHAPE_TREEINDEX_COLUMN;
 	const static std::string SURF_TREEINDEX_COLUMN;
 	const static std::string IMAGE_DIRECTORY;
+	const static std::string IMAGE_CROP_DIRECTORY;
+	const static std::string IMAGE_MASK_DIRECTORY;
+	const static std::string ANNTREE_ROOT_FILE;
+	const static std::string ANNTREE_SLAVE_FILE;
 	const static int VOCABULARY_SIZE;
 	const static int SHORT_LIST_SIZE;
 	const static int IMAGE_LENGTH;
@@ -84,6 +93,7 @@ public:
 	const static std::string INVERT_INDEX_NEXT_COLUMN;
 	const static std::string INVERTED_INDEX_SERVER_NAME;
 	const static int INVERTED_INDEX_SERVER_PORT;
+	const static int IMAGE_DAEMON_SERVER_PORT;
 	const static bool USE_VERIFICATION;
 	const static float PI;
 

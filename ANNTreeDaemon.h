@@ -20,12 +20,16 @@ class ANNTreeDaemonIf {
   virtual void loadSample(const int32_t treeIndex, const std::string& sampleArray, const int32_t sampleCount) = 0;
   virtual void addFeature(const int32_t treeIndex, const int64_t id, const std::string& feature) = 0;
   virtual void index(const int32_t treeIndex) = 0;
+  virtual void save(const int32_t treeIndex) = 0;
+  virtual void load(const int32_t treeIndex) = 0;
   virtual void knnSearch(std::vector<Neighbor> & _return, const int32_t treeIndex, const std::string& feature, const int32_t k) = 0;
   virtual void similarSearch(std::vector<Neighbor> & _return, const int32_t treeIndex, const int64_t id, const int32_t k) = 0;
   virtual void slavePutTree(const int32_t treeIndex) = 0;
   virtual void slaveAddFeature(const int32_t treeIndex, const int64_t id, const std::string& feature) = 0;
   virtual void slaveIndex(const int32_t treeIndex) = 0;
   virtual void slaveKnnSearch(std::vector<Neighbor> & _return, const int32_t treeIndex, const std::string& feature, const int32_t k) = 0;
+  virtual void slaveSave(const int32_t treeIndex) = 0;
+  virtual void slaveLoad(const int32_t treeIndex) = 0;
   virtual void buildCategory(const std::string& categoryName) = 0;
   virtual void buildAllCategory() = 0;
   virtual void query(std::vector<std::string> & _return, const std::string& imagePath, const int32_t treeIndex, const std::string& featureType, const int32_t k) = 0;
@@ -73,6 +77,12 @@ class ANNTreeDaemonNull : virtual public ANNTreeDaemonIf {
   void index(const int32_t /* treeIndex */) {
     return;
   }
+  void save(const int32_t /* treeIndex */) {
+    return;
+  }
+  void load(const int32_t /* treeIndex */) {
+    return;
+  }
   void knnSearch(std::vector<Neighbor> & /* _return */, const int32_t /* treeIndex */, const std::string& /* feature */, const int32_t /* k */) {
     return;
   }
@@ -89,6 +99,12 @@ class ANNTreeDaemonNull : virtual public ANNTreeDaemonIf {
     return;
   }
   void slaveKnnSearch(std::vector<Neighbor> & /* _return */, const int32_t /* treeIndex */, const std::string& /* feature */, const int32_t /* k */) {
+    return;
+  }
+  void slaveSave(const int32_t /* treeIndex */) {
+    return;
+  }
+  void slaveLoad(const int32_t /* treeIndex */) {
     return;
   }
   void buildCategory(const std::string& /* categoryName */) {
@@ -558,6 +574,182 @@ class ANNTreeDaemon_index_presult {
 
 
   virtual ~ANNTreeDaemon_index_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ANNTreeDaemon_save_args__isset {
+  _ANNTreeDaemon_save_args__isset() : treeIndex(false) {}
+  bool treeIndex;
+} _ANNTreeDaemon_save_args__isset;
+
+class ANNTreeDaemon_save_args {
+ public:
+
+  ANNTreeDaemon_save_args() : treeIndex(0) {
+  }
+
+  virtual ~ANNTreeDaemon_save_args() throw() {}
+
+  int32_t treeIndex;
+
+  _ANNTreeDaemon_save_args__isset __isset;
+
+  void __set_treeIndex(const int32_t val) {
+    treeIndex = val;
+  }
+
+  bool operator == (const ANNTreeDaemon_save_args & rhs) const
+  {
+    if (!(treeIndex == rhs.treeIndex))
+      return false;
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_save_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_save_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_save_pargs {
+ public:
+
+
+  virtual ~ANNTreeDaemon_save_pargs() throw() {}
+
+  const int32_t* treeIndex;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_save_result {
+ public:
+
+  ANNTreeDaemon_save_result() {
+  }
+
+  virtual ~ANNTreeDaemon_save_result() throw() {}
+
+
+  bool operator == (const ANNTreeDaemon_save_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_save_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_save_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_save_presult {
+ public:
+
+
+  virtual ~ANNTreeDaemon_save_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ANNTreeDaemon_load_args__isset {
+  _ANNTreeDaemon_load_args__isset() : treeIndex(false) {}
+  bool treeIndex;
+} _ANNTreeDaemon_load_args__isset;
+
+class ANNTreeDaemon_load_args {
+ public:
+
+  ANNTreeDaemon_load_args() : treeIndex(0) {
+  }
+
+  virtual ~ANNTreeDaemon_load_args() throw() {}
+
+  int32_t treeIndex;
+
+  _ANNTreeDaemon_load_args__isset __isset;
+
+  void __set_treeIndex(const int32_t val) {
+    treeIndex = val;
+  }
+
+  bool operator == (const ANNTreeDaemon_load_args & rhs) const
+  {
+    if (!(treeIndex == rhs.treeIndex))
+      return false;
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_load_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_load_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_load_pargs {
+ public:
+
+
+  virtual ~ANNTreeDaemon_load_pargs() throw() {}
+
+  const int32_t* treeIndex;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_load_result {
+ public:
+
+  ANNTreeDaemon_load_result() {
+  }
+
+  virtual ~ANNTreeDaemon_load_result() throw() {}
+
+
+  bool operator == (const ANNTreeDaemon_load_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_load_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_load_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_load_presult {
+ public:
+
+
+  virtual ~ANNTreeDaemon_load_presult() throw() {}
 
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
@@ -1224,6 +1416,182 @@ class ANNTreeDaemon_slaveKnnSearch_presult {
 
 };
 
+typedef struct _ANNTreeDaemon_slaveSave_args__isset {
+  _ANNTreeDaemon_slaveSave_args__isset() : treeIndex(false) {}
+  bool treeIndex;
+} _ANNTreeDaemon_slaveSave_args__isset;
+
+class ANNTreeDaemon_slaveSave_args {
+ public:
+
+  ANNTreeDaemon_slaveSave_args() : treeIndex(0) {
+  }
+
+  virtual ~ANNTreeDaemon_slaveSave_args() throw() {}
+
+  int32_t treeIndex;
+
+  _ANNTreeDaemon_slaveSave_args__isset __isset;
+
+  void __set_treeIndex(const int32_t val) {
+    treeIndex = val;
+  }
+
+  bool operator == (const ANNTreeDaemon_slaveSave_args & rhs) const
+  {
+    if (!(treeIndex == rhs.treeIndex))
+      return false;
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_slaveSave_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_slaveSave_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_slaveSave_pargs {
+ public:
+
+
+  virtual ~ANNTreeDaemon_slaveSave_pargs() throw() {}
+
+  const int32_t* treeIndex;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_slaveSave_result {
+ public:
+
+  ANNTreeDaemon_slaveSave_result() {
+  }
+
+  virtual ~ANNTreeDaemon_slaveSave_result() throw() {}
+
+
+  bool operator == (const ANNTreeDaemon_slaveSave_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_slaveSave_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_slaveSave_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_slaveSave_presult {
+ public:
+
+
+  virtual ~ANNTreeDaemon_slaveSave_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ANNTreeDaemon_slaveLoad_args__isset {
+  _ANNTreeDaemon_slaveLoad_args__isset() : treeIndex(false) {}
+  bool treeIndex;
+} _ANNTreeDaemon_slaveLoad_args__isset;
+
+class ANNTreeDaemon_slaveLoad_args {
+ public:
+
+  ANNTreeDaemon_slaveLoad_args() : treeIndex(0) {
+  }
+
+  virtual ~ANNTreeDaemon_slaveLoad_args() throw() {}
+
+  int32_t treeIndex;
+
+  _ANNTreeDaemon_slaveLoad_args__isset __isset;
+
+  void __set_treeIndex(const int32_t val) {
+    treeIndex = val;
+  }
+
+  bool operator == (const ANNTreeDaemon_slaveLoad_args & rhs) const
+  {
+    if (!(treeIndex == rhs.treeIndex))
+      return false;
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_slaveLoad_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_slaveLoad_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_slaveLoad_pargs {
+ public:
+
+
+  virtual ~ANNTreeDaemon_slaveLoad_pargs() throw() {}
+
+  const int32_t* treeIndex;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_slaveLoad_result {
+ public:
+
+  ANNTreeDaemon_slaveLoad_result() {
+  }
+
+  virtual ~ANNTreeDaemon_slaveLoad_result() throw() {}
+
+
+  bool operator == (const ANNTreeDaemon_slaveLoad_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ANNTreeDaemon_slaveLoad_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ANNTreeDaemon_slaveLoad_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ANNTreeDaemon_slaveLoad_presult {
+ public:
+
+
+  virtual ~ANNTreeDaemon_slaveLoad_presult() throw() {}
+
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 typedef struct _ANNTreeDaemon_buildCategory_args__isset {
   _ANNTreeDaemon_buildCategory_args__isset() : categoryName(false) {}
   bool categoryName;
@@ -1556,6 +1924,12 @@ class ANNTreeDaemonClient : virtual public ANNTreeDaemonIf {
   void index(const int32_t treeIndex);
   void send_index(const int32_t treeIndex);
   void recv_index();
+  void save(const int32_t treeIndex);
+  void send_save(const int32_t treeIndex);
+  void recv_save();
+  void load(const int32_t treeIndex);
+  void send_load(const int32_t treeIndex);
+  void recv_load();
   void knnSearch(std::vector<Neighbor> & _return, const int32_t treeIndex, const std::string& feature, const int32_t k);
   void send_knnSearch(const int32_t treeIndex, const std::string& feature, const int32_t k);
   void recv_knnSearch(std::vector<Neighbor> & _return);
@@ -1574,6 +1948,12 @@ class ANNTreeDaemonClient : virtual public ANNTreeDaemonIf {
   void slaveKnnSearch(std::vector<Neighbor> & _return, const int32_t treeIndex, const std::string& feature, const int32_t k);
   void send_slaveKnnSearch(const int32_t treeIndex, const std::string& feature, const int32_t k);
   void recv_slaveKnnSearch(std::vector<Neighbor> & _return);
+  void slaveSave(const int32_t treeIndex);
+  void send_slaveSave(const int32_t treeIndex);
+  void recv_slaveSave();
+  void slaveLoad(const int32_t treeIndex);
+  void send_slaveLoad(const int32_t treeIndex);
+  void recv_slaveLoad();
   void buildCategory(const std::string& categoryName);
   void send_buildCategory(const std::string& categoryName);
   void recv_buildCategory();
@@ -1601,12 +1981,16 @@ class ANNTreeDaemonProcessor : public ::apache::thrift::TProcessor {
   void process_loadSample(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_index(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_save(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_load(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_knnSearch(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_similarSearch(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_slavePutTree(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_slaveAddFeature(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_slaveIndex(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_slaveKnnSearch(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_slaveSave(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_slaveLoad(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_buildCategory(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_buildAllCategory(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_query(int32_t seqid, apache::thrift::protocol::TProtocol* iprot, apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -1618,12 +2002,16 @@ class ANNTreeDaemonProcessor : public ::apache::thrift::TProcessor {
     processMap_["loadSample"] = &ANNTreeDaemonProcessor::process_loadSample;
     processMap_["addFeature"] = &ANNTreeDaemonProcessor::process_addFeature;
     processMap_["index"] = &ANNTreeDaemonProcessor::process_index;
+    processMap_["save"] = &ANNTreeDaemonProcessor::process_save;
+    processMap_["load"] = &ANNTreeDaemonProcessor::process_load;
     processMap_["knnSearch"] = &ANNTreeDaemonProcessor::process_knnSearch;
     processMap_["similarSearch"] = &ANNTreeDaemonProcessor::process_similarSearch;
     processMap_["slavePutTree"] = &ANNTreeDaemonProcessor::process_slavePutTree;
     processMap_["slaveAddFeature"] = &ANNTreeDaemonProcessor::process_slaveAddFeature;
     processMap_["slaveIndex"] = &ANNTreeDaemonProcessor::process_slaveIndex;
     processMap_["slaveKnnSearch"] = &ANNTreeDaemonProcessor::process_slaveKnnSearch;
+    processMap_["slaveSave"] = &ANNTreeDaemonProcessor::process_slaveSave;
+    processMap_["slaveLoad"] = &ANNTreeDaemonProcessor::process_slaveLoad;
     processMap_["buildCategory"] = &ANNTreeDaemonProcessor::process_buildCategory;
     processMap_["buildAllCategory"] = &ANNTreeDaemonProcessor::process_buildAllCategory;
     processMap_["query"] = &ANNTreeDaemonProcessor::process_query;
@@ -1691,6 +2079,20 @@ class ANNTreeDaemonMultiface : virtual public ANNTreeDaemonIf {
     }
   }
 
+  void save(const int32_t treeIndex) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->save(treeIndex);
+    }
+  }
+
+  void load(const int32_t treeIndex) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->load(treeIndex);
+    }
+  }
+
   void knnSearch(std::vector<Neighbor> & _return, const int32_t treeIndex, const std::string& feature, const int32_t k) {
     size_t sz = ifaces_.size();
     for (size_t i = 0; i < sz; ++i) {
@@ -1745,6 +2147,20 @@ class ANNTreeDaemonMultiface : virtual public ANNTreeDaemonIf {
       } else {
         ifaces_[i]->slaveKnnSearch(_return, treeIndex, feature, k);
       }
+    }
+  }
+
+  void slaveSave(const int32_t treeIndex) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->slaveSave(treeIndex);
+    }
+  }
+
+  void slaveLoad(const int32_t treeIndex) {
+    size_t sz = ifaces_.size();
+    for (size_t i = 0; i < sz; ++i) {
+      ifaces_[i]->slaveLoad(treeIndex);
     }
   }
 

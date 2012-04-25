@@ -38,14 +38,14 @@ void Feature::segment(cv::Mat* pMask, const cv::Mat& image) {
 	}
 	try {
 		/// flooding is used
-		//	cv::Mat imageCpy = image.clone();
-		//	cv::floodFill(imageCpy, cv::Point(0, 0), cv::Scalar(0), 0,
-		//			cv::Scalar(5, 5, 5, 0), cv::Scalar(5, 5, 5, 0), 8);
-		//	cv::cvtColor(imageCpy, *pMask, CV_BGR2GRAY, 1);
+//		cv::Mat imageCpy = image.clone();
+//		cv::floodFill(imageCpy, cv::Point(0, 0), cv::Scalar(0), 0,
+//				cv::Scalar(5, 5, 5, 0), cv::Scalar(5, 5, 5, 0), 8);
+//		cv::cvtColor(imageCpy, *pMask, CV_BGR2GRAY, 1);
 		/// grab cut is used
 		int centerX = image.cols / 2;
 		int centerY = image.rows / 2;
-		float ratio = 0.85;
+		float ratio = 0.9;
 		int width = (int) (ratio * image.cols);
 		int height = (int) (ratio * image.rows);
 		cv::Rect rectangle(centerX - width / 2, centerY - height / 2, width,
@@ -57,7 +57,40 @@ void Feature::segment(cv::Mat* pMask, const cv::Mat& image) {
 	} catch (cv::Exception& e) {
 		std::cerr << e.what() << std::endl;
 	}
+}
 
+void Feature::compute(const cv::Mat& image){
+	// clear the data vector
+	mVector.clear();
+	if (image.empty()) {
+		return;
+	}
+	// resize image to have the same max dimension
+	cv::Mat resizedImage;
+	ImageResizer::resize(image, &resizedImage, GlobalConfig::IMAGE_LENGTH);
+	// compute the segmentation, mask could be empty
+	cv::Mat mask;
+	segment(&mask, resizedImage);
+	compute(resizedImage, mask);
+}
+
+void Feature::compute(int64_t imageKey) {
+	mVector.clear();
+	Image image;
+	image.loadImage(imageKey);
+	if (image.empty()) {
+		return;
+	}
+	cv::Mat resizedImage;
+	ImageResizer::resize(image.image, &resizedImage,
+			GlobalConfig::IMAGE_LENGTH);
+	Image mask;
+	mask.loadMaskImage(imageKey);
+	if (mask.empty()) {
+		segment(&mask.image, resizedImage);
+		mask.saveMaskImage(imageKey);
+	}
+	compute(resizedImage, mask.image);
 }
 
 float Feature::norm() {
@@ -84,7 +117,8 @@ void Feature::getFeature(std::vector<float>* pFeature, int index) {
 	pFeature->assign(mVector.begin(), mVector.end());
 }
 
-void Feature::add(const boost::shared_ptr<ANNTreeRoot>& pRoot, int64_t imageId) {
+void Feature::add(const boost::shared_ptr<ANNTreeRoot>& pRoot,
+		int64_t imageId) {
 	if (!empty()) {
 		pRoot->addFeature(imageId, mVector);
 	}

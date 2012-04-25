@@ -28,13 +28,14 @@ using namespace ::net::walnutvision;
 class ImageDaemonHandler: virtual public ImageDaemonIf {
 public:
 	ImageDaemonHandler() {
-		ANNVocabulary::instance()->init("/export/c/voc/surf.1m.voc.dat");
+//		ANNVocabulary::instance()->init("/export/c/voc/surf.1m.voc.dat");
+//		testSegment();
 		Logger::instance()->log("Initialization Done.");
 	}
 	void computeBoWFeature(std::vector<Bin> & _return, const int64_t rowKey) {
 		BoWHistogram histogram;
 		Image image;
-		image.load(rowKey);
+		image.loadImage(rowKey);
 		//compute the feature
 		LocalFeatureExtractor localFeatureExtractor;
 		LocalFeature localFeature;
@@ -51,14 +52,8 @@ public:
 	void computeColorFeature(const int64_t rowKey) {
 		boost::shared_ptr<Feature> pFeature(
 				new ColorFeature(GlobalConfig::COLOR_FEATURE_BINSIZE));
-		Image image;
-		image.load(rowKey);
-		pFeature->compute(image.image);
-		std::string string;
-		pFeature->save(&string);
-		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
-				GlobalConfig::IMAGE_COLOR_FEATURE_COLUMN);
+		pFeature->compute(rowKey);
+		pFeature->save(rowKey);
 		Logger::instance()->log("RPC computeColorFeature");
 	}
 
@@ -66,27 +61,16 @@ public:
 		boost::shared_ptr<Feature> pFeature(
 				new ShapeFeature(GlobalConfig::SHAPE_FEATURE_BINSIZE,
 						GlobalConfig::SHAPE_FEATURE_BINSIZE));
-		Image image;
-		image.load(rowKey);
-		pFeature->compute(image.image);
-		std::string string;
-		pFeature->save(&string);
-		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
-				GlobalConfig::IMAGE_SHAPE_FEATURE_COLUMN);
+		pFeature->compute(rowKey);
+		pFeature->save(rowKey);
 		Logger::instance()->log("RPC computeShapeFeature");
 	}
 
 	void computeSURFFeature(const int64_t rowKey) {
-		boost::shared_ptr<Feature> pFeature(new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
-		Image image;
-		image.load(rowKey);
-		pFeature->compute(image.image);
-		std::string string;
-		pFeature->save(&string);
-		boost::shared_ptr<DBAdapter> dbAdapter(new HbaseAdapter);
-		dbAdapter->saveCell(string, GlobalConfig::IMAGE_TABLE, rowKey,
-				GlobalConfig::IMAGE_SURF_FEATURE_COLUMN);
+		boost::shared_ptr<Feature> pFeature(
+				new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
+		pFeature->compute(rowKey);
+		pFeature->save(rowKey);
 		Logger::instance()->log("RPC computeSURFFeature");
 	}
 
@@ -114,7 +98,7 @@ public:
 		dbAdapter->saveCell(imageHash, GlobalConfig::IMAGE_TABLE, strRowKey,
 				GlobalConfig::IMAGE_HASH_COLUMN);
 		Image image;
-		image.load(imageHash);
+		image.load(GlobalConfig::IMAGE_DIRECTORY + imageHash + ".jpg");
 		//compute the feature
 		LocalFeatureExtractor localFeatureExtractor;
 		LocalFeature localFeature;
@@ -139,15 +123,41 @@ public:
 		Logger::instance()->log("RPC indexImage");
 	}
 
-	void cropImage(const std::string& imagePath,
-			const std::string& cropImagePath, const int32_t width,
+	void cropImage(const int64_t rowKey, const int32_t width,
 			const int32_t height) {
-		ImageResizer::crop(imagePath, cropImagePath, width, height);
+		Image image;
+		image.loadImage(rowKey);
+		Image cropImage;
+		ImageResizer::crop(image.image, &cropImage.image, width, height);
+		cropImage.saveCropImage(rowKey);
+		Logger::instance()->log("RPC cropImage");
+	}
+
+	void cropUploadImage(const std::string& srcPath, const std::string& dstPath,
+			const int32_t width, const int32_t height) {
+		cv::Mat image = cv::imread(srcPath);
+		cv::Mat cropImage;
+		ImageResizer::crop(image, &cropImage, width, height);
+		cv::imwrite(dstPath, cropImage);
+		Logger::instance()->log("RPC cropUploadImage");
+	}
+
+	void segment(const int64_t rowKey) {
+		Image image;
+		image.loadImage(rowKey);
+		cv::Mat resizedImage;
+		ImageResizer::resize(image.image, &resizedImage,
+				GlobalConfig::IMAGE_LENGTH);
+		Image mask;
+		ColorFeature colorFeature(GlobalConfig::COLOR_FEATURE_BINSIZE);
+		colorFeature.segment(&mask.image, resizedImage);
+		mask.saveMaskImage(rowKey);
+		Logger::instance()->log("RPC segment");
 	}
 };
 
 int main(int argc, char **argv) {
-	int port = 9992;
+	int port = GlobalConfig::IMAGE_DAEMON_SERVER_PORT;
 	shared_ptr<ImageDaemonHandler> handler(new ImageDaemonHandler());
 	shared_ptr<TProcessor> processor(new ImageDaemonProcessor(handler));
 	shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());

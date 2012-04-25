@@ -19,16 +19,73 @@
 #include "ShapeFeature.h"
 #include "ColorFeature.h"
 #include "SURFFeature.h"
+#include "ScopedANNTreeDaemonClient.h"
+#include "Serializer.h"
 using namespace ::net::walnutvision;
 
-void testSURF() {
-	std::string imagePath = "/home/zixuan/Desktop/test.jpg";
-	cv::Mat image = cv::imread(imagePath);
-	std::cout << image.rows << std::endl;
-//	boost::shared_ptr<Feature> pFeature(
-//			new SURFFeature(GlobalConfig::SURF_FEATURE_COUNT_PER_IMAGE));
-//	pFeature->compute(image);
+void testRemoveHead() {
+	std::string fileName =
+			"/media/node1/export/walnut/workspace/category/yt.map";
+	std::ifstream inStream;
+	inStream.open(fileName.c_str());
+	std::ofstream outStream("/media/node1/export/walnut/workspace/category/yt");
+	if (inStream.good()) {
+		std::string line;
+		while (getline(inStream, line)) {
+			std::string newline = line.substr(1);
+			outStream << newline << std::endl;
+		}
+		inStream.close();
+	}
+	outStream.close();
 }
+
+//void testSerializer() {
+//	std::string imagePath = "/home/zixuan/Desktop/test.jpg";
+//	std::string path = "/home/zixuan/Desktop/image.dat";
+//	cv::Mat image = cv::imread(imagePath);
+//	Serializer::save(image, path);
+//	cv::Mat image2;
+//	Serializer::load(&image2, path);
+//	cv::imwrite("/home/zixuan/Desktop/test2.jpg", image2);
+//}
+
+//void testClient(){
+//	ScopedANNTreeDaemonClient client("",8080);
+//	try{
+//		client.client->buildAllCategory();
+//	}catch (const TException& tx) {
+//		std::cerr << tx.what() << std::endl;
+//	}
+//}
+
+//void testSegment() {
+//	cv::Mat image = cv::Mat();
+//	cv::imwrite("/home/zixuan/Desktop/result.jpg", image);
+//	cv::Mat image2 = cv::imread("/home/zixuan/Desktop/result.jpg");
+//	if (image2.empty()) {
+//		std::cout << "empty" << std::endl;
+//	}
+//	std::string imageDirectory = "/home/zixuan/public_html/bags/imgs";
+//	std::string outputDirctory = "/home/zixuan/Desktop/bags";
+//	boost::filesystem::directory_iterator end_itr;
+//	for (boost::filesystem::directory_iterator itr(imageDirectory);
+//			itr != end_itr; ++itr) {
+//		if (!boost::filesystem::is_directory(itr->status())) {
+//			std::string imagePath = itr->path().string();
+//			boost::filesystem::path bstoutputdir = outputDirctory;
+//			std::string maskPath =
+//					(bstoutputdir / itr->path().filename()).string();
+//			cv::Mat image = cv::imread(imagePath);
+//			cv::Mat mask;
+//			ColorFeature feature(10);
+//			feature.segment(&mask, image);
+//			mask *= 255;
+//			cv::imwrite(maskPath, mask);
+//			std::cout << imagePath << std::endl;
+//		}
+//	}
+//}
 
 //void testShape() {
 //	std::string imageDirectory = "/home/zixuan/public_html/shoe/image";
